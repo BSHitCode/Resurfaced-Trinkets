@@ -33,7 +33,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static owmii.lib.config.Config.MARKER;
+import static owmii.losttrinkets.config.Configs.MARKER;
 import static owmii.losttrinkets.LostTrinkets.LOGGER;
 
 public class UnlockManager {

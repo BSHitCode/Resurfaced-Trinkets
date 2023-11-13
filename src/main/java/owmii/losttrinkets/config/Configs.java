@@ -1,21 +1,41 @@
 package owmii.losttrinkets.config;
 
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.loading.FMLPaths;
+
 import org.apache.commons.lang3.tuple.Pair;
-import owmii.lib.config.Config;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
+
 import owmii.losttrinkets.LostTrinkets;
 
-import static owmii.lib.config.Config.MARKER;
 import static owmii.losttrinkets.LostTrinkets.LOGGER;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class Configs {
+    public static final Marker MARKER = new MarkerManager.Log4jMarker("Config");
     public static final GeneralConfig GENERAL;
     private static final ForgeConfigSpec GENERAL_SPEC;
 
+    private static String createConfigDir(String path) {
+        try {
+            Path configDir = Paths.get(FMLPaths.CONFIGDIR.get()
+                    .toAbsolutePath().toString(), path);
+            Files.createDirectories(configDir);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return path;
+    }
+
     public static void register(LostTrinkets lostTrinkets) {
-        final String path = Config.createConfigDir(LostTrinkets.MOD_ID);
-        Config.registerCommon(GENERAL_SPEC, LostTrinkets.MOD_ID + "/general_common.toml");
+        final String path = createConfigDir(LostTrinkets.MOD_ID);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, GENERAL_SPEC, LostTrinkets.MOD_ID + "/general_common.toml");
         lostTrinkets.addModListener(Configs::refresh);
     }
 
@@ -30,7 +50,7 @@ public class Configs {
     }
 
     static {
-        final Pair<GeneralConfig, ForgeConfigSpec> generalPair = Config.get(GeneralConfig::new);
+        final Pair<GeneralConfig, ForgeConfigSpec> generalPair = new ForgeConfigSpec.Builder().configure(GeneralConfig::new);
         GENERAL = generalPair.getLeft();
         GENERAL_SPEC = generalPair.getRight();
     }
