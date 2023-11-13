@@ -1,14 +1,16 @@
 modLoader="javafml" 
 loaderVersion="[36,)"
-issueTrackerURL="https://github.com/owmii/lost-trinkets/issues"
+issueTrackerURL="https://github.com/Bithero-Studio/Lost-Trinkets/issues"
 license="LGPLv3"
 
 [[mods]]
 modId="losttrinkets"
 version="${version}"
-displayName="Lost Trinkets"
-displayURL="https://www.curseforge.com/minecraft/mc-mods/lost-trinkets"
-authors="owmii"
+displayName="Lost Trinkets Rediscovered"
+displayURL="https://modrinth.com/mod/lost-trinkets"
+logoFile="logo.png"
+logoBlur=false
+authors="owmii,Mai-Lapyst"
 description='''
 70+ Unlockable trinkets with different useful abilities.
 '''
