@@ -14,13 +14,6 @@ description='''
 '''
 
 [[dependencies.losttrinkets]]
-    modId="lollipop"
-    mandatory=true
-    versionRange="[3.2.9,)"
-    ordering="NONE"
-    side="BOTH"
-
-[[dependencies.losttrinkets]]
     modId="forge"
     mandatory=true
     versionRange="[36.0.0,)"

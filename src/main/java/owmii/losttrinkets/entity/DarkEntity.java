@@ -8,7 +8,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
-import owmii.lib.util.Player;
+import owmii.lib.util.Server;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -32,7 +32,7 @@ public class DarkEntity extends CreatureEntity {
             if (this.owner == null) {
                 vanish();
             } else {
-                Optional<ServerPlayerEntity> player = Player.get(this.owner);
+                Optional<ServerPlayerEntity> player = Server.getPlayerByUUID(this.owner);
                 if (player.isPresent()) {
                     this.player = player.get();
                 } else vanish();
