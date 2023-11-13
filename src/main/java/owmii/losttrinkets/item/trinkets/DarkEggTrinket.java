@@ -36,7 +36,7 @@ public class DarkEggTrinket extends Trinket<DarkEggTrinket> {
                     int entities = world.getEntitiesWithinAABB(DarkVexEntity.class, new AxisAlignedBB(player.getPosition()).grow(16)).size();
                     if (entities < 6) {
                         for (int i = 0; i < 3; i++) {
-                            DarkVexEntity vex = Entities.DARK_VEX.create(world);
+                            DarkVexEntity vex = Entities.DARK_VEX.get().create(world);
                             if (vex != null && world instanceof IServerWorld) {
                                 vex.onInitialSpawn((IServerWorld) world, world.getDifficultyForLocation(player.getPosition()), SpawnReason.MOB_SUMMONED, null, null);
                                 vex.setAttackTarget(living);

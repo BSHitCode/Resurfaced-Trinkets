@@ -8,7 +8,7 @@ import owmii.losttrinkets.api.trinket.Rarity;
 import owmii.losttrinkets.api.trinket.Trinket;
 import owmii.losttrinkets.item.Itms;
 
-public class CreepoTrinket extends Trinket {
+public class CreepoTrinket extends Trinket<CreepoTrinket> {
     public CreepoTrinket(Rarity rarity, Properties properties) {
         super(rarity, properties);
     }

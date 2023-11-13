@@ -7,6 +7,7 @@ import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.ForgeRegistries;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.player.PlayerData;
@@ -197,6 +198,10 @@ public class Trinkets implements INBTSerializable<CompoundNBT> {
 
     public boolean isActive(ITrinket trinket) {
         return this.active.contains(trinket);
+    }
+
+    public boolean isActive(RegistryObject<? extends ITrinket> trinket) {
+        return this.active.contains(trinket.get());
     }
 
     public boolean isAvailable(ITrinket trinket) {

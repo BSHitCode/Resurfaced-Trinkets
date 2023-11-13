@@ -11,7 +11,7 @@ public class ItemGroups {
         @Override
         @OnlyIn(Dist.CLIENT)
         public ItemStack createIcon() {
-            return new ItemStack(Itms.CREEPO);
+            return new ItemStack(Itms.CREEPO.get());
         }
     };
 }

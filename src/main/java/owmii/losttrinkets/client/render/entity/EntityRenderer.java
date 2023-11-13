@@ -10,6 +10,6 @@ import owmii.losttrinkets.entity.Entities;
 public class EntityRenderer {
     public static void register() {
         final Minecraft mc = Minecraft.getInstance();
-        RenderingRegistry.registerEntityRenderingHandler(Entities.DARK_VEX, DarkVexRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(Entities.DARK_VEX.get(), DarkVexRenderer::new);
     }
 }

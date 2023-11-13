@@ -25,7 +25,7 @@ public class GoldenSkullTrinket extends Trinket<GoldenSkullTrinket> {
                 LivingEntity target = event.getEntityLiving();
                 if (target instanceof MonsterEntity) {
                     if (target.world.rand.nextInt(20) == 0) {
-                        event.getDrops().add(new ItemEntity(target.world, target.getPosX(), target.getPosY(), target.getPosZ(), new ItemStack(Itms.TREASURE_BAG)));
+                        event.getDrops().add(new ItemEntity(target.world, target.getPosX(), target.getPosY(), target.getPosZ(), new ItemStack(Itms.TREASURE_BAG.get())));
                     }
                 }
             }
