@@ -11,6 +11,7 @@ import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import owmii.losttrinkets.api.LostTrinketsAPI;
+import owmii.losttrinkets.entity.Entities;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -25,7 +26,7 @@ public class TargetHandler {
                 PlayerEntity player = (PlayerEntity) target;
 
                 // Always allow targeting for boss mobs
-                if (!mob.isNonBoss()) {
+                if (!Entities.isNonBossEntity(mob)) {
                     return false;
                 }
 
@@ -63,7 +64,7 @@ public class TargetHandler {
                 UUID targetUUID = angerable.getAngerTarget();
                 if (targetUUID != null && preventTargeting(mob, mob.world.getPlayerByUuid(targetUUID))) {
                     // Resets anger timer and target
-                    angerable.func_241356_K__();
+                    angerable.resetTargets();
                 }
             }
             // Remove attack target

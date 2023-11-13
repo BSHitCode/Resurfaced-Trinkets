@@ -38,9 +38,9 @@ public class TrebleHooksTrinket extends Trinket<TrebleHooksTrinket> {
                 ItemStack rod = stack.getItem() instanceof FishingRodItem ? stack : stack1;
                 for (int i = 0; i < 2; i++) {
                     FishingBobberEntity hook = event.getHookEntity();
-                    Entity entity = hook.func_234616_v_();
+                    Entity entity = hook.getShooter();
                     if (entity != null) {
-                        LootContext.Builder builder = (new LootContext.Builder((ServerWorld) world)).withParameter(LootParameters.field_237457_g_, hook.getPositionVec()).withParameter(LootParameters.TOOL, rod).withParameter(LootParameters.THIS_ENTITY, hook).withRandom(world.rand).withLuck((float) EnchantmentHelper.getFishingLuckBonus(rod) + player.getLuck());
+                        LootContext.Builder builder = (new LootContext.Builder((ServerWorld) world)).withParameter(LootParameters.ORIGIN, hook.getPositionVec()).withParameter(LootParameters.TOOL, rod).withParameter(LootParameters.THIS_ENTITY, hook).withRandom(world.rand).withLuck((float) EnchantmentHelper.getFishingLuckBonus(rod) + player.getLuck());
                         builder.withParameter(LootParameters.KILLER_ENTITY, entity).withParameter(LootParameters.THIS_ENTITY, hook);
                         MinecraftServer server = world.getServer();
                         if (server != null) {

@@ -20,6 +20,7 @@ import net.minecraftforge.fml.common.Mod;
 import owmii.lib.util.Ticker;
 import owmii.losttrinkets.api.trinket.ITrinket;
 import owmii.losttrinkets.config.Configs;
+import owmii.losttrinkets.entity.Entities;
 import owmii.losttrinkets.impl.LostTrinketsAPIImpl;
 
 import java.util.*;
@@ -93,7 +94,7 @@ public class UnlockHandler {
             if (entity instanceof PlayerEntity) {
                 PlayerEntity player = (PlayerEntity) entity;
                 if (!player.world.isRemote) {
-                    if (target.isNonBoss()) {
+                    if (Entities.isNonBossEntity(target)) {
                         if (Configs.GENERAL.killingUnlockEnabled.get()) {
                             queueUnlock(player, Type.KILL);
                         }

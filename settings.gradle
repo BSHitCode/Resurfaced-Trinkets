@@ -1,1 +1,4 @@
 rootProject.name = 'WorldLock'
+
+include(':_Lollipop')
+project(':_Lollipop').projectDir = new File('../Lollipop')

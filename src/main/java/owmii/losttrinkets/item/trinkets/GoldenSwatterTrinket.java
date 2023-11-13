@@ -10,6 +10,7 @@ import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.Rarity;
 import owmii.losttrinkets.api.trinket.Trinket;
 import owmii.losttrinkets.api.trinket.Trinkets;
+import owmii.losttrinkets.entity.Entities;
 import owmii.losttrinkets.item.Itms;
 
 public class GoldenSwatterTrinket extends Trinket<GoldenSwatterTrinket> {
@@ -25,7 +26,7 @@ public class GoldenSwatterTrinket extends Trinket<GoldenSwatterTrinket> {
                 PlayerEntity player = (PlayerEntity) entity;
                 Trinkets trinkets = LostTrinketsAPI.getTrinkets(player);
                 if (trinkets.isActive(Itms.GOLDEN_SWATTER)) {
-                    if (living.isNonBoss()) {
+                    if (Entities.isNonBossEntity(living)) {
                         living.setHealth(0.5F);
                     }
                 }

@@ -27,7 +27,7 @@ public class TreasureBagItem extends ItemBase {
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
         if (world instanceof ServerWorld) {
             LootContext.Builder builder = new LootContext.Builder((ServerWorld) world);
-            builder.withParameter(LootParameters.field_237457_g_, player.getPositionVec()).withSeed(world.rand.nextLong());
+            builder.withParameter(LootParameters.ORIGIN, player.getPositionVec()).withSeed(world.rand.nextLong());
             builder.withLuck(player.getLuck()).withParameter(LootParameters.THIS_ENTITY, player);
             ResourceLocation rl = Objects.requireNonNull(getRegistryName());
             LootTable lootTable = Server.get().getLootTableManager().getLootTableFromLocation(rl);

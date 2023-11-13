@@ -13,6 +13,7 @@ import owmii.lib.util.Server;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.Rarity;
 import owmii.losttrinkets.api.trinket.Trinket;
+import owmii.losttrinkets.entity.Entities;
 import owmii.losttrinkets.item.Itms;
 
 import java.util.ArrayList;
@@ -45,9 +46,9 @@ public class TreasureRingTrinket extends Trinket<TreasureRingTrinket> {
             PlayerEntity player = (PlayerEntity) source.getTrueSource();
             if (LostTrinketsAPI.getTrinkets(player).isActive(Itms.TREASURE_RING)) {
                 LivingEntity target = event.getEntityLiving();
-                if (!target.isNonBoss() && player.world instanceof ServerWorld) {
+                if (!Entities.isNonBossEntity(target) && player.world instanceof ServerWorld) {
                     LootContext.Builder builder = new LootContext.Builder((ServerWorld) player.world);
-                    builder.withParameter(LootParameters.field_237457_g_, target.getPositionVec()).withSeed(player.world.rand.nextLong());
+                    builder.withParameter(LootParameters.ORIGIN, target.getPositionVec()).withSeed(player.world.rand.nextLong());
                     builder.withLuck(player.getLuck()).withParameter(LootParameters.THIS_ENTITY, player);
                     LootTable lootTable = Server.get().getLootTableManager().getLootTableFromLocation(LOOTS.get(player.world.rand.nextInt(LOOTS.size())));
                     List<ItemStack> stacks = lootTable.generate(builder.build(LootParameterSets.CHEST));

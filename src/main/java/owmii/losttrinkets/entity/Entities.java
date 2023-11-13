@@ -1,5 +1,6 @@
 package owmii.losttrinkets.entity;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
@@ -13,5 +14,10 @@ public class Entities {
 
     public static void register() {
         GlobalEntityTypeAttributes.put(DARK_VEX, DarkVexEntity.getAttribute().create());
+    }
+
+    public static boolean isNonBossEntity(Entity entity) {
+        // TODO: make a better check
+        return entity.canChangeDimension();
     }
 }

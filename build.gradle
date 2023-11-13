@@ -30,6 +30,18 @@ sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = co
 minecraft {
     mappings channel: lib.mappings_channel, version: lib.mappings_version
     accessTransformer = file('../Lollipop/src/main/resources/META-INF/accesstransformer.cfg')
+    runs {
+        client {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            mods {
+                LostTrinkets {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
 }
 
 tasks.withType(Jar) {

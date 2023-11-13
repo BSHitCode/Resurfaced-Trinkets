@@ -8,6 +8,7 @@ import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.util.math.vector.Vector3d;
 import owmii.losttrinkets.api.LostTrinketsAPI;
+import owmii.losttrinkets.entity.Entities;
 import owmii.losttrinkets.item.Itms;
 
 import javax.annotation.Nullable;
@@ -51,7 +52,7 @@ public class BigFootGoal extends Goal {
 
     @Override
     public boolean shouldExecute() {
-        if (this.entity.isNonBoss() && this.entity.isChild()) {
+        if (Entities.isNonBossEntity(this.entity) && this.entity.isChild()) {
             this.player = this.entity.world.getClosestPlayer(this.entity.getPosX(), this.entity.getPosY(), this.entity.getPosZ(), 8.0,
                     target -> target instanceof PlayerEntity && LostTrinketsAPI.getTrinkets((PlayerEntity) target).isActive(Itms.BIG_FOOT));
             if (this.player != null) {
@@ -61,7 +62,7 @@ public class BigFootGoal extends Goal {
                 } else if (this.player.getDistanceSq(vector3d.x, vector3d.y, vector3d.z) < this.player.getDistanceSq(this.entity)) {
                     return false;
                 } else {
-                    this.path = this.navigation.getPathToPos(vector3d.x, vector3d.y, vector3d.z, 0);
+                    this.path = this.navigation.pathfind(vector3d.x, vector3d.y, vector3d.z, 0);
                     return this.path != null;
                 }
             }

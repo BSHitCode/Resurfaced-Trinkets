@@ -81,7 +81,7 @@ public class WarmVoidTrinket extends Trinket<WarmVoidTrinket> implements ITickab
         Consumer<ServerPlayerEntity> repositionEntity = callbackPlayer -> {
             if (spawnPos.isPresent()) {
                 BlockState blockstate = spawnWorld.getBlockState(spawnPosRaw);
-                boolean isRespawnAnchor = blockstate.isIn(Blocks.RESPAWN_ANCHOR);
+                boolean isRespawnAnchor = blockstate.matchesBlock(Blocks.RESPAWN_ANCHOR);
                 Vector3d spawnPosResolved = spawnPos.get();
                 float spawnAngleResolved;
                 if (!blockstate.isIn(BlockTags.BEDS) && !isRespawnAnchor) {
@@ -94,7 +94,7 @@ public class WarmVoidTrinket extends Trinket<WarmVoidTrinket> implements ITickab
                 callbackPlayer.setLocationAndAngles(spawnPosResolved.x, spawnPosResolved.y, spawnPosResolved.z, spawnAngleResolved, 0.0F);
                 callbackPlayer.func_242111_a(spawnWorld.getDimensionKey(), spawnPosRaw, spawnAngle, spawnForced, false);
             } else if (spawnPosRaw != null) {
-                callbackPlayer.connection.sendPacket(new SChangeGameStatePacket(SChangeGameStatePacket.field_241764_a_, 0.0F));
+                callbackPlayer.connection.sendPacket(new SChangeGameStatePacket(SChangeGameStatePacket.SPAWN_NOT_VALID, 0.0F));
             }
 
             while (!spawnWorld.hasNoCollisions(callbackPlayer) && callbackPlayer.getPosY() < 256.0D) {

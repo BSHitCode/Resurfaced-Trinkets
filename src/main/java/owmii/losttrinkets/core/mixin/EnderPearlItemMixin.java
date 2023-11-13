@@ -30,7 +30,7 @@ public class EnderPearlItemMixin extends Item {
         if (!world.isRemote) {
             EnderPearlEntity entity = new EnderPearlEntity(world, player);
             entity.setItem(stack);
-            entity.func_234612_a_(player, player.rotationPitch, player.rotationYaw, 0.0F, 1.5F, 1.0F);
+            entity.setDirectionAndMovement(player, player.rotationPitch, player.rotationYaw, 0.0F, 1.5F, 1.0F);
             world.addEntity(entity);
         }
         player.addStat(Stats.ITEM_USED.get(this));
