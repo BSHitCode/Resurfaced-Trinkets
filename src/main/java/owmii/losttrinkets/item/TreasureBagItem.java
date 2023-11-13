@@ -1,6 +1,7 @@
 package owmii.losttrinkets.item;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootParameterSets;
@@ -12,13 +13,12 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.items.ItemHandlerHelper;
-import owmii.lib.item.ItemBase;
 import owmii.lib.util.Server;
 
 import java.util.List;
 import java.util.Objects;
 
-public class TreasureBagItem extends ItemBase {
+public class TreasureBagItem extends Item {
     public TreasureBagItem(Properties properties) {
         super(properties);
     }
