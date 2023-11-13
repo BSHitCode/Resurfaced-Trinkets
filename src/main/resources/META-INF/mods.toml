@@ -5,7 +5,7 @@ license="LGPLv3"
 
 [[mods]]
 modId="losttrinkets"
-version="${file.jarVersion}"
+version="${version}"
 displayName="Lost Trinkets"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/lost-trinkets"
 authors="owmii"

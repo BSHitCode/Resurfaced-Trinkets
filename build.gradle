@@ -1,70 +1,79 @@
-buildscript {
-    repositories {
-        jcenter()
-        mavenCentral()
-        maven { url = 'https://files.minecraftforge.net/maven' }
-        maven { url = 'https://repo.spongepowered.org/repository/maven-public' }
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
-        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
-    }
+plugins {
+    id "dev.architectury.loom" version "1.3-SNAPSHOT"
+    id "maven-publish"
 }
 
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'org.spongepowered.mixin'
-apply plugin: 'idea'
-
-mixin {
-    add sourceSets.main, "${mod_name.toLowerCase()}.refmap.json"
+base {
+    archivesName = project.mod_name
 }
 
-version = '1.16.5-' + mod_version
-group = 'owmii'
-archivesBaseName = mod_name
+version = project.mod_version
+group = "owmii.losttrinkets"
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+java {
+    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+}
 
-minecraft {
-    mappings channel: 'snapshot', version: '20210309-1.16.5'
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-    runs {
-        client {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            mods {
-                LostTrinkets {
-                    source sourceSets.main
-                }
-            }
-        }
+loom {
+    forge {
+        mixinConfigs = [
+            "losttrinkets.mixins.json"
+        ]
     }
-}
-
-tasks.withType(Jar) {
-    def out = file("../_JARS")
-    destinationDir = out
 }
 
 repositories {
-    maven { url = "http://dvs1.progwml6.com/files/maven" } //JEI
-    maven { url = "https://maven.theillusivec4.top" } //Curios
+    maven { url "https://dvs1.progwml6.com/files/maven" } //JEI
     maven { url "https://maven.blamejared.com" } // Botania
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.5-36.2.26'
-    compileOnly fg.deobf("mezz.jei:jei-1.16.4:7.6.1.71:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-1.16.4:7.6.1.71")
-    annotationProcessor 'org.spongepowered:mixin:0.8.1:processor'
-    compileOnly fg.deobf("vazkii.botania:Botania:1.16.4-413:api")
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings "de.oceanlabs.mcp:mcp_snapshot:20210309-1.16.5"
+    // mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+    forge "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
+
+    modCompileOnly "mezz.jei:jei-1.16.4:7.6.1.71:api"
+    modRuntimeOnly "mezz.jei:jei-1.16.4:7.6.1.71"
+
+    modCompileOnly "vazkii.botania:Botania:1.16.4-413:api"
+}
+
+processResources {
+    // define properties that can be used during resource processing
+    inputs.property "version", project.version
+
+    // this will replace the property "${version}" in your mods.toml
+    // with the version you've defined in your gradle.properties
+    filesMatching("META-INF/mods.toml") {
+        expand "version": project.version
+    }
+}
+
+tasks.withType(JavaCompile) {
+    // ensure that the encoding is set to UTF-8, no matter what the system default is
+    // this fixes some edge cases with special characters not displaying correctly
+    // see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
+    // If Javadoc is generated, this must be specified in that task too.
+    options.encoding = "UTF-8"
+
+    // The Minecraft launcher currently installs Java 8 for users, so your mod probably wants to target Java 8 too
+    // JDK 9 introduced a new way of specifying this that will make sure no newer classes or methods are used.
+    // We'll use that if it's available, but otherwise we'll use the older option.
+    def targetVersion = 8
+    if (JavaVersion.current().isJava9Compatible()) {
+        options.release = targetVersion
+    }
+}
+
+java {
+    withSourcesJar()
 }
 
 jar {
+    // add some additional metadata to the jar manifest
     manifest {
         attributes([
-                "MixinConfigs"            : "${mod_name.toLowerCase()}.mixins.json",
                 "Specification-Title"     : mod_name,
                 "Specification-Vendor"    : 'owmii',
                 "Specification-Version"   : mod_version,
@@ -72,14 +81,23 @@ jar {
                 "Implementation-Version"  : mod_version,
                 "Implementation-Vendor"   : 'owmii',
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
-        ],)
+        ])
     }
 }
 
-if (System.getProperty("idea.sync.active") == "true") {
-    afterEvaluate {
-        tasks.withType(JavaCompile).all {
-            it.options.annotationProcessorPath = files()
+// configure the maven publication
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
         }
+    }
+
+    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
+    repositories {
+        // Add repositories to publish to here.
+        // Notice: This block does NOT have the same function as the block in the top level.
+        // The repositories here will be used for publishing your artifact, not for
+        // retrieving dependencies.
     }
 }
