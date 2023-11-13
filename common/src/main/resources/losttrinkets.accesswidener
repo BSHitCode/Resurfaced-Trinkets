@@ -1,0 +1,10 @@
+accessWidener v2 named
+
+# LivingEntity
+accessible method net/minecraft/entity/LivingEntity onFinishedPotionEffect (Lnet/minecraft/potion/EffectInstance;)V
+
+# CreeperEntity
+accessible field net/minecraft/entity/monster/CreeperEntity timeSinceIgnited I
+
+# ServerPlayerEntity
+accessible method net/minecraft/entity/player/ServerPlayerEntity onFinishedPotionEffect (Lnet/minecraft/potion/EffectInstance;)V
