@@ -33,10 +33,9 @@ public class Configs {
         return path;
     }
 
-    public static void register(LostTrinkets lostTrinkets) {
+    public static void register() {
         final String path = createConfigDir(LostTrinkets.MOD_ID);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, GENERAL_SPEC, LostTrinkets.MOD_ID + "/general_common.toml");
-        lostTrinkets.addModListener(Configs::refresh);
     }
 
     public static void refresh(ModConfig.ModConfigEvent event) {
