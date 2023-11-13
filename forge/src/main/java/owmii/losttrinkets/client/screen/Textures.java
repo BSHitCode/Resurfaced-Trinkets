@@ -1,8 +1,8 @@
 package owmii.losttrinkets.client.screen;
 
 import net.minecraft.util.ResourceLocation;
-import owmii.lib.client.screen.Texture;
 import owmii.losttrinkets.LostTrinkets;
+import owmii.losttrinkets.lib.client.screen.Texture;
 
 public class Textures {
     public static final Texture TOAST = register("toasts", 160, 42, 0, 0);

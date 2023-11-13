@@ -2,10 +2,10 @@ package owmii.losttrinkets.network.packet;
 
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
-import owmii.lib.client.util.MC;
-import owmii.lib.network.IPacket;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.player.PlayerData;
+import owmii.losttrinkets.lib.client.util.MC;
+import owmii.losttrinkets.lib.network.IPacket;
 
 import java.util.function.Supplier;
 

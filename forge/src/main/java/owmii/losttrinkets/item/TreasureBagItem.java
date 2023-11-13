@@ -13,7 +13,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.items.ItemHandlerHelper;
-import owmii.lib.util.Server;
+import owmii.losttrinkets.lib.util.Server;
 
 import java.util.List;
 import java.util.Objects;

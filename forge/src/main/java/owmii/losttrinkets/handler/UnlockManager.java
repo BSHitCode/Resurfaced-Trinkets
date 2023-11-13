@@ -15,13 +15,13 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.util.text.event.HoverEvent;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 import net.minecraftforge.registries.ForgeRegistries;
-import owmii.lib.util.Server;
 import owmii.losttrinkets.LostTrinkets;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.player.PlayerData;
 import owmii.losttrinkets.api.trinket.ITrinket;
 import owmii.losttrinkets.api.trinket.Trinkets;
 import owmii.losttrinkets.config.Configs;
+import owmii.losttrinkets.lib.util.Server;
 import owmii.losttrinkets.network.packet.TrinketUnlockedPacket;
 
 import javax.annotation.Nullable;

@@ -9,12 +9,12 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.client.gui.GuiUtils;
-import owmii.lib.client.screen.widget.IconButton;
 import owmii.losttrinkets.LostTrinkets;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.ITrinket;
 import owmii.losttrinkets.api.trinket.Trinkets;
 import owmii.losttrinkets.client.screen.widget.TrinketButton;
+import owmii.losttrinkets.lib.client.screen.widget.IconButton;
 import owmii.losttrinkets.network.packet.SetActivePacket;
 
 import javax.annotation.Nullable;

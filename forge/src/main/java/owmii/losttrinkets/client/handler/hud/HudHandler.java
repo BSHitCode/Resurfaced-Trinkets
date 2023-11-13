@@ -14,8 +14,9 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.apache.commons.lang3.StringUtils;
-import owmii.lib.util.Ticker;
+
 import owmii.losttrinkets.client.screen.Textures;
+import owmii.losttrinkets.lib.util.Ticker;
 
 import javax.annotation.Nullable;
 import java.awt.*;

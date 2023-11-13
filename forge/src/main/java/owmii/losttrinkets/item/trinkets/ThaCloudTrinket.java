@@ -5,10 +5,10 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
-import owmii.lib.util.math.V3d;
 import owmii.losttrinkets.api.trinket.ITickableTrinket;
 import owmii.losttrinkets.api.trinket.Rarity;
 import owmii.losttrinkets.api.trinket.Trinket;
+import owmii.losttrinkets.lib.util.math.V3d;
 
 public class ThaCloudTrinket extends Trinket<ThaCloudTrinket> implements ITickableTrinket {
     public ThaCloudTrinket(Rarity rarity, Properties properties) {

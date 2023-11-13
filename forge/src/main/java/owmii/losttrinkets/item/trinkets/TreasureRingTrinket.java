@@ -9,12 +9,12 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
-import owmii.lib.util.Server;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.Rarity;
 import owmii.losttrinkets.api.trinket.Trinket;
 import owmii.losttrinkets.entity.Entities;
 import owmii.losttrinkets.item.Itms;
+import owmii.losttrinkets.lib.util.Server;
 
 import java.util.ArrayList;
 import java.util.List;

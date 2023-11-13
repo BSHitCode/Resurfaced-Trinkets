@@ -2,8 +2,8 @@ package owmii.losttrinkets.client.screen;
 
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.util.text.ITextComponent;
-import owmii.lib.client.screen.ScreenBase;
 import owmii.losttrinkets.client.handler.KeyHandler;
+import owmii.losttrinkets.lib.client.screen.ScreenBase;
 
 import javax.annotation.Nullable;
 

@@ -6,8 +6,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.StringTextComponent;
-import owmii.lib.client.screen.Texture;
 import owmii.losttrinkets.api.trinket.ITrinket;
+import owmii.losttrinkets.lib.client.screen.Texture;
 
 public class TrinketButton extends Button {
     protected final ITrinket trinket;

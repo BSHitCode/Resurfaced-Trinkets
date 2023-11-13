@@ -4,11 +4,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
-import owmii.lib.client.util.MC;
-import owmii.lib.network.IPacket;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.player.PlayerData;
 import owmii.losttrinkets.client.screen.Screens;
+import owmii.losttrinkets.lib.client.util.MC;
+import owmii.losttrinkets.lib.network.IPacket;
 
 import java.util.Objects;
 import java.util.UUID;

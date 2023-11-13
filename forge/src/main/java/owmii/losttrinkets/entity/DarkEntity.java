@@ -8,7 +8,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
-import owmii.lib.util.Server;
+import owmii.losttrinkets.lib.util.Server;
 
 import javax.annotation.Nullable;
 import java.util.List;

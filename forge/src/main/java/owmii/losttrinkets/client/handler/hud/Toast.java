@@ -1,7 +1,7 @@
 package owmii.losttrinkets.client.handler.hud;
 
-import owmii.lib.util.Ticker;
 import owmii.losttrinkets.api.trinket.ITrinket;
+import owmii.losttrinkets.lib.util.Ticker;
 
 public class Toast {
     private final ITrinket trinket;

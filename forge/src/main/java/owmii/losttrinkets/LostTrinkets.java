@@ -8,7 +8,7 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import owmii.lib.network.Network;
+
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.client.Sounds;
 import owmii.losttrinkets.config.Configs;
@@ -16,6 +16,7 @@ import owmii.losttrinkets.entity.Entities;
 import owmii.losttrinkets.handler.DataManager;
 import owmii.losttrinkets.impl.LostTrinketsAPIImpl;
 import owmii.losttrinkets.item.Itms;
+import owmii.losttrinkets.lib.network.Network;
 import owmii.losttrinkets.network.Packets;
 
 @Mod(LostTrinkets.MOD_ID)

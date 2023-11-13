@@ -5,12 +5,12 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.registries.ForgeRegistries;
-import owmii.lib.client.util.MC;
-import owmii.lib.network.IPacket;
 import owmii.losttrinkets.api.trinket.ITrinket;
 import owmii.losttrinkets.client.Sounds;
 import owmii.losttrinkets.client.handler.hud.HudHandler;
 import owmii.losttrinkets.client.handler.hud.Toast;
+import owmii.losttrinkets.lib.client.util.MC;
+import owmii.losttrinkets.lib.network.IPacket;
 
 import java.util.function.Supplier;
 

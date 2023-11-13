@@ -7,10 +7,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.network.NetworkEvent;
-import owmii.lib.network.IPacket;
-import owmii.lib.util.Magnet;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.item.Itms;
+import owmii.losttrinkets.lib.network.IPacket;
+import owmii.losttrinkets.lib.util.Magnet;
 
 import java.util.List;
 import java.util.function.Supplier;

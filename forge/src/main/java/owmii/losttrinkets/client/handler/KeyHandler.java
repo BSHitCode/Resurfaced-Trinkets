@@ -8,9 +8,9 @@ import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
-import owmii.lib.client.util.MC;
 import owmii.losttrinkets.client.screen.TrinketsScreen;
 import owmii.losttrinkets.item.trinkets.MagnetoTrinket;
+import owmii.losttrinkets.lib.client.util.MC;
 
 import static net.minecraft.client.util.InputMappings.INPUT_INVALID;
 import static net.minecraft.client.util.InputMappings.Type.KEYSYM;

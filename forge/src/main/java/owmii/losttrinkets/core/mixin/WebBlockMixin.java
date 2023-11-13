@@ -12,10 +12,11 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IForgeShearable;
 import org.spongepowered.asm.mixin.Mixin;
-import owmii.lib.util.Stack;
+
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.Trinkets;
 import owmii.losttrinkets.item.Itms;
+import owmii.losttrinkets.lib.util.Stack;
 
 @Mixin(WebBlock.class)
 public class WebBlockMixin extends Block implements IForgeShearable {

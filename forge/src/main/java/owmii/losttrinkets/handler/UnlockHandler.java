@@ -17,11 +17,11 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
-import owmii.lib.util.Ticker;
 import owmii.losttrinkets.api.trinket.ITrinket;
 import owmii.losttrinkets.config.Configs;
 import owmii.losttrinkets.entity.Entities;
 import owmii.losttrinkets.impl.LostTrinketsAPIImpl;
+import owmii.losttrinkets.lib.util.Ticker;
 
 import java.util.*;
 
