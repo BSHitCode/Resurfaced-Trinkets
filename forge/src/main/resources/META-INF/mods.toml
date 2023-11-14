@@ -21,3 +21,17 @@ description='''
     versionRange="[36.0.0,)"
     ordering="NONE"
     side="BOTH"
+
+[[dependencies.losttrinkets]]
+    modId="architectury"
+    mandatory=true
+    versionRange="[1.32.68,]"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.losttrinkets]]
+    modId="cloth-config"
+    mandatory=true
+    versionRange="[4.17.101,]"
+    ordering="NONE"
+    side="BOTH"

@@ -19,6 +19,12 @@ subprojects {
         mappings "de.oceanlabs.mcp:mcp_snapshot:20210309-1.16.5"
         // mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     }
+
+    architectury {
+        // Disable Architectury's injectables like @ExpectPlatform
+        // since we don't use them.
+        injectInjectables = false
+    }
 }
 
 allprojects {

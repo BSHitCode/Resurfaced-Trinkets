@@ -28,6 +28,8 @@ configurations {
 
 dependencies {
     forge "net.minecraftforge:forge:${rootProject.minecraft_version}-${rootProject.forge_version}"
+    modApi "me.shedaniel:architectury-forge:${rootProject.architectury_version}"
+    modImplementation "me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_config_version}"
 
     modCompileOnly "mezz.jei:jei-1.16.4:7.6.1.71:api"
     modRuntimeOnly "mezz.jei:jei-1.16.4:7.6.1.71"
