@@ -1,8 +1,9 @@
 package owmii.losttrinkets.item.trinkets;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraft.util.DamageSource;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.Rarity;
 import owmii.losttrinkets.api.trinket.Trinket;
@@ -14,13 +15,13 @@ public class DarkDaggerTrinket extends Trinket<DarkDaggerTrinket> {
         super(rarity, properties);
     }
 
-    public static void onHurt(LivingHurtEvent event) {
-        Entity entity = event.getSource().getImmediateSource();
+    public static void onHurt(DamageSource source, float amount, LivingEntity entityLiving) {
+        Entity entity = source.getImmediateSource();
         if (entity instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) entity;
             Trinkets trinkets = LostTrinketsAPI.getTrinkets(player);
             if (trinkets.isActive(Itms.DARK_DAGGER)) {
-                player.heal(Math.max(Math.min(event.getAmount(), event.getEntityLiving().getHealth()) / 2.0F, 1.0F));
+                player.heal(Math.max(Math.min(amount, entityLiving.getHealth()) / 2.0F, 1.0F));
             }
         }
     }

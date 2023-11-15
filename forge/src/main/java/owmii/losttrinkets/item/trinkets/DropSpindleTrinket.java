@@ -2,7 +2,7 @@ package owmii.losttrinkets.item.trinkets;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraft.util.DamageSource;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.Rarity;
 import owmii.losttrinkets.api.trinket.Trinket;
@@ -14,8 +14,8 @@ public class DropSpindleTrinket extends Trinket<DropSpindleTrinket> {
         super(rarity, properties);
     }
 
-    public static void onHurt(LivingHurtEvent event) {
-        Entity entity = event.getSource().getImmediateSource();
+    public static void onHurt(DamageSource source) {
+        Entity entity = source.getImmediateSource();
         if (entity instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) entity;
             Trinkets trinkets = LostTrinketsAPI.getTrinkets(player);

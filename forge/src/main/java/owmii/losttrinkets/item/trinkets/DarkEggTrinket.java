@@ -8,7 +8,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.Rarity;
 import owmii.losttrinkets.api.trinket.Trinket;
@@ -22,10 +21,8 @@ public class DarkEggTrinket extends Trinket<DarkEggTrinket> {
         super(rarity, properties);
     }
 
-    public static void onHurt(LivingHurtEvent event) {
-        LivingEntity entity = event.getEntityLiving();
+    public static void onHurt(LivingEntity entity, DamageSource source) {
         World world = entity.getEntityWorld();
-        DamageSource source = event.getSource();
         Entity trueSource = source.getTrueSource();
         if (entity instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) entity;

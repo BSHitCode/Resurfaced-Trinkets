@@ -1,12 +1,13 @@
 package owmii.losttrinkets.item.trinkets;
 
+import java.util.Collection;
+
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.Rarity;
 import owmii.losttrinkets.api.trinket.Trinket;
@@ -17,15 +18,13 @@ public class GoldenSkullTrinket extends Trinket<GoldenSkullTrinket> {
         super(rarity, properties);
     }
 
-    public static void onDrops(LivingDropsEvent event) {
-        DamageSource source = event.getSource();
+    public static void onDrops(DamageSource source, LivingEntity target, Collection<ItemEntity> drops) {
         if (source.getTrueSource() instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) source.getTrueSource();
             if (LostTrinketsAPI.getTrinkets(player).isActive(Itms.GOLDEN_SKULL)) {
-                LivingEntity target = event.getEntityLiving();
                 if (target instanceof MonsterEntity) {
                     if (target.world.rand.nextInt(20) == 0) {
-                        event.getDrops().add(new ItemEntity(target.world, target.getPosX(), target.getPosY(), target.getPosZ(), new ItemStack(Itms.TREASURE_BAG.get())));
+                        drops.add(new ItemEntity(target.world, target.getPosX(), target.getPosY(), target.getPosZ(), new ItemStack(Itms.TREASURE_BAG.get())));
                     }
                 }
             }

@@ -1,5 +1,7 @@
 package owmii.losttrinkets.item.trinkets;
 
+import java.util.Collection;
+
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.passive.AnimalEntity;
@@ -7,7 +9,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.DamageSource;
-import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.Rarity;
 import owmii.losttrinkets.api.trinket.Trinket;
@@ -18,16 +19,18 @@ public class ButchersCleaverTrinket extends Trinket<ButchersCleaverTrinket> {
         super(rarity, properties);
     }
 
-    public static void dropExtra(LivingDropsEvent event) {
-        DamageSource source = event.getSource();
+    public static void dropExtra(
+        DamageSource source,
+        LivingEntity target,
+        Collection<ItemEntity> drops
+    ) {
         if (source.getTrueSource() instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) source.getTrueSource();
             if (LostTrinketsAPI.getTrinkets(player).isActive(Itms.BUTCHERS_CLEAVER)) {
-                LivingEntity target = event.getEntityLiving();
                 if (target instanceof AnimalEntity) {
                     if (target.world.rand.nextInt(10) == 0) {
                         ItemStack stack = new ItemStack(Items.BONE, target.world.rand.nextInt(2) + 1);
-                        event.getDrops().add(new ItemEntity(target.world, target.getPosX(), target.getPosY(), target.getPosZ(), stack));
+                        drops.add(new ItemEntity(target.world, target.getPosX(), target.getPosY(), target.getPosZ(), stack));
                     }
                 }
             }

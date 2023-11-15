@@ -37,7 +37,7 @@ public class EventHandler {
 
     @SubscribeEvent
     public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
-        FireMindTrinket.onLivingUpdate(event);
+        FireMindTrinket.onLivingUpdate(event.getEntityLiving());
     }
 
     @SubscribeEvent
@@ -58,8 +58,8 @@ public class EventHandler {
 
     @SubscribeEvent
     public static void joinWorld(EntityJoinWorldEvent event) {
-        OctopickTrinket.collectDrops(event);
-        BigFootTrinket.addAvoidGoal(event);
+        OctopickTrinket.collectDrops(event.getEntity(), (cancel) -> event.setCanceled(cancel));
+        BigFootTrinket.addAvoidGoal(event.getEntity());
     }
 
     @SubscribeEvent
@@ -69,8 +69,8 @@ public class EventHandler {
         if (BlazeHeartTrinket.isImmuneToFire(event.getEntityLiving(), event.getSource())) {
             event.setCanceled(true);
         }
-        MadAuraTrinket.onAttack(event);
-        OctopusLegTrinket.onAttack(event);
+        MadAuraTrinket.onAttack(event.getEntityLiving(), event.getSource(), (cancel) -> event.setCanceled(cancel));
+        OctopusLegTrinket.onAttack(event.getEntityLiving(), event.getSource());
     }
 
     @SubscribeEvent
@@ -78,17 +78,17 @@ public class EventHandler {
         DamageSource source = event.getSource();
         if (source == null) return;
 
-        DarkDaggerTrinket.onHurt(event);
-        DarkEggTrinket.onHurt(event);
-        DropSpindleTrinket.onHurt(event);
-        EmberTrinket.onHurt(event);
-        GoldenSwatterTrinket.onHurt(event);
-        MadPiggyTrinket.onHurt(event);
-        MirrorShardTrinket.onHurt(event);
-        SerpentToothTrinket.onHurt(event);
-        StarfishTrinket.onHurt(event);
-        SlingshotTrinket.onHurt(event);
-        WitherNailTrinket.onHurt(event);
+        DarkDaggerTrinket.onHurt(event.getSource(), event.getAmount(), event.getEntityLiving());
+        DarkEggTrinket.onHurt(event.getEntityLiving(), event.getSource());
+        DropSpindleTrinket.onHurt(event.getSource());
+        EmberTrinket.onHurt(event.getEntityLiving(), event.getSource());
+        GoldenSwatterTrinket.onHurt(event.getEntityLiving(), event.getSource());
+        MadPiggyTrinket.onHurt(event.getEntityLiving(), event.getSource());
+        MirrorShardTrinket.onHurt(event.getEntityLiving(), event.getSource(), event.getAmount());
+        SerpentToothTrinket.onHurt(event.getSource(), event.getEntityLiving());
+        StarfishTrinket.onHurt(event.getSource(), event.getAmount());
+        SlingshotTrinket.onHurt(event.getSource(), event.getEntityLiving());
+        WitherNailTrinket.onHurt(event.getSource(), event.getEntityLiving());
 
         if (source.getTrueSource() instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) source.getTrueSource();
@@ -108,27 +108,28 @@ public class EventHandler {
     public static void onDeath(LivingDeathEvent event) {
         DamageSource source = event.getSource();
         if (source == null) return;
-        RubyHeartTrinket.onDeath(event);
+        RubyHeartTrinket.onDeath(event.getSource(), event.getEntityLiving(), (cancel) -> event.setCanceled(cancel));
     }
 
     @SubscribeEvent
     public static void onDrops(LivingDropsEvent event) {
-        ButchersCleaverTrinket.dropExtra(event);
-        TreasureRingTrinket.onDrops(event);
-        GoldenSkullTrinket.onDrops(event);
+        ButchersCleaverTrinket.dropExtra(event.getSource(), event.getEntityLiving(), event.getDrops());
+        TreasureRingTrinket.onDrops(event.getSource(), event.getEntityLiving(), event.getDrops());
+        GoldenSkullTrinket.onDrops(event.getSource(), event.getEntityLiving(), event.getDrops());
     }
 
     @SubscribeEvent
     public static void onPotion(PotionEvent.PotionApplicableEvent event) {
-        CoffeeBeanTrinket.onPotion(event);
-        MagicalHerbsTrinket.onPotion(event);
-        OxalisTrinket.onPotion(event);
-        TeaLeafTrinket.onPotion(event);
+        Runnable denyResult = () -> event.setResult(net.minecraftforge.eventbus.api.Event.Result.DENY);
+        CoffeeBeanTrinket.onPotion(event.getEntityLiving(), event.getPotionEffect().getPotion(), denyResult);
+        MagicalHerbsTrinket.onPotion(event.getEntityLiving(), event.getPotionEffect().getPotion(), denyResult);
+        OxalisTrinket.onPotion(event.getEntityLiving(), event.getPotionEffect().getPotion(), denyResult);
+        TeaLeafTrinket.onPotion(event.getEntityLiving(), event.getPotionEffect().getPotion(), denyResult);
     }
 
     @SubscribeEvent
     public static void onCriticalHit(CriticalHitEvent event) {
-        CreepoTrinket.resetExplosion(event);
+        CreepoTrinket.resetExplosion(event.getPlayer(), event.getTarget());
     }
 
     @SubscribeEvent
@@ -151,17 +152,17 @@ public class EventHandler {
 
     @SubscribeEvent
     public static void onUseFinish(LivingEntityUseItemEvent.Finish event) {
-        GoldenMelonTrinket.onUseFinish(event);
-        LunchBagTrinket.onUseFinish(event);
+        GoldenMelonTrinket.onUseFinish(event.getEntityLiving(), event.getItem());
+        LunchBagTrinket.onUseFinish(event.getEntityLiving(), event.getItem());
     }
 
     @SubscribeEvent
     public static void onBreakSpeed(PlayerEvent.BreakSpeed event) {
-        MinersPickTrinket.onBreakSpeed(event);
+        MinersPickTrinket.onBreakSpeed(event.getPlayer(), () -> event.getOriginalSpeed(), (v) -> event.setNewSpeed(v));
     }
 
     @SubscribeEvent
     public static void onBreak(BlockEvent.BreakEvent event) {
-        OctopickTrinket.onBreak(event);
+        OctopickTrinket.onBreak(event.getPlayer(), event.getPos(), event.getState(), (cancel) -> event.setCanceled(cancel));
     }
 }

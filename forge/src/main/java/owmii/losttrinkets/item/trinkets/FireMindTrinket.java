@@ -4,7 +4,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.brain.memory.MemoryModuleType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraftforge.event.entity.living.LivingEvent;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.Rarity;
 import owmii.losttrinkets.api.trinket.Trinket;
@@ -17,8 +16,7 @@ public class FireMindTrinket extends Trinket<FireMindTrinket> {
         super(rarity, properties);
     }
 
-    public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
-        LivingEntity entity = event.getEntityLiving();
+    public static void onLivingUpdate(LivingEntity entity) {
         if (entity instanceof MobEntity) {
             MobEntity mob = (MobEntity) entity;
             LivingEntity target = mob.getAttackTarget();

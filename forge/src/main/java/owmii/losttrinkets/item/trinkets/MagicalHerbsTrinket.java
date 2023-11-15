@@ -8,8 +8,6 @@ import net.minecraft.potion.EffectType;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.living.PotionEvent;
-import net.minecraftforge.eventbus.api.Event;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.Rarity;
 import owmii.losttrinkets.api.trinket.Trinket;
@@ -23,15 +21,13 @@ public class MagicalHerbsTrinket extends Trinket<MagicalHerbsTrinket> {
         super(rarity, properties);
     }
 
-    public static void onPotion(PotionEvent.PotionApplicableEvent event) {
-        LivingEntity entity = event.getEntityLiving();
+    public static void onPotion(LivingEntity entity, Effect effect, Runnable denyResult) {
         if (entity instanceof PlayerEntity) {
             Trinkets trinkets = LostTrinketsAPI.getTrinkets((PlayerEntity) entity);
             if (trinkets.isActive(Itms.MAGICAL_HERBS)) {
-                Effect effect = event.getPotionEffect().getPotion();
                 if (effect.getEffectType().equals(EffectType.HARMFUL) ||
                         effect.equals(Effects.BAD_OMEN)) {
-                    event.setResult(Event.Result.DENY);
+                    denyResult.run();
                 }
             }
         }

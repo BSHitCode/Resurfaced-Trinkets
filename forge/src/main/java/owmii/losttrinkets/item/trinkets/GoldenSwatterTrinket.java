@@ -5,7 +5,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.EndermiteEntity;
 import net.minecraft.entity.monster.SilverfishEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraft.util.DamageSource;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.Rarity;
 import owmii.losttrinkets.api.trinket.Trinket;
@@ -18,10 +18,9 @@ public class GoldenSwatterTrinket extends Trinket<GoldenSwatterTrinket> {
         super(rarity, properties);
     }
 
-    public static void onHurt(LivingHurtEvent event) {
-        LivingEntity living = event.getEntityLiving();
+    public static void onHurt(LivingEntity living, DamageSource source) {
         if (living instanceof SilverfishEntity || living instanceof EndermiteEntity) {
-            Entity entity = event.getSource().getImmediateSource();
+            Entity entity = source.getImmediateSource();
             if (entity instanceof PlayerEntity) {
                 PlayerEntity player = (PlayerEntity) entity;
                 Trinkets trinkets = LostTrinketsAPI.getTrinkets(player);

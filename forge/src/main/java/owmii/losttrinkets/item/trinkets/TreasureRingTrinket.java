@@ -8,7 +8,6 @@ import net.minecraft.loot.*;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.Rarity;
 import owmii.losttrinkets.api.trinket.Trinket;
@@ -17,6 +16,7 @@ import owmii.losttrinkets.item.Itms;
 import owmii.losttrinkets.lib.util.Server;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class TreasureRingTrinket extends Trinket<TreasureRingTrinket> {
@@ -40,19 +40,17 @@ public class TreasureRingTrinket extends Trinket<TreasureRingTrinket> {
         LOOTS.add(LootTables.CHESTS_VILLAGE_VILLAGE_WEAPONSMITH);
     }
 
-    public static void onDrops(LivingDropsEvent event) {
-        DamageSource source = event.getSource();
+    public static void onDrops(DamageSource source, LivingEntity target, Collection<ItemEntity> drops) {
         if (source.getTrueSource() instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) source.getTrueSource();
             if (LostTrinketsAPI.getTrinkets(player).isActive(Itms.TREASURE_RING)) {
-                LivingEntity target = event.getEntityLiving();
                 if (!Entities.isNonBossEntity(target) && player.world instanceof ServerWorld) {
                     LootContext.Builder builder = new LootContext.Builder((ServerWorld) player.world);
                     builder.withParameter(LootParameters.ORIGIN, target.getPositionVec()).withSeed(player.world.rand.nextLong());
                     builder.withLuck(player.getLuck()).withParameter(LootParameters.THIS_ENTITY, player);
                     LootTable lootTable = Server.get().getLootTableManager().getLootTableFromLocation(LOOTS.get(player.world.rand.nextInt(LOOTS.size())));
                     List<ItemStack> stacks = lootTable.generate(builder.build(LootParameterSets.CHEST));
-                    stacks.forEach(stack -> event.getDrops().add(new ItemEntity(target.world, target.getPosX(), target.getPosY(), target.getPosZ(), stack)));
+                    stacks.forEach(stack -> drops.add(new ItemEntity(target.world, target.getPosX(), target.getPosY(), target.getPosZ(), stack)));
                 }
             }
         }

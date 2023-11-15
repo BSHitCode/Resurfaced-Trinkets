@@ -15,8 +15,6 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.world.BlockEvent;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.Rarity;
 import owmii.losttrinkets.api.trinket.Trinket;
@@ -24,6 +22,7 @@ import owmii.losttrinkets.api.trinket.Trinkets;
 import owmii.losttrinkets.item.Itms;
 
 import java.util.Set;
+import java.util.function.Consumer;
 
 public class OctopickTrinket extends Trinket<OctopickTrinket> {
     private static final ThreadLocal<ServerPlayerEntity> octoMiningPlayer = new ThreadLocal<>();
@@ -32,15 +31,14 @@ public class OctopickTrinket extends Trinket<OctopickTrinket> {
         super(rarity, properties);
     }
 
-    public static void onBreak(BlockEvent.BreakEvent event) {
+    public static void onBreak(PlayerEntity player, BlockPos pos, BlockState state, Consumer<Boolean> setCanceled) {
         if (octoMiningPlayer.get() != null) return;
         try {
-            PlayerEntity player = event.getPlayer();
             if (player instanceof ServerPlayerEntity) {
                 ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
                 octoMiningPlayer.set(serverPlayer);
-                if (OctopickTrinket.mine(serverPlayer, serverPlayer.getServerWorld(), event.getPos(), event.getState())) {
-                    event.setCanceled(true);
+                if (OctopickTrinket.mine(serverPlayer, serverPlayer.getServerWorld(), pos, state)) {
+                    setCanceled.accept(true);
                 }
             }
         } finally {
@@ -86,10 +84,9 @@ public class OctopickTrinket extends Trinket<OctopickTrinket> {
         return false;
     }
 
-    public static void collectDrops(EntityJoinWorldEvent event) {
+    public static void collectDrops(Entity entity, Consumer<Boolean> setCanceled) {
         ServerPlayerEntity player = octoMiningPlayer.get();
         if (player != null) {
-            Entity entity = event.getEntity();
             if (entity.isAlive() && entity.world == player.world) {
                 boolean valid = true;
                 if (entity instanceof ItemEntity) {
@@ -105,7 +102,7 @@ public class OctopickTrinket extends Trinket<OctopickTrinket> {
                     entity.setPosition(pos.x, pos.y, pos.z);
                     entity.onCollideWithPlayer(player);
                     if (!entity.isAlive()) {
-                        event.setCanceled(true);
+                        setCanceled.accept(true);
                     }
                 }
             }

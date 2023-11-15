@@ -2,7 +2,7 @@ package owmii.losttrinkets.item.trinkets;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.CreeperEntity;
-import net.minecraftforge.event.entity.player.CriticalHitEvent;
+import net.minecraft.entity.player.PlayerEntity;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.Rarity;
 import owmii.losttrinkets.api.trinket.Trinket;
@@ -13,10 +13,10 @@ public class CreepoTrinket extends Trinket<CreepoTrinket> {
         super(rarity, properties);
     }
 
-    public static void resetExplosion(CriticalHitEvent event) {
-        if (LostTrinketsAPI.getTrinkets(event.getPlayer()).isActive(Itms.CREEPO)) {
-            Entity target = event.getTarget();
+    public static void resetExplosion(PlayerEntity player, Entity target) {
+        if (LostTrinketsAPI.getTrinkets(player).isActive(Itms.CREEPO)) {
             if (target instanceof CreeperEntity) {
+                // TODO: this just "deletes" the creeper; maybe add an "poof" effect?
                 ((CreeperEntity) target).setCreeperState(-1);
                 ((CreeperEntity) target).timeSinceIgnited = 0;
             }

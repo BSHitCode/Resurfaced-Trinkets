@@ -4,11 +4,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.ZombifiedPiglinEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.Rarity;
 import owmii.losttrinkets.api.trinket.Trinket;
@@ -22,10 +22,9 @@ public class MadPiggyTrinket extends Trinket<MadPiggyTrinket> {
         super(rarity, properties);
     }
 
-    public static void onHurt(LivingHurtEvent event) {
-        LivingEntity entity = event.getEntityLiving();
+    public static void onHurt(LivingEntity entity, DamageSource source) {
         World world = entity.getEntityWorld();
-        Entity trueSource = event.getSource().getTrueSource();
+        Entity trueSource = source.getTrueSource();
         if (entity instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) entity;
             Trinkets trinkets = LostTrinketsAPI.getTrinkets(player);

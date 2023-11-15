@@ -10,8 +10,8 @@ import net.minecraft.item.Items;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -25,6 +25,7 @@ import owmii.losttrinkets.lib.util.Server;
 
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber
@@ -53,9 +54,8 @@ public class RubyHeartTrinket extends Trinket<RubyHeartTrinket> {
         }
     }
 
-    public static void onDeath(LivingDeathEvent event) {
-        if (!event.getSource().canHarmInCreative()) {
-            LivingEntity entity = event.getEntityLiving();
+    public static void onDeath(DamageSource source, LivingEntity entity, Consumer<Boolean> setCanceled) {
+        if (!source.canHarmInCreative()) {
             if (entity instanceof PlayerEntity) {
                 PlayerEntity player = (PlayerEntity) entity;
                 Trinkets trinkets = LostTrinketsAPI.getTrinkets(player);
@@ -63,7 +63,7 @@ public class RubyHeartTrinket extends Trinket<RubyHeartTrinket> {
                 if (trinkets.isActive(Itms.RUBY_HEART)) {
                     if (lastHealths.getOrDefault(player.getUniqueID(), player.getHealth()) > 6.0F) {
                         player.setHealth(1.0F);
-                        event.setCanceled(true);
+                        setCanceled.accept(true);
                         flag = true;
                     }
                 }
@@ -79,7 +79,7 @@ public class RubyHeartTrinket extends Trinket<RubyHeartTrinket> {
                         player.addPotionEffect(new EffectInstance(Effects.REGENERATION, 900, 1));
                         player.addPotionEffect(new EffectInstance(Effects.ABSORPTION, 100, 1));
                         player.world.setEntityState(player, (byte) 35);
-                        event.setCanceled(true);
+                        setCanceled.accept(true);
                     }
                 }
             }
