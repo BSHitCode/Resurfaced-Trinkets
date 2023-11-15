@@ -37,7 +37,6 @@ public final class LostTrinketsClient {
         EntityRenderer.register();
 
         event.enqueueWork(() -> {
-            Screens.register();
             KeyHandler.register();
             KeyHandler.TRINKET_GUI.setKeyConflictContext(KeyConflictContext.IN_GAME);
             KeyHandler.MAGNETO.setKeyConflictContext(KeyConflictContext.IN_GAME);
