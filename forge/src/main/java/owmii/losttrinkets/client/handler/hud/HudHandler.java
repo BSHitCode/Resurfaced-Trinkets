@@ -88,7 +88,7 @@ public class HudHandler {
             RenderSystem.pushMatrix();
             RenderSystem.translated(41.0F, 5.0F, 0.0F);
             mc.fontRenderer.drawString(matrix, I18n.format("gui.losttrinkets.trinket.unlocked"), 0, 5, new Color(0xFFBA6F).getRGB());
-            String s = I18n.format(toast.getTrinket().getItem().getTranslationKey());
+            String s = I18n.format(toast.getTrinket().asItem().getTranslationKey());
             s = StringUtils.abbreviate(s, 20);
             mc.fontRenderer.drawString(matrix, s, 0, 18, 0xF0C6E5);
             RenderSystem.popMatrix();

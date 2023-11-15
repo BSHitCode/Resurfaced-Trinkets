@@ -1,19 +1,15 @@
 package owmii.losttrinkets.api.player;
 
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
-import net.minecraftforge.common.util.INBTSerializable;
 import owmii.losttrinkets.api.trinket.Trinkets;
 
-public class PlayerData implements INBTSerializable<CompoundNBT> {
+public class PlayerData {
     private final Trinkets trinkets = new Trinkets(this);
     public long unlockDelay;
     public boolean allowFlying;
     public boolean wasFlying;
     private boolean sync;
 
-    @Override
     public CompoundNBT serializeNBT() {
         CompoundNBT nbt = new CompoundNBT();
         nbt.put("trinkets", this.trinkets.serializeNBT());
@@ -23,7 +19,6 @@ public class PlayerData implements INBTSerializable<CompoundNBT> {
         return nbt;
     }
 
-    @Override
     public void deserializeNBT(CompoundNBT nbt) {
         this.trinkets.deserializeNBT(nbt.getCompound("trinkets"));
         this.unlockDelay = nbt.getLong("unlock_delay");

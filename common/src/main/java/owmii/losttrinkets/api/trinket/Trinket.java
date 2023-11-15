@@ -15,8 +15,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.lib.client.util.MC;
 
@@ -49,7 +47,6 @@ public class Trinket<T extends Trinket> extends Item implements ITrinket {
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
         if (LostTrinketsAPI.get().isDisabled(this)) {
             tooltip.add(new TranslationTextComponent("gui.losttrinkets.status.disabled").mergeStyle(TextFormatting.DARK_RED));
