@@ -17,8 +17,7 @@ public class BigFootTrinket extends Trinket<BigFootTrinket> implements ITargetin
     public static void addAvoidGoal(Entity entity) {
         if (entity instanceof CreatureEntity) {
             CreatureEntity mob = (CreatureEntity) entity;
-            // TODO: re-enable this
-            // mob.goalSelector.addGoal(-1, new BigFootGoal(mob));
+            mob.goalSelector.addGoal(-1, new BigFootGoal(mob));
         }
     }
 

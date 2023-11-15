@@ -8,3 +8,6 @@ accessible field net/minecraft/entity/monster/CreeperEntity timeSinceIgnited I
 
 # ServerPlayerEntity
 accessible method net/minecraft/entity/player/ServerPlayerEntity onFinishedPotionEffect (Lnet/minecraft/potion/EffectInstance;)V
+
+# MobEntity
+accessible field net/minecraft/entity/MobEntity goalSelector Lnet/minecraft/entity/ai/goal/GoalSelector;
