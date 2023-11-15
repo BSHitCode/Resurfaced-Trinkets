@@ -1,6 +1,7 @@
 package owmii.losttrinkets.client;
 
 import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -40,6 +41,8 @@ public final class LostTrinketsClient {
             TileRenderer.register();
             Screens.register();
             KeyHandler.register();
+            KeyHandler.TRINKET_GUI.setKeyConflictContext(KeyConflictContext.IN_GAME);
+            KeyHandler.MAGNETO.setKeyConflictContext(KeyConflictContext.IN_GAME);
         });
     }
 }

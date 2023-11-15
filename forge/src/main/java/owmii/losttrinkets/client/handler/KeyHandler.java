@@ -7,15 +7,13 @@ import net.minecraft.util.ActionResultType;
 import owmii.losttrinkets.client.screen.TrinketsScreen;
 import owmii.losttrinkets.item.trinkets.MagnetoTrinket;
 
-import static net.minecraft.client.util.InputMappings.INPUT_INVALID;
 import static net.minecraft.client.util.InputMappings.Type.KEYSYM;
-import static net.minecraftforge.client.settings.KeyConflictContext.IN_GAME;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
 
 public class KeyHandler {
     public static final String TRINKET_CATEGORY = "key.categories.losttrinkets";
-    public static final KeyBinding TRINKET_GUI = new KeyBinding("key.losttrinkets.trinket", IN_GAME, KEYSYM, GLFW_KEY_R, TRINKET_CATEGORY);
-    public static final KeyBinding MAGNETO = new KeyBinding("key.losttrinkets.magneto", IN_GAME, INPUT_INVALID, TRINKET_CATEGORY);
+    public static final KeyBinding TRINKET_GUI = new KeyBinding("key.losttrinkets.trinket", KEYSYM, GLFW_KEY_R, TRINKET_CATEGORY);
+    public static final KeyBinding MAGNETO = new KeyBinding("key.losttrinkets.magneto", KEYSYM, -1, TRINKET_CATEGORY);
 
     public static void register() {
         KeyBindings.registerKeyBinding(TRINKET_GUI);
