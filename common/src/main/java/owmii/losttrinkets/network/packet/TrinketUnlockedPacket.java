@@ -8,7 +8,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import owmii.losttrinkets.api.trinket.ITrinket;
-// import owmii.losttrinkets.client.Sounds;
+import owmii.losttrinkets.client.Sounds;
 import owmii.losttrinkets.client.handler.hud.HudHandler;
 import owmii.losttrinkets.client.handler.hud.Toast;
 import owmii.losttrinkets.lib.client.util.MC;
@@ -44,8 +44,7 @@ public class TrinketUnlockedPacket implements IPacket {
             Item item = optItem.get();
             if (item instanceof ITrinket) {
                 HudHandler.add(new Toast((ITrinket) item));
-                // TODO: re-enable once Sounds is ported
-                // player.playSound(Sounds.UNLOCK.get(), 1.0F, 1.0F);
+                player.playSound(Sounds.UNLOCK.get(), 1.0F, 1.0F);
             }
         });
     }
