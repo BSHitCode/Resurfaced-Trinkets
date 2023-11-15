@@ -2,17 +2,12 @@ package owmii.losttrinkets.client.handler.hud;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+
+import me.shedaniel.architectury.event.events.GuiEvent;
+import me.shedaniel.architectury.event.events.client.ClientTickEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.GuiScreenEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import org.apache.commons.lang3.StringUtils;
 
 import owmii.losttrinkets.client.screen.Textures;
@@ -24,8 +19,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-@OnlyIn(Dist.CLIENT)
-@Mod.EventBusSubscriber(Dist.CLIENT)
 public class HudHandler {
     private static final List<Toast> TOASTS = new ArrayList<>();
     private static Ticker ticker = new Ticker(60);
@@ -33,10 +26,18 @@ public class HudHandler {
     @Nullable
     private static Toast toast;
 
-    @SubscribeEvent
-    public static void tick(TickEvent.ClientTickEvent event) {
-        if (event.phase == TickEvent.Phase.END) {
+    public static void register() {
+        GuiEvent.RENDER_HUD.register((matrices, tickDelta) -> {
             Minecraft mc = Minecraft.getInstance();
+            if (mc.currentScreen == null) {
+                render(matrices, mc, mc.getMainWindow().getScaledWidth(), mc.getMainWindow().getScaledHeight());
+            }
+        });
+        GuiEvent.RENDER_POST.register((screen, matrices, mouseX, mouseY, delta) -> {
+            Minecraft mc = Minecraft.getInstance();
+            render(matrices, mc, screen.width, screen.height);
+        });
+        ClientTickEvent.CLIENT_POST.register((mc) -> {
             if (mc.world == null && !TOASTS.isEmpty()) {
                 TOASTS.clear();
                 toast = null;
@@ -63,21 +64,7 @@ public class HudHandler {
             if (TOASTS.isEmpty()) {
                 toast = null;
             }
-        }
-    }
-
-    @SubscribeEvent
-    public static void renderHud(RenderGameOverlayEvent.Post event) {
-        Minecraft mc = Minecraft.getInstance();
-        if (event.getType() == RenderGameOverlayEvent.ElementType.ALL && mc.currentScreen == null) {
-            render(event.getMatrixStack(), mc, event.getWindow().getScaledWidth(), event.getWindow().getScaledHeight());
-        }
-    }
-
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void gui(GuiScreenEvent.DrawScreenEvent.Post event) {
-        Minecraft mc = Minecraft.getInstance();
-        render(event.getMatrixStack(), mc, event.getGui().width, event.getGui().height);
+        });
     }
 
     static void render(MatrixStack matrix, Minecraft mc, int width, int height) {

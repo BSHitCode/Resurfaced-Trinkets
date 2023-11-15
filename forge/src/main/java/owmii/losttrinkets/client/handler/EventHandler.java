@@ -1,8 +1,11 @@
 package owmii.losttrinkets.client.handler;
 
+import java.util.function.Consumer;
+
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
@@ -15,32 +18,26 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3f;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RenderLivingEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.item.Itms;
 
-@OnlyIn(Dist.CLIENT)
-@Mod.EventBusSubscriber(Dist.CLIENT)
 public class EventHandler {
-    @SubscribeEvent
-    @SuppressWarnings("unchecked")
-    public static void onBreakSpeed(RenderLivingEvent.Pre event) {
+    public static void onBreakSpeed(
+        LivingEntity living,
+        LivingRenderer renderer,
+        MatrixStack matrix,
+        float partialTicks,
+        IRenderTypeBuffer buffers,
+        Consumer<Boolean> setCanceled
+    ) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player != null && mc.world != null) {
-            LivingEntity living = event.getEntity();
             if (living.isInvisible() && LostTrinketsAPI.getTrinkets(mc.player).isActive(Itms.MINDS_EYE)) {
-                LivingRenderer renderer = event.getRenderer();
                 EntityModel model = renderer.getEntityModel();
-                MatrixStack matrix = event.getMatrixStack();
                 matrix.push();
                 boolean shouldSit = living.isPassenger() && (living.getRidingEntity() != null && living.getRidingEntity().shouldRiderSit());
                 model.isSitting = shouldSit;
                 model.isChild = living.isChild();
-                float partialTicks = event.getPartialRenderTick();
                 float f6 = MathHelper.lerp(partialTicks, living.prevRotationPitch, living.rotationPitch);
                 if (living.getPose() == Pose.SLEEPING) {
                     Direction direction = living.getBedDirection();
@@ -93,7 +90,7 @@ public class EventHandler {
                 model.setRotationAngles(living, f5, f8, f7, f2, f6);
                 ResourceLocation texture = renderer.getEntityTexture(living);
                 RenderType rendertype = RenderType.getEntityTranslucent(texture);
-                IVertexBuilder ivertexbuilder = event.getBuffers().getBuffer(rendertype);
+                IVertexBuilder ivertexbuilder = buffers.getBuffer(rendertype);
                 int ii = OverlayTexture.getPackedUV(OverlayTexture.getU(0.0F), OverlayTexture.getV(living.hurtTime > 0 || living.deathTime > 0));
                 model.render(matrix, ivertexbuilder, mc.getRenderManager().getPackedLight(living, partialTicks), ii, 1.0F, 1.0F, 1.0F, 0.2F);
                 matrix.pop();
@@ -101,7 +98,7 @@ public class EventHandler {
             if (living instanceof PlayerEntity) {
                 PlayerEntity player = (PlayerEntity) living;
                 if (player.isPotionActive(Effects.INVISIBILITY) && LostTrinketsAPI.getTrinkets(player).isActive(Itms.THA_GHOST)) {
-                    event.setCanceled(true);
+                    setCanceled.accept(true);
                 }
             }
         }
