@@ -43,4 +43,6 @@ public interface EnvHandler {
     void teleport(PlayerEntity player, ServerWorld world, PortalInfo target);
 
     PlayerData getPlayerData(PlayerEntity player);
+
+    boolean isFakePlayer(PlayerEntity player);
 }

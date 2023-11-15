@@ -5,18 +5,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.player.BonemealEvent;
-import net.minecraftforge.event.entity.player.UseHoeEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.common.Mod;
+import owmii.losttrinkets.EnvHandler;
 import owmii.losttrinkets.LostTrinkets;
 import owmii.losttrinkets.api.trinket.ITrinket;
 import owmii.losttrinkets.entity.Entities;
@@ -25,31 +17,25 @@ import owmii.losttrinkets.lib.util.Ticker;
 
 import java.util.*;
 
-@Mod.EventBusSubscriber
 public class UnlockHandler {
     private static final Map<UUID, Type> MAP = new HashMap<>();
     private static final Ticker DELAY = new Ticker(10);
     private static boolean flag;
 
-    @SubscribeEvent
-    public static void tick(TickEvent.PlayerTickEvent event) {
-        if (event.phase == TickEvent.Phase.END && event.side == LogicalSide.SERVER) {
-            PlayerEntity player = event.player;
-
-            List<ITrinket> trinkets = LostTrinketsAPIImpl.UNLOCK_QUEUE.get(player.getUniqueID());
-            if (trinkets != null) {
-                trinkets.forEach(trinket -> UnlockManager.unlock(player, trinket, false));
-            }
-            LostTrinketsAPIImpl.UNLOCK_QUEUE.remove(player.getUniqueID());
-            Iterator<UUID> itr = LostTrinketsAPIImpl.WEIGHTED_UNLOCK_QUEUE.iterator();
-            while (itr.hasNext()) {
-                if (itr.next().equals(player.getUniqueID())) {
-                    UnlockManager.unlock(player, false);
-                    itr.remove();
-                }
-            }
-            checkUnlocks(player);
+    public static void tickPlayerOnServer(PlayerEntity player) {
+        List<ITrinket> trinkets = LostTrinketsAPIImpl.UNLOCK_QUEUE.get(player.getUniqueID());
+        if (trinkets != null) {
+            trinkets.forEach(trinket -> UnlockManager.unlock(player, trinket, false));
         }
+        LostTrinketsAPIImpl.UNLOCK_QUEUE.remove(player.getUniqueID());
+        Iterator<UUID> itr = LostTrinketsAPIImpl.WEIGHTED_UNLOCK_QUEUE.iterator();
+        while (itr.hasNext()) {
+            if (itr.next().equals(player.getUniqueID())) {
+                UnlockManager.unlock(player, false);
+                itr.remove();
+            }
+        }
+        checkUnlocks(player);
     }
 
     private static void checkUnlocks(PlayerEntity player) {
@@ -73,7 +59,7 @@ public class UnlockHandler {
     }
 
     private static void queueUnlock(PlayerEntity player, Type type) {
-        if (!player.world.isRemote && !(player instanceof FakePlayer)) {
+        if (!player.world.isRemote && !EnvHandler.INSTANCE.isFakePlayer(player)) {
             MAP.put(player.getUniqueID(), type);
         }
     }
@@ -86,11 +72,9 @@ public class UnlockHandler {
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void kill(LivingDeathEvent event) {
+    public static void kill(DamageSource source, LivingEntity target) {
         if (LostTrinkets.config().unlockEnabled) {
-            Entity entity = event.getSource().getTrueSource();
-            LivingEntity target = event.getEntityLiving();
+            Entity entity = source.getTrueSource();
             if (entity instanceof PlayerEntity) {
                 PlayerEntity player = (PlayerEntity) entity;
                 if (!player.world.isRemote) {
@@ -109,7 +93,7 @@ public class UnlockHandler {
     public static void checkBlockHarvest(PlayerEntity player, World world, BlockPos pos, BlockState state) {
         if (LostTrinkets.config().unlockEnabled) {
             if (!player.world.isRemote) {
-                if (Tags.Blocks.ORES.contains(state.getBlock())) {
+                if (EnvHandler.INSTANCE.isOreBlock(state.getBlock())) {
                     if (LostTrinkets.config().oresMiningUnlockEnabled) {
                         queueUnlock(player, Type.ORE_MINE);
                     }
@@ -126,20 +110,16 @@ public class UnlockHandler {
         }
     }
 
-    @SubscribeEvent
-    public static void useHoe(UseHoeEvent event) {
+    public static void useHoe(PlayerEntity player) {
         if (LostTrinkets.config().unlockEnabled && LostTrinkets.config().farmingUnlockEnabled) {
-            PlayerEntity player = event.getPlayer();
             if (!player.world.isRemote) {
                 queueUnlock(player, Type.FARM_HARVEST);
             }
         }
     }
 
-    @SubscribeEvent
-    public static void bonemeal(BonemealEvent event) {
+    public static void bonemeal(PlayerEntity player) {
         if (LostTrinkets.config().unlockEnabled && LostTrinkets.config().farmingUnlockEnabled) {
-            PlayerEntity player = event.getPlayer();
             if (!player.world.isRemote) {
                 queueUnlock(player, Type.FARM_HARVEST);
             }

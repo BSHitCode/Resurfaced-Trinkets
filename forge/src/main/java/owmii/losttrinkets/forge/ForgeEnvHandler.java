@@ -22,6 +22,7 @@ import net.minecraft.world.server.ServerChunkProvider;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ITeleporter;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.LogicalSidedProvider;
@@ -93,5 +94,10 @@ public class ForgeEnvHandler implements EnvHandler {
     @Override
     public PlayerData getPlayerData(PlayerEntity player) {
         return player.getCapability(LostTrinketsForge.PLAYERDATA_CAP).orElse(new PlayerData());
+    }
+
+    @Override
+    public boolean isFakePlayer(PlayerEntity player) {
+        return (player instanceof FakePlayer);
     }
 }

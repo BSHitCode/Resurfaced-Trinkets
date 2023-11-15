@@ -8,13 +8,16 @@ import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.*;
+import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.ItemFishedEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.UseHoeEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.player.PlayerData;
@@ -34,6 +37,10 @@ public class EventHandler {
             }
             Trinkets trinkets = LostTrinketsAPI.getTrinkets(player);
             trinkets.getTickable().forEach(trinket -> trinket.tick(player.world, player.getPosition(), player));
+
+            if (event.side == LogicalSide.SERVER) {
+                UnlockHandler.tickPlayerOnServer(player);
+            }
         }
     }
 
@@ -126,6 +133,11 @@ public class EventHandler {
         RubyHeartTrinket.onDeath(event.getSource(), event.getEntityLiving(), (cancel) -> event.setCanceled(cancel));
     }
 
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void kill(LivingDeathEvent event) {
+        UnlockHandler.kill(event.getSource(), event.getEntityLiving());
+    }
+
     @SubscribeEvent
     public static void onDrops(LivingDropsEvent event) {
         ButchersCleaverTrinket.dropExtra(event.getSource(), event.getEntityLiving(), event.getDrops());
@@ -194,5 +206,17 @@ public class EventHandler {
     @SubscribeEvent
     public static void setTarget(LivingSetAttackTargetEvent event) {
         TargetHandler.setTarget(event.getEntityLiving(), event.getTarget());
+    }
+
+    @SubscribeEvent
+    public static void useHoe(UseHoeEvent event) {
+        // TODO: this is also triggered in forge when right-clicking with a hoe onto ANY block; including stone
+        UnlockHandler.useHoe(event.getPlayer());
+    }
+
+    @SubscribeEvent
+    public static void bonemeal(BonemealEvent event) {
+        // TODO: this is also triggered in forge when right-clicking with bonemeal onto ANY block; including stone
+        UnlockHandler.bonemeal(event.getPlayer());
     }
 }
