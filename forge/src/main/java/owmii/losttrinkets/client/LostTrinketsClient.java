@@ -22,7 +22,7 @@ public final class LostTrinketsClient {
         MagnetoTrinket.register();
 
         MinecraftForge.EVENT_BUS.addListener((RenderLivingEvent.Pre event) -> {
-            EventHandler.onBreakSpeed(
+            EventHandler.onRenderLiving(
                 event.getEntity(),
                 event.getRenderer(),
                 event.getMatrixStack(),

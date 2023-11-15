@@ -47,4 +47,8 @@ public interface EnvHandler {
     PlayerData getPlayerData(PlayerEntity player);
 
     boolean isFakePlayer(PlayerEntity player);
+
+    default boolean shouldRiderSit(Entity entity) {
+        return true;
+    }
 }

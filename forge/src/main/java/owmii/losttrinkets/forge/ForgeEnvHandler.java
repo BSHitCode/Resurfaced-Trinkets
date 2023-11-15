@@ -105,4 +105,9 @@ public class ForgeEnvHandler implements EnvHandler {
     public boolean isFakePlayer(PlayerEntity player) {
         return (player instanceof FakePlayer);
     }
+
+    @Override
+    public boolean shouldRiderSit(Entity entity) {
+        return entity.shouldRiderSit();
+    }
 }

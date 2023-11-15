@@ -1,7 +1,6 @@
 package owmii.losttrinkets.client.handler;
 
 import java.util.function.Consumer;
-
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
@@ -18,11 +17,12 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3f;
+import owmii.losttrinkets.EnvHandler;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.item.Itms;
 
 public class EventHandler {
-    public static void onBreakSpeed(
+    public static void onRenderLiving(
         LivingEntity living,
         LivingRenderer renderer,
         MatrixStack matrix,
@@ -33,9 +33,10 @@ public class EventHandler {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player != null && mc.world != null) {
             if (living.isInvisible() && LostTrinketsAPI.getTrinkets(mc.player).isActive(Itms.MINDS_EYE)) {
+                // TODO: use a Mixin instead so we dont differ from rendering when another mod changes the default rendering
                 EntityModel model = renderer.getEntityModel();
                 matrix.push();
-                boolean shouldSit = living.isPassenger() && (living.getRidingEntity() != null && living.getRidingEntity().shouldRiderSit());
+                boolean shouldSit = living.isPassenger() && (living.getRidingEntity() != null && EnvHandler.INSTANCE.shouldRiderSit(living.getRidingEntity()));
                 model.isSitting = shouldSit;
                 model.isChild = living.isChild();
                 float f6 = MathHelper.lerp(partialTicks, living.prevRotationPitch, living.rotationPitch);
