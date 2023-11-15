@@ -93,6 +93,8 @@
   "chat.losttrinkets.unlocked.trinket": "%s has unlocked %s trinket",
   "chat.losttrinkets.unlocked.all": "Unlocked all trinkets!!",
   "_comment": "--------------------------- Config -------------------------------",
+  "gui.losttrinkets.config.title": "Sunken Trinkets Configuration",
+
   "gui.losttrinkets.config.unlockEnabled.text": "Enable default way of trinket unlocking",
   "gui.losttrinkets.config.unlockEnabled.tooltip": "Set to false to disable the default way of unlocking trinkets",
   "gui.losttrinkets.config.unlockCooldown.text": "Cooldown (ticks) between unlocks",
@@ -128,7 +130,7 @@
   "gui.losttrinkets.config.bossKilling.text": "Rarity of unlocking a trinket from killing Bosses",
   "gui.losttrinkets.config.bossKilling.tooltip": "(Greater number = more rare)\nRange: 2 ~ 100000",
 
-  "gui.losttrinkets.config.framingUnlocks": "Trinket unlocking - Farming",
+  "gui.losttrinkets.config.farmingUnlocks": "Trinket unlocking - Farming",
   "gui.losttrinkets.config.farmingUnlockEnabled.text": "Enable trinket unlocking by farming",
   "gui.losttrinkets.config.farmingUnlockEnabled.tooltip": "Set to false to disable unlocking trinkets from killing Bosses",
   "gui.losttrinkets.config.farming.text": "Rarity of unlocking a trinket from farming",
