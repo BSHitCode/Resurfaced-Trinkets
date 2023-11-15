@@ -10,7 +10,6 @@ import net.minecraft.item.Items;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
-import net.minecraftforge.common.IForgeShearable;
 import org.spongepowered.asm.mixin.Mixin;
 
 import owmii.losttrinkets.api.LostTrinketsAPI;
@@ -19,7 +18,7 @@ import owmii.losttrinkets.item.Itms;
 import owmii.losttrinkets.lib.util.Stack;
 
 @Mixin(WebBlock.class)
-public class WebBlockMixin extends Block implements IForgeShearable {
+public class WebBlockMixin extends Block {
     public WebBlockMixin(Properties properties) {
         super(properties);
     }

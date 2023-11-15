@@ -5,7 +5,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
 import org.spongepowered.asm.mixin.Mixin;
 import owmii.losttrinkets.item.trinkets.IceShardTrinket;
 import owmii.losttrinkets.item.trinkets.ThaSpiderTrinket;
@@ -24,9 +23,14 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
     @Override
     public boolean isOnLadder() {
-        if (!super.isOnLadder()) {
-            return ThaSpiderTrinket.doClimb(this);
+        if (this.isSpectator()) {
+            return false;
         }
-        return ForgeHooks.isLivingOnLadder(getBlockState(), this.world, getPosition(), this);
+
+        if (super.isOnLadder()) {
+            return true;
+        }
+
+        return ThaSpiderTrinket.doClimb(this);
     }
 }
