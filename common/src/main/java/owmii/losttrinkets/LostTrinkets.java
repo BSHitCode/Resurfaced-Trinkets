@@ -4,7 +4,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import me.shedaniel.autoconfig.ConfigHolder;
+import owmii.losttrinkets.client.Sounds;
 import owmii.losttrinkets.config.SunkenTrinketsConfig;
+import owmii.losttrinkets.entity.Entities;
+import owmii.losttrinkets.item.Itms;
 import owmii.losttrinkets.network.Network;
 
 public class LostTrinkets {
@@ -17,6 +20,9 @@ public class LostTrinkets {
     }
 
     public static void init() {
+        Itms.setup();
+        Entities.setup();
+        Sounds.setup();
         Network.register();
     }
 }
