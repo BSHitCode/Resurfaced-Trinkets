@@ -69,7 +69,7 @@ public class OctopickTrinket extends Trinket<OctopickTrinket> {
                 if (toBreak.size() > 1) {
                     toBreak.forEach(breakPos -> {
                         BlockState breakState = world.getBlockState(breakPos);
-                        if (breakState.canHarvestBlock(world, breakPos, player)) {
+                        if (EnvHandler.INSTANCE.canHarvestBlock(breakState, player, world, breakPos)) {
                             if (player.interactionManager.tryHarvestBlock(breakPos)) {
                                 // Use the same constant as in Block.onBlockHarvested!
                                 world.playEvent(2001, breakPos, Block.getStateId(breakState));
