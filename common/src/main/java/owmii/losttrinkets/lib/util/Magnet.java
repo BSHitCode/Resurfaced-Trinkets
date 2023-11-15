@@ -1,13 +1,9 @@
 package owmii.losttrinkets.lib.util;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.nbt.CompoundNBT;
-import owmii.losttrinkets.lib.compat.botania.BotaniaCompat;
+import owmii.losttrinkets.EnvHandler;
 
 public class Magnet {
-    public static final String PREVENT_REMOTE_MOVEMENT = "PreventRemoteMovement";
-    public static final String ALLOW_MACHINE_REMOTE_MOVEMENT = "AllowMachineRemoteMovement";
-
     /**
      * Checks if the entity can be collected by a magnet, vacuum or similar.
      *
@@ -15,26 +11,13 @@ public class Magnet {
      * @param automated true if the magnet does not require a player to operate
      * @see <a href="https://github.com/comp500/Demagnetize#for-mod-developers">Demagnetize: For mod developers</a>
      */
-    @SuppressWarnings("RedundantIfStatement")
     public static boolean canCollect(Entity entity, boolean automated) {
         if (!entity.isAlive()) {
             return false;
         }
 
-        // Demagnetize standard
-        CompoundNBT persistentData = entity.getPersistentData();
-        if (persistentData.contains(PREVENT_REMOTE_MOVEMENT)) {
-            if (!(automated && persistentData.contains(ALLOW_MACHINE_REMOTE_MOVEMENT))) {
-                return false;
-            }
-        }
-
         // Mod compatibility
-        if (BotaniaCompat.preventCollect(entity)) {
-            return false;
-        }
-
-        return true;
+        return EnvHandler.INSTANCE.magnetCanCollect(entity, automated);
     }
 
     /**

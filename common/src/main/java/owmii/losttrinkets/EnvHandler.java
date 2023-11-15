@@ -21,4 +21,8 @@ public interface EnvHandler {
             throw new RuntimeException("Failed to setup env handler", exception);
         }
     });
+
+    MinecraftServer getServerInstance();
+
+    boolean magnetCanCollect(Entity entity, boolean automated);
 }
