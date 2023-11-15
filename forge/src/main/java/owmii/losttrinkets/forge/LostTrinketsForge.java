@@ -26,13 +26,9 @@ import owmii.losttrinkets.entity.Entities;
 import owmii.losttrinkets.handler.DataManager;
 import owmii.losttrinkets.impl.LostTrinketsAPIImpl;
 import owmii.losttrinkets.item.Itms;
-import owmii.losttrinkets.lib.network.Network;
-import owmii.losttrinkets.network.Packets;
 
 @Mod(LostTrinkets.MOD_ID)
 public class LostTrinketsForge {
-    public static final Network NET = new Network(LostTrinkets.MOD_ID);
-
     @CapabilityInject(PlayerData.class)
     @SuppressWarnings("ConstantConditions")
     public static Capability<PlayerData> PLAYERDATA_CAP = null;
@@ -81,7 +77,6 @@ public class LostTrinketsForge {
 
     public static void setup(FMLCommonSetupEvent event) {
         DataManager.register();
-        Packets.register();
     }
 
     public static void addEntityAttributes(EntityAttributeCreationEvent event) {

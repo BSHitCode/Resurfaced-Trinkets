@@ -10,7 +10,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.ITrinket;
 import owmii.losttrinkets.api.trinket.Trinkets;
-import owmii.losttrinkets.forge.LostTrinketsForge;
+import owmii.losttrinkets.network.Network;
 import owmii.losttrinkets.network.packet.SetInactivePacket;
 
 import javax.annotation.Nullable;
@@ -38,7 +38,7 @@ public class TrinketOptionScreen extends AbstractLTScreen {
                 Trinkets trinkets = LostTrinketsAPI.getTrinkets(this.mc.player);
                 int i = trinkets.getActiveTrinkets().indexOf(this.trinket);
                 if (i >= 0) {
-                    LostTrinketsForge.NET.toServer(new SetInactivePacket(i));
+                    Network.toServer(new SetInactivePacket(i));
                     trinkets.setInactive(this.trinket, this.mc.player);
                     setRefreshScreen(new TrinketsScreen());
                 }

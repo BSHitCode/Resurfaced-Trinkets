@@ -1,0 +1,14 @@
+{
+    "required": true,
+    "minVersion": "0.8",
+    "package": "owmii.losttrinkets.forge.mixin",
+    "compatibilityLevel": "JAVA_8",
+    "mixins": [
+        "ChunkManagerMixin"
+    ],
+    "client": [],
+    "server": [],
+    "injectors": {
+      "defaultRequire": 1
+    }
+  }

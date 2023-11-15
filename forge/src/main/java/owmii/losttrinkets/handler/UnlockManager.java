@@ -20,8 +20,8 @@ import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.player.PlayerData;
 import owmii.losttrinkets.api.trinket.ITrinket;
 import owmii.losttrinkets.api.trinket.Trinkets;
-import owmii.losttrinkets.forge.LostTrinketsForge;
 import owmii.losttrinkets.lib.util.Server;
+import owmii.losttrinkets.network.Network;
 import owmii.losttrinkets.network.packet.TrinketUnlockedPacket;
 
 import javax.annotation.Nullable;
@@ -78,7 +78,7 @@ public class UnlockManager {
                     data.unlockDelay = LostTrinkets.config().unlockCooldown;
                 }
                 if (doNotification) {
-                    LostTrinketsForge.NET.toClient(new TrinketUnlockedPacket(Objects.requireNonNull(trinket.asItem().getRegistryName()).toString()), player);
+                    Network.toClient(new TrinketUnlockedPacket(Objects.requireNonNull(trinket.asItem().getRegistryName()).toString()), player);
                     ItemStack stack = new ItemStack(trinket);
                     ITextComponent trinketName = stack.getDisplayName().deepCopy().modifyStyle(style -> {
                         return style.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new HoverEvent.ItemHover(stack)));

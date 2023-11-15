@@ -27,6 +27,7 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.LogicalSidedProvider;
 import owmii.losttrinkets.EnvHandler;
 import owmii.losttrinkets.api.player.PlayerData;
+import owmii.losttrinkets.forge.mixin.ChunkManagerTrackingExtension;
 import owmii.losttrinkets.lib.compat.botania.BotaniaCompat;
 
 public class ForgeEnvHandler implements EnvHandler {
@@ -61,6 +62,12 @@ public class ForgeEnvHandler implements EnvHandler {
         }
 
         return true;
+    }
+
+    @Override
+    public Collection<ServerPlayerEntity> getTrackingPlayers(Entity entity) {
+        ChunkManager chunkManager = ((ServerChunkProvider)entity.getEntityWorld().getChunkProvider()).chunkManager;
+        return ((ChunkManagerTrackingExtension) chunkManager).forge_getTrackingPlayers(entity);
     }
 
     @Override

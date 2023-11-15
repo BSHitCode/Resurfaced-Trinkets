@@ -13,8 +13,8 @@ import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.ITrinket;
 import owmii.losttrinkets.api.trinket.Trinkets;
 import owmii.losttrinkets.client.screen.widget.TrinketButton;
-import owmii.losttrinkets.forge.LostTrinketsForge;
 import owmii.losttrinkets.lib.client.screen.widget.IconButton;
+import owmii.losttrinkets.network.Network;
 import owmii.losttrinkets.network.packet.UnlockSlotPacket;
 
 import java.util.ArrayList;

@@ -23,6 +23,7 @@ import owmii.losttrinkets.api.player.PlayerData;
 import owmii.losttrinkets.api.trinket.Trinket;
 import owmii.losttrinkets.api.trinket.Trinkets;
 import owmii.losttrinkets.forge.LostTrinketsForge;
+import owmii.losttrinkets.network.Network;
 import owmii.losttrinkets.network.packet.SyncDataPacket;
 
 import javax.annotation.Nonnull;
@@ -101,7 +102,7 @@ public class DataManager implements ICapabilitySerializable<CompoundNBT> {
             ServerPlayerEntity player = (ServerPlayerEntity) entity;
             PlayerData data = LostTrinketsAPI.getData(player);
             if (data.isSync()) {
-                LostTrinketsForge.NET.toTrackingAndSelf(new SyncDataPacket(player), player);
+                Network.toTrackingAndSelf(new SyncDataPacket(player), player);
                 data.setSync(false);
             }
         }
@@ -137,13 +138,13 @@ public class DataManager implements ICapabilitySerializable<CompoundNBT> {
         Entity target = event.getTarget();
         // When a player starts tracking another player entity, sync the target to them
         if (target instanceof ServerPlayerEntity) {
-            LostTrinketsForge.NET.toClient(new SyncDataPacket((ServerPlayerEntity) target), event.getPlayer());
+            Network.toClient(new SyncDataPacket((ServerPlayerEntity) target), event.getPlayer());
         }
     }
 
     static void sync(PlayerEntity player) {
         if (player instanceof ServerPlayerEntity) {
-            LostTrinketsForge.NET.toClient(new SyncDataPacket(player), player);
+            Network.toClient(new SyncDataPacket(player), player);
         }
     }
 }

@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import me.shedaniel.autoconfig.ConfigHolder;
 import owmii.losttrinkets.config.SunkenTrinketsConfig;
+import owmii.losttrinkets.network.Network;
 
 public class LostTrinkets {
     public static final String MOD_ID = "losttrinkets";
@@ -15,5 +16,7 @@ public class LostTrinkets {
         return CONFIG.getConfig();
     }
 
-    public static void init() {}
+    public static void init() {
+        Network.register();
+    }
 }

@@ -33,6 +33,8 @@ public interface EnvHandler {
 
     boolean magnetCanCollect(Entity entity, boolean automated);
 
+    Collection<ServerPlayerEntity> getTrackingPlayers(Entity entity);
+
     boolean canHarvestBlock(BlockState state, PlayerEntity player, IWorld world, BlockPos pos);
 
     boolean isOreBlock(Block block);

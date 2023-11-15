@@ -14,8 +14,8 @@ import owmii.losttrinkets.api.trinket.Rarity;
 import owmii.losttrinkets.api.trinket.Trinket;
 import owmii.losttrinkets.api.trinket.Trinkets;
 import owmii.losttrinkets.client.handler.KeyHandler;
-import owmii.losttrinkets.forge.LostTrinketsForge;
 import owmii.losttrinkets.item.Itms;
+import owmii.losttrinkets.network.Network;
 import owmii.losttrinkets.network.packet.MagnetoPacket;
 
 import java.util.List;
@@ -36,7 +36,7 @@ public class MagnetoTrinket extends Trinket<MagnetoTrinket> {
     public static void trySendCollect(PlayerEntity player) {
         Trinkets trinkets = LostTrinketsAPI.getTrinkets(player);
         if (trinkets.isActive(Itms.MAGNETO)) {
-            LostTrinketsForge.NET.toServer(new MagnetoPacket());
+            Network.toServer(new MagnetoPacket());
         }
     }
 
