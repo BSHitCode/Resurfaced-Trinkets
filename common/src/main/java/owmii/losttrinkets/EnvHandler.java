@@ -38,4 +38,6 @@ public interface EnvHandler {
     boolean isOreBlock(Block block);
 
     void teleport(PlayerEntity player, ServerWorld world, PortalInfo target);
+
+    PlayerData getPlayerData(PlayerEntity player);
 }

@@ -2,11 +2,11 @@ package owmii.losttrinkets.impl;
 
 import com.google.common.collect.Lists;
 import net.minecraft.entity.player.PlayerEntity;
+import owmii.losttrinkets.EnvHandler;
 import owmii.losttrinkets.api.ILostTrinketsAPI;
 import owmii.losttrinkets.api.player.PlayerData;
 import owmii.losttrinkets.api.trinket.ITrinket;
 import owmii.losttrinkets.api.trinket.Trinkets;
-import owmii.losttrinkets.forge.LostTrinketsForge;
 import owmii.losttrinkets.handler.UnlockManager;
 
 import java.util.ArrayList;
@@ -47,7 +47,7 @@ public class LostTrinketsAPIImpl implements ILostTrinketsAPI {
 
     @Override
     public PlayerData getData(PlayerEntity player) {
-        return player.getCapability(LostTrinketsForge.PLAYERDATA_CAP).orElse(new PlayerData());
+        return EnvHandler.INSTANCE.getPlayerData(player);
     }
 
     @Override
