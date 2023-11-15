@@ -10,7 +10,6 @@ import owmii.losttrinkets.client.handler.EventHandler;
 import owmii.losttrinkets.client.handler.KeyHandler;
 import owmii.losttrinkets.client.handler.hud.HudHandler;
 import owmii.losttrinkets.client.render.entity.EntityRenderer;
-import owmii.losttrinkets.client.render.tile.TileRenderer;
 import owmii.losttrinkets.client.screen.Screens;
 import owmii.losttrinkets.item.trinkets.MagnetoTrinket;
 
@@ -38,7 +37,6 @@ public final class LostTrinketsClient {
         EntityRenderer.register();
 
         event.enqueueWork(() -> {
-            TileRenderer.register();
             Screens.register();
             KeyHandler.register();
             KeyHandler.TRINKET_GUI.setKeyConflictContext(KeyConflictContext.IN_GAME);
