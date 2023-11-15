@@ -5,13 +5,12 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.player.PlayerData;
-// import owmii.losttrinkets.client.screen.Screens;
+import owmii.losttrinkets.client.screen.Screens;
 import owmii.losttrinkets.lib.client.util.MC;
 import owmii.losttrinkets.network.IPacket;
 
 import java.util.Objects;
 import java.util.UUID;
-import java.util.function.Supplier;
 
 public class SyncDataPacket implements IPacket {
     private final UUID uuid;
@@ -47,8 +46,7 @@ public class SyncDataPacket implements IPacket {
             if (player != null) {
                 PlayerData data = LostTrinketsAPI.getData(player);
                 data.deserializeNBT(this.nbt);
-                // TODO: re-enable
-                // Screens.checkScreenRefresh();
+                Screens.checkScreenRefresh();
             }
         });
     }

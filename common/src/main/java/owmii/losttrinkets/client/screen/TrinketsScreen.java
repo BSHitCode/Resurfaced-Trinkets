@@ -7,7 +7,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.fml.client.gui.GuiUtils;
+// import net.minecraftforge.fml.client.gui.GuiUtils;
 import owmii.losttrinkets.LostTrinkets;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.ITrinket;
@@ -50,7 +50,8 @@ public class TrinketsScreen extends AbstractLTScreen {
                             list.add(stack.getDisplayName());
                             trinket.addTrinketDescription(stack, list);
                             list.add(new TranslationTextComponent("gui.losttrinkets.rarity." + trinket.getRarity().name().toLowerCase(Locale.ENGLISH)).mergeStyle(TextFormatting.DARK_GRAY));
-                            GuiUtils.drawHoveringText(matrix, list, i1, i2, this.width, this.height, 240, this.font);
+                            //GuiUtils.drawHoveringText(matrix, list, i1, i2, this.width, this.height, 240, this.font);
+                            this.func_243308_b(matrix, list, i1, i2);
                         }));
                     } else {
                         boolean locked = i + 1 > trinkets.getSlots();

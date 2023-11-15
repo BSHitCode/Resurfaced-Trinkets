@@ -1,6 +1,5 @@
 package owmii.losttrinkets.client.screen;
 
-import net.minecraft.client.util.InputMappings;
 import net.minecraft.util.text.ITextComponent;
 import owmii.losttrinkets.client.handler.KeyHandler;
 import owmii.losttrinkets.lib.client.screen.ScreenBase;
@@ -38,8 +37,7 @@ public class AbstractLTScreen extends ScreenBase {
         if (super.keyPressed(p_231046_1_, p_231046_2_, p_231046_3_)) {
             return true;
         } else {
-            InputMappings.Input code = InputMappings.getInputByCode(p_231046_1_, p_231046_2_);
-            if (KeyHandler.TRINKET_GUI.isActiveAndMatches(code)) {
+            if (KeyHandler.TRINKET_GUI.matchesKey(p_231046_1_, p_231046_2_)) {
                 if (this.mc.player != null) {
                     closeScreen();
                 }

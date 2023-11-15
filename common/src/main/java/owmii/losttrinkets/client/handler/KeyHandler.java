@@ -5,7 +5,7 @@ import me.shedaniel.architectury.registry.KeyBindings;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.ActionResultType;
 import owmii.losttrinkets.client.screen.TrinketsScreen;
-import owmii.losttrinkets.item.trinkets.MagnetoTrinket;
+// import owmii.losttrinkets.item.trinkets.MagnetoTrinket;
 
 import static net.minecraft.client.util.InputMappings.Type.KEYSYM;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
@@ -23,7 +23,8 @@ public class KeyHandler {
                 client.displayGuiScreen(new TrinketsScreen());
             }
             if (MAGNETO.isPressed()) {
-                MagnetoTrinket.trySendCollect(client.player);
+                // TODO: re-enable this
+                // MagnetoTrinket.trySendCollect(client.player);
             }
             return ActionResultType.PASS;
         });
