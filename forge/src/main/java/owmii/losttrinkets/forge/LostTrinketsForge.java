@@ -5,6 +5,7 @@ import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ExtensionPoint;
@@ -20,6 +21,7 @@ import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.player.PlayerData;
 import owmii.losttrinkets.client.Sounds;
 import owmii.losttrinkets.config.SunkenTrinketsConfig;
+import owmii.losttrinkets.entity.DarkVexEntity;
 import owmii.losttrinkets.entity.Entities;
 import owmii.losttrinkets.handler.DataManager;
 import owmii.losttrinkets.impl.LostTrinketsAPIImpl;
@@ -48,6 +50,7 @@ public class LostTrinketsForge {
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.addListener(LostTrinketsForge::setup);
+        modEventBus.addListener(LostTrinketsForge::addEntityAttributes);
 
         DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> new DistExecutor.SafeRunnable() {
             @Override
@@ -79,6 +82,9 @@ public class LostTrinketsForge {
     public static void setup(FMLCommonSetupEvent event) {
         DataManager.register();
         Packets.register();
-        Entities.register();
+    }
+
+    public static void addEntityAttributes(EntityAttributeCreationEvent event) {
+        event.put(Entities.DARK_VEX.get(), DarkVexEntity.getAttribute().create());
     }
 }
