@@ -12,12 +12,12 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import owmii.losttrinkets.LostTrinkets;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.Rarity;
 import owmii.losttrinkets.api.trinket.Trinket;
 import owmii.losttrinkets.api.trinket.Trinkets;
 import owmii.losttrinkets.client.handler.KeyHandler;
+import owmii.losttrinkets.forge.LostTrinketsForge;
 import owmii.losttrinkets.item.Itms;
 import owmii.losttrinkets.network.packet.MagnetoPacket;
 
@@ -32,7 +32,7 @@ public class MagnetoTrinket extends Trinket<MagnetoTrinket> {
     public static void trySendCollect(PlayerEntity player) {
         Trinkets trinkets = LostTrinketsAPI.getTrinkets(player);
         if (trinkets.isActive(Itms.MAGNETO)) {
-            LostTrinkets.NET.toServer(new MagnetoPacket());
+            LostTrinketsForge.NET.toServer(new MagnetoPacket());
         }
     }
 

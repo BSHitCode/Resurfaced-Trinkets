@@ -13,7 +13,7 @@ import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.ITrinket;
 import owmii.losttrinkets.api.trinket.Trinkets;
 import owmii.losttrinkets.client.screen.widget.TrinketButton;
-import owmii.losttrinkets.config.Configs;
+import owmii.losttrinkets.forge.LostTrinketsForge;
 import owmii.losttrinkets.lib.client.screen.widget.IconButton;
 import owmii.losttrinkets.network.packet.UnlockSlotPacket;
 
@@ -34,7 +34,7 @@ public class TrinketsScreen extends AbstractLTScreen {
             this.x = this.width / 2 - this.columns * this.btnDim / 2;
             this.y = this.height / 2 - this.rows * this.btnDim / 2;
             Trinkets trinkets = LostTrinketsAPI.getTrinkets(this.mc.player);
-            int cost = Configs.GENERAL.calcCost(trinkets);
+            int cost = LostTrinkets.config().calcCost(trinkets.getSlots());
             List<ITrinket> all = trinkets.getActiveTrinkets();
             label:
             for (int j1 = 0; j1 < this.rows; ++j1) {
@@ -59,7 +59,7 @@ public class TrinketsScreen extends AbstractLTScreen {
                         }
                         addButton(new IconButton(this.x + j2 * this.btnDim, this.y + j1 * this.btnDim, locked ? Textures.TRINKET_BG_LOCKED : Textures.TRINKET_BG_ADD, button -> {
                             if (locked) {
-                                LostTrinkets.NET.toServer(new UnlockSlotPacket());
+                                LostTrinketsForge.NET.toServer(new UnlockSlotPacket());
                                 setRefreshScreen(this);
                             } else {
                                 this.mc.displayGuiScreen(new AvailableTrinketsScreen(this, 0));

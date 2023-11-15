@@ -9,11 +9,11 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.client.gui.GuiUtils;
-import owmii.losttrinkets.LostTrinkets;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.ITrinket;
 import owmii.losttrinkets.api.trinket.Trinkets;
 import owmii.losttrinkets.client.screen.widget.TrinketButton;
+import owmii.losttrinkets.forge.LostTrinketsForge;
 import owmii.losttrinkets.lib.client.screen.widget.IconButton;
 import owmii.losttrinkets.network.packet.SetActivePacket;
 
@@ -47,7 +47,7 @@ public class AvailableTrinketsScreen extends AbstractLTScreen {
                     if (i + 1 <= total) {
                         final ITrinket trinket = all.get(i);
                         addButton(new TrinketButton(this.x + j2 * this.btnDim, this.y + j1 * this.btnDim, Textures.TRINKET_BG, trinket, button -> {
-                            LostTrinkets.NET.toServer(new SetActivePacket(i));
+                            LostTrinketsForge.NET.toServer(new SetActivePacket(i));
                             trinkets.setActive(trinket, this.mc.player);
                             setRefreshScreen(new TrinketsScreen());
                         }, (button, matrix, i1, i2) -> {

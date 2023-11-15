@@ -22,7 +22,7 @@ import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.player.PlayerData;
 import owmii.losttrinkets.api.trinket.Trinket;
 import owmii.losttrinkets.api.trinket.Trinkets;
-import owmii.losttrinkets.config.Configs;
+import owmii.losttrinkets.forge.LostTrinketsForge;
 import owmii.losttrinkets.network.packet.SyncDataPacket;
 
 import javax.annotation.Nonnull;
@@ -36,7 +36,7 @@ public class DataManager implements ICapabilitySerializable<CompoundNBT> {
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap == PlayerData.CAP) {
+        if (cap == LostTrinketsForge.PLAYERDATA_CAP) {
             return this.holder.cast();
         }
         return LazyOptional.empty();
@@ -101,7 +101,7 @@ public class DataManager implements ICapabilitySerializable<CompoundNBT> {
             ServerPlayerEntity player = (ServerPlayerEntity) entity;
             PlayerData data = LostTrinketsAPI.getData(player);
             if (data.isSync()) {
-                LostTrinkets.NET.toTrackingAndSelf(new SyncDataPacket(player), player);
+                LostTrinketsForge.NET.toTrackingAndSelf(new SyncDataPacket(player), player);
                 data.setSync(false);
             }
         }
@@ -115,7 +115,7 @@ public class DataManager implements ICapabilitySerializable<CompoundNBT> {
     @SubscribeEvent
     public static void loggedIn(PlayerEvent.PlayerLoggedInEvent event) {
         Trinkets trinkets = LostTrinketsAPI.getTrinkets(event.getPlayer());
-        trinkets.initSlots(Configs.GENERAL.startSlots.get());
+        trinkets.initSlots(LostTrinkets.config().startSlots);
         trinkets.removeDisabled(event.getPlayer());
         sync(event.getPlayer());
     }
@@ -137,13 +137,13 @@ public class DataManager implements ICapabilitySerializable<CompoundNBT> {
         Entity target = event.getTarget();
         // When a player starts tracking another player entity, sync the target to them
         if (target instanceof ServerPlayerEntity) {
-            LostTrinkets.NET.toClient(new SyncDataPacket((ServerPlayerEntity) target), event.getPlayer());
+            LostTrinketsForge.NET.toClient(new SyncDataPacket((ServerPlayerEntity) target), event.getPlayer());
         }
     }
 
     static void sync(PlayerEntity player) {
         if (player instanceof ServerPlayerEntity) {
-            LostTrinkets.NET.toClient(new SyncDataPacket(player), player);
+            LostTrinketsForge.NET.toClient(new SyncDataPacket(player), player);
         }
     }
 }

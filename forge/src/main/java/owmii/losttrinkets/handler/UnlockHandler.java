@@ -17,8 +17,8 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
+import owmii.losttrinkets.LostTrinkets;
 import owmii.losttrinkets.api.trinket.ITrinket;
-import owmii.losttrinkets.config.Configs;
 import owmii.losttrinkets.entity.Entities;
 import owmii.losttrinkets.impl.LostTrinketsAPIImpl;
 import owmii.losttrinkets.lib.util.Ticker;
@@ -53,7 +53,7 @@ public class UnlockHandler {
     }
 
     private static void checkUnlocks(PlayerEntity player) {
-        if (Configs.GENERAL.unlockEnabled.get()) {
+        if (LostTrinkets.config().unlockEnabled) {
             UUID id = player.getUniqueID();
             if (DELAY.isEmpty() && MAP.containsKey(id)) {
                 if (player.world.rand.nextInt(MAP.get(id).getRandom()) == 0) {
@@ -79,7 +79,7 @@ public class UnlockHandler {
     }
 
     public static void trade(PlayerEntity player) {
-        if (Configs.GENERAL.unlockEnabled.get() && Configs.GENERAL.tradingUnlockEnabled.get()) {
+        if (LostTrinkets.config().unlockEnabled && LostTrinkets.config().tradingUnlockEnabled) {
             if (!player.world.isRemote) {
                 queueUnlock(player, Type.TRADING);
             }
@@ -88,17 +88,17 @@ public class UnlockHandler {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void kill(LivingDeathEvent event) {
-        if (Configs.GENERAL.unlockEnabled.get()) {
+        if (LostTrinkets.config().unlockEnabled) {
             Entity entity = event.getSource().getTrueSource();
             LivingEntity target = event.getEntityLiving();
             if (entity instanceof PlayerEntity) {
                 PlayerEntity player = (PlayerEntity) entity;
                 if (!player.world.isRemote) {
                     if (Entities.isNonBossEntity(target)) {
-                        if (Configs.GENERAL.killingUnlockEnabled.get()) {
+                        if (LostTrinkets.config().killingUnlockEnabled) {
                             queueUnlock(player, Type.KILL);
                         }
-                    } else if (Configs.GENERAL.bossKillingUnlockEnabled.get()) {
+                    } else if (LostTrinkets.config().bossKillingUnlockEnabled) {
                         queueUnlock(player, Type.BOSS_KILL);
                     }
                 }
@@ -107,18 +107,18 @@ public class UnlockHandler {
     }
 
     public static void checkBlockHarvest(PlayerEntity player, World world, BlockPos pos, BlockState state) {
-        if (Configs.GENERAL.unlockEnabled.get()) {
+        if (LostTrinkets.config().unlockEnabled) {
             if (!player.world.isRemote) {
                 if (Tags.Blocks.ORES.contains(state.getBlock())) {
-                    if (Configs.GENERAL.oresMiningUnlockEnabled.get()) {
+                    if (LostTrinkets.config().oresMiningUnlockEnabled) {
                         queueUnlock(player, Type.ORE_MINE);
                     }
                 } else if (BlockTags.CROPS.contains(state.getBlock())) {
-                    if (Configs.GENERAL.farmingUnlockEnabled.get()) {
+                    if (LostTrinkets.config().farmingUnlockEnabled) {
                         queueUnlock(player, Type.FARM_HARVEST);
                     }
                 } else if (BlockTags.LOGS.contains(state.getBlock())) {
-                    if (Configs.GENERAL.woodCuttingUnlockEnabled.get()) {
+                    if (LostTrinkets.config().woodCuttingUnlockEnabled) {
                         queueUnlock(player, Type.WOOD_CUTTING);
                     }
                 }
@@ -128,7 +128,7 @@ public class UnlockHandler {
 
     @SubscribeEvent
     public static void useHoe(UseHoeEvent event) {
-        if (Configs.GENERAL.unlockEnabled.get() && Configs.GENERAL.farmingUnlockEnabled.get()) {
+        if (LostTrinkets.config().unlockEnabled && LostTrinkets.config().farmingUnlockEnabled) {
             PlayerEntity player = event.getPlayer();
             if (!player.world.isRemote) {
                 queueUnlock(player, Type.FARM_HARVEST);
@@ -138,7 +138,7 @@ public class UnlockHandler {
 
     @SubscribeEvent
     public static void bonemeal(BonemealEvent event) {
-        if (Configs.GENERAL.unlockEnabled.get() && Configs.GENERAL.farmingUnlockEnabled.get()) {
+        if (LostTrinkets.config().unlockEnabled && LostTrinkets.config().farmingUnlockEnabled) {
             PlayerEntity player = event.getPlayer();
             if (!player.world.isRemote) {
                 queueUnlock(player, Type.FARM_HARVEST);
@@ -151,17 +151,17 @@ public class UnlockHandler {
 
         public int getRandom() {
             if (this == KILL) {
-                return Configs.GENERAL.killing.get();
+                return LostTrinkets.config().killing;
             } else if (this == BOSS_KILL) {
-                return Configs.GENERAL.bossKilling.get();
+                return LostTrinkets.config().bossKilling;
             } else if (this == ORE_MINE) {
-                return Configs.GENERAL.oresMining.get();
+                return LostTrinkets.config().oresMining;
             } else if (this == TRADING) {
-                return Configs.GENERAL.trading.get();
+                return LostTrinkets.config().trading;
             } else if (this == FARM_HARVEST) {
-                return Configs.GENERAL.farming.get();
+                return LostTrinkets.config().farming;
             } else if (this == WOOD_CUTTING) {
-                return Configs.GENERAL.woodCutting.get();
+                return LostTrinkets.config().woodCutting;
             }
             return Integer.MAX_VALUE;
         }

@@ -7,10 +7,10 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TranslationTextComponent;
-import owmii.losttrinkets.LostTrinkets;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.ITrinket;
 import owmii.losttrinkets.api.trinket.Trinkets;
+import owmii.losttrinkets.forge.LostTrinketsForge;
 import owmii.losttrinkets.network.packet.SetInactivePacket;
 
 import javax.annotation.Nullable;
@@ -24,7 +24,7 @@ public class TrinketOptionScreen extends AbstractLTScreen {
     protected final Screen prevScreen;
 
     protected TrinketOptionScreen(ITrinket trinket, @Nullable Screen prevScreen) {
-        super(new TranslationTextComponent(trinket.getItem().getTranslationKey()));
+        super(new TranslationTextComponent(trinket.asItem().getTranslationKey()));
         this.trinket = trinket;
         this.prevScreen = prevScreen;
     }
@@ -38,7 +38,7 @@ public class TrinketOptionScreen extends AbstractLTScreen {
                 Trinkets trinkets = LostTrinketsAPI.getTrinkets(this.mc.player);
                 int i = trinkets.getActiveTrinkets().indexOf(this.trinket);
                 if (i >= 0) {
-                    LostTrinkets.NET.toServer(new SetInactivePacket(i));
+                    LostTrinketsForge.NET.toServer(new SetInactivePacket(i));
                     trinkets.setInactive(this.trinket, this.mc.player);
                     setRefreshScreen(new TrinketsScreen());
                 }
@@ -59,7 +59,7 @@ public class TrinketOptionScreen extends AbstractLTScreen {
 
         super.render(matrix, mx, my, pt);
 
-        String name = I18n.format(this.trinket.getItem().getTranslationKey());
+        String name = I18n.format(this.trinket.asItem().getTranslationKey());
         this.font.drawString(matrix, name, 8 + x - this.font.getStringWidth(name) / 2, y + 32, 0x999999);
     }
 

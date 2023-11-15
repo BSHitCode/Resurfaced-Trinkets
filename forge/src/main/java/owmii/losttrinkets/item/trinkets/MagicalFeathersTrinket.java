@@ -3,12 +3,12 @@ package owmii.losttrinkets.item.trinkets;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import owmii.losttrinkets.LostTrinkets;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.player.PlayerData;
 import owmii.losttrinkets.api.trinket.ITickableTrinket;
 import owmii.losttrinkets.api.trinket.Rarity;
 import owmii.losttrinkets.api.trinket.Trinket;
+import owmii.losttrinkets.forge.LostTrinketsForge;
 import owmii.losttrinkets.network.packet.SyncFlyPacket;
 
 public class MagicalFeathersTrinket extends Trinket<MagicalFeathersTrinket> implements ITickableTrinket {
@@ -26,7 +26,7 @@ public class MagicalFeathersTrinket extends Trinket<MagicalFeathersTrinket> impl
         }
         if (!data.allowFlying) {
             if (!world.isRemote) {
-                LostTrinkets.NET.toClient(new SyncFlyPacket(true), player);
+                LostTrinketsForge.NET.toClient(new SyncFlyPacket(true), player);
             }
             data.allowFlying = true;
         }
@@ -40,7 +40,7 @@ public class MagicalFeathersTrinket extends Trinket<MagicalFeathersTrinket> impl
             player.abilities.allowFlying = false;
             player.abilities.isFlying = false;
             if (!world.isRemote) {
-                LostTrinkets.NET.toClient(new SyncFlyPacket(false), player);
+                LostTrinketsForge.NET.toClient(new SyncFlyPacket(false), player);
             }
             data.allowFlying = false;
         }

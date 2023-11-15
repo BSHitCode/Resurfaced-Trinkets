@@ -5,20 +5,18 @@ import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.util.registry.Registry;
+import owmii.losttrinkets.LostTrinkets;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.player.PlayerData;
-import owmii.losttrinkets.config.Configs;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-public class Trinkets implements INBTSerializable<CompoundNBT> {
+public class Trinkets {
     private final List<ITrinket> available = new ArrayList<>();
     private final List<ITrinket> active = new ArrayList<>();
     private final List<ITickableTrinket> tickable = new ArrayList<>();
@@ -31,7 +29,6 @@ public class Trinkets implements INBTSerializable<CompoundNBT> {
         this.data = data;
     }
 
-    @Override
     public CompoundNBT serializeNBT() {
         CompoundNBT nbt = new CompoundNBT();
         nbt.putInt("slots", this.slots);
@@ -39,7 +36,7 @@ public class Trinkets implements INBTSerializable<CompoundNBT> {
         ListNBT availableTrinkets = new ListNBT();
         this.available.forEach((trinket) -> {
             CompoundNBT nbt1 = new CompoundNBT();
-            ResourceLocation location = trinket.getItem().getRegistryName();
+            ResourceLocation location = Registry.ITEM.getKey(trinket.asItem());
             Objects.requireNonNull(location);
             nbt1.putString("trinket", location.toString());
             availableTrinkets.add(nbt1);
@@ -48,7 +45,7 @@ public class Trinkets implements INBTSerializable<CompoundNBT> {
         ListNBT activeTrinkets = new ListNBT();
         this.active.forEach((trinket) -> {
             CompoundNBT nbt1 = new CompoundNBT();
-            ResourceLocation location = trinket.getItem().getRegistryName();
+            ResourceLocation location = Registry.ITEM.getKey(trinket.asItem());
             Objects.requireNonNull(location);
             nbt1.putString("trinket", location.toString());
             activeTrinkets.add(nbt1);
@@ -57,26 +54,26 @@ public class Trinkets implements INBTSerializable<CompoundNBT> {
         return nbt;
     }
 
-    @Override
     public void deserializeNBT(CompoundNBT nbt) {
         this.slots = nbt.getInt("slots");
         this.slotsSet = nbt.getBoolean("slots_set");
-        ListNBT availableTrinkets = nbt.getList("available_trinkets", Constants.NBT.TAG_COMPOUND);
+        ListNBT availableTrinkets = nbt.getList("available_trinkets", (byte)10);
         this.available.clear();
         for (int i = 0; i < availableTrinkets.size(); i++) {
             CompoundNBT nbt1 = availableTrinkets.getCompound(i);
-            Item trinket = ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt1.getString("trinket")));
+            Item trinket = Registry.ITEM.getOrDefault(new ResourceLocation(nbt1.getString("trinket")));
             if (trinket instanceof ITrinket) {
                 this.available.add((ITrinket) trinket);
             }
         }
-        ListNBT activeTrinkets = nbt.getList("active_trinkets", Constants.NBT.TAG_COMPOUND);
+
+        ListNBT activeTrinkets = nbt.getList("active_trinkets", (byte)10);
         this.active.clear();
         this.tickable.clear();
         this.targeting.clear();
         for (int i = 0; i < activeTrinkets.size(); i++) {
             CompoundNBT nbt1 = activeTrinkets.getCompound(i);
-            Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt1.getString("trinket")));
+            Item item = Registry.ITEM.getOrDefault(new ResourceLocation(nbt1.getString("trinket")));
             if (item instanceof ITrinket) {
                 ITrinket trinket = (ITrinket) item;
                 if (this.active.size() < this.slots) {
@@ -93,7 +90,7 @@ public class Trinkets implements INBTSerializable<CompoundNBT> {
     }
 
     public boolean unlockSlot() {
-        if (this.slots < Configs.GENERAL.maxSlots.get()) {
+        if (this.slots < LostTrinkets.config().maxSlots) {
             this.slots++;
             this.data.setSync(true);
             return true;
@@ -200,7 +197,7 @@ public class Trinkets implements INBTSerializable<CompoundNBT> {
         return this.active.contains(trinket);
     }
 
-    public boolean isActive(RegistryObject<? extends ITrinket> trinket) {
+    public boolean isActive(Supplier<? extends ITrinket> trinket) {
         return this.active.contains(trinket.get());
     }
 

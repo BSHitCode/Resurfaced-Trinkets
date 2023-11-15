@@ -6,6 +6,7 @@ import owmii.losttrinkets.api.ILostTrinketsAPI;
 import owmii.losttrinkets.api.player.PlayerData;
 import owmii.losttrinkets.api.trinket.ITrinket;
 import owmii.losttrinkets.api.trinket.Trinkets;
+import owmii.losttrinkets.forge.LostTrinketsForge;
 import owmii.losttrinkets.handler.UnlockManager;
 
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class LostTrinketsAPIImpl implements ILostTrinketsAPI {
 
     @Override
     public PlayerData getData(PlayerEntity player) {
-        return player.getCapability(PlayerData.CAP).orElse(new PlayerData());
+        return player.getCapability(LostTrinketsForge.PLAYERDATA_CAP).orElse(new PlayerData());
     }
 
     @Override

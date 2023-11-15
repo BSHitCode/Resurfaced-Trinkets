@@ -43,7 +43,4 @@ public class PlayerData implements INBTSerializable<CompoundNBT> {
         return this.trinkets;
     }
 
-    @CapabilityInject(PlayerData.class)
-    @SuppressWarnings("ConstantConditions")
-    public static Capability<PlayerData> CAP = null;
 }

@@ -20,7 +20,7 @@ import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.player.PlayerData;
 import owmii.losttrinkets.api.trinket.ITrinket;
 import owmii.losttrinkets.api.trinket.Trinkets;
-import owmii.losttrinkets.config.Configs;
+import owmii.losttrinkets.forge.LostTrinketsForge;
 import owmii.losttrinkets.lib.util.Server;
 import owmii.losttrinkets.network.packet.TrinketUnlockedPacket;
 
@@ -33,7 +33,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static owmii.losttrinkets.config.Configs.MARKER;
+import static owmii.losttrinkets.config.SunkenTrinketsConfig.MARKER;
 import static owmii.losttrinkets.LostTrinkets.LOGGER;
 
 public class UnlockManager {
@@ -75,10 +75,10 @@ public class UnlockManager {
             Trinkets trinkets = LostTrinketsAPI.getTrinkets(player);
             if (LostTrinketsAPI.get().isEnabled(trinket) && trinkets.give(trinket)) {
                 if (checkDelay) {
-                    data.unlockDelay = Configs.GENERAL.unlockCooldown.get();
+                    data.unlockDelay = LostTrinkets.config().unlockCooldown;
                 }
                 if (doNotification) {
-                    LostTrinkets.NET.toClient(new TrinketUnlockedPacket(Objects.requireNonNull(trinket.getItem().getRegistryName()).toString()), player);
+                    LostTrinketsForge.NET.toClient(new TrinketUnlockedPacket(Objects.requireNonNull(trinket.asItem().getRegistryName()).toString()), player);
                     ItemStack stack = new ItemStack(trinket);
                     ITextComponent trinketName = stack.getDisplayName().deepCopy().modifyStyle(style -> {
                         return style.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new HoverEvent.ItemHover(stack)));
@@ -106,10 +106,10 @@ public class UnlockManager {
     }
 
     public static void refresh() {
-        Set<ResourceLocation> banned = Configs.GENERAL.blackList.get().stream()
+        Set<ResourceLocation> banned = LostTrinkets.config().blackList.stream()
                 .map(ResourceLocation::new)
                 .collect(Collectors.toCollection(Sets::newLinkedHashSet));
-        Set<ResourceLocation> nonRandom = Configs.GENERAL.nonRandom.get().stream()
+        Set<ResourceLocation> nonRandom = LostTrinkets.config().nonRandom.stream()
                 .map(ResourceLocation::new)
                 .collect(Collectors.toCollection(Sets::newLinkedHashSet));
         Set<ResourceLocation> seen = Sets.newLinkedHashSet();
