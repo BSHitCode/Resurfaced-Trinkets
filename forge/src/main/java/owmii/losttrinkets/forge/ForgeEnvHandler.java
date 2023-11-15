@@ -39,6 +39,11 @@ public class ForgeEnvHandler implements EnvHandler {
         return LogicalSidedProvider.INSTANCE.get(LogicalSide.SERVER);
     }
 
+    @Override
+    public LootTable getLootTableFromLocation(ResourceLocation location) {
+        return this.getServerInstance().getLootTableManager().getLootTableFromLocation(location);
+    }
+
     /**
      * Checks if the entity can be collected by a magnet, vacuum or similar.
      *

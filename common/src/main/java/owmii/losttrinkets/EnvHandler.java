@@ -32,6 +32,8 @@ public interface EnvHandler {
 
     MinecraftServer getServerInstance();
 
+    LootTable getLootTableFromLocation(ResourceLocation location);
+
     boolean magnetCanCollect(Entity entity, boolean automated);
 
     Collection<ServerPlayerEntity> getTrackingPlayers(Entity entity);
