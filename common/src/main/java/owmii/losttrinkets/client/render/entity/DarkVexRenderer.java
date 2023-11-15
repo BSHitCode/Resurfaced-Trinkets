@@ -1,16 +1,17 @@
 package owmii.losttrinkets.client.render.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.BipedRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import owmii.losttrinkets.client.model.DarkVexModel;
 import owmii.losttrinkets.entity.DarkVexEntity;
 
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class DarkVexRenderer extends BipedRenderer<DarkVexEntity, DarkVexModel> {
     private static final ResourceLocation VEX_TEXTURE = new ResourceLocation("textures/entity/illager/vex.png");
     private static final ResourceLocation VEX_CHARGING_TEXTURE = new ResourceLocation("textures/entity/illager/vex_charging.png");

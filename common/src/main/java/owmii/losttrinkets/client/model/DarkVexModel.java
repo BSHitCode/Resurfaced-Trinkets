@@ -2,15 +2,16 @@ package owmii.losttrinkets.client.model;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import owmii.losttrinkets.entity.DarkVexEntity;
 
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class DarkVexModel extends BipedModel<DarkVexEntity> {
     private final ModelRenderer leftWing;
     private final ModelRenderer rightWing;
