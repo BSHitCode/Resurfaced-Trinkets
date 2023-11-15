@@ -154,6 +154,7 @@ public class SunkenTrinketsConfig implements ConfigData {
                 entryBuilder.startStrList(tr("blackList.label"), config.blackList)
                     .setDefaultValue(new ArrayList<>())
                     .setSaveConsumer((v) -> config.blackList = v)
+                    .requireRestart()
                     .build()
             );
             defaultCategory.addEntry(cat.build());
@@ -167,6 +168,7 @@ public class SunkenTrinketsConfig implements ConfigData {
                 entryBuilder.startStrList(tr("nonRandom.label"), config.nonRandom)
                     .setDefaultValue(new ArrayList<>())
                     .setSaveConsumer((v) -> config.nonRandom = v)
+                    .requireRestart()
                     .build()
             );
             defaultCategory.addEntry(cat.build());
