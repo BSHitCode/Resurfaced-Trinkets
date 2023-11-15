@@ -8,13 +8,14 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
 import net.minecraft.util.WeightedRandom;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.util.text.event.HoverEvent;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
-import net.minecraftforge.registries.ForgeRegistries;
+// import net.minecraftforge.fml.server.ServerLifecycleHooks;
+// import net.minecraftforge.registries.ForgeRegistries;
 import owmii.losttrinkets.LostTrinkets;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.player.PlayerData;
@@ -37,7 +38,7 @@ import static owmii.losttrinkets.config.SunkenTrinketsConfig.MARKER;
 import static owmii.losttrinkets.LostTrinkets.LOGGER;
 
 public class UnlockManager {
-    private static final Set<ITrinket> ALL_TRINKETS = ForgeRegistries.ITEMS.getValues().stream()
+    private static final Set<ITrinket> ALL_TRINKETS = Registry.ITEM.stream()
             .filter(item -> item instanceof ITrinket)
             .map(item -> (ITrinket) item)
             .collect(Collectors.toCollection(LinkedHashSet::new));
@@ -78,7 +79,7 @@ public class UnlockManager {
                     data.unlockDelay = LostTrinkets.config().unlockCooldown;
                 }
                 if (doNotification) {
-                    Network.toClient(new TrinketUnlockedPacket(Objects.requireNonNull(trinket.asItem().getRegistryName()).toString()), player);
+                    Network.toClient(new TrinketUnlockedPacket(Objects.requireNonNull(Registry.ITEM.getKey(trinket.asItem())).toString()), player);
                     ItemStack stack = new ItemStack(trinket);
                     ITextComponent trinketName = stack.getDisplayName().deepCopy().modifyStyle(style -> {
                         return style.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new HoverEvent.ItemHover(stack)));
@@ -115,7 +116,7 @@ public class UnlockManager {
         Set<ResourceLocation> seen = Sets.newLinkedHashSet();
         LOGGER.info(MARKER, "Gathering Trinkets...");
         ALL_TRINKETS.forEach(trinket -> {
-            ResourceLocation rl = trinket.asItem().getRegistryName();
+            ResourceLocation rl = Registry.ITEM.getKey(trinket.asItem());
             seen.add(rl);
             if (banned.contains(rl)) {
                 TRINKETS.remove(trinket);
@@ -144,11 +145,13 @@ public class UnlockManager {
         nonRandom.stream().filter(banned::contains)
                 .forEach(rl -> LOGGER.warn(MARKER, "Redundant Non-Random Trinket (already banned): " + rl));
         // Remove banned trinkets from current players if server is running
-        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-        if (server != null) {
-            server.runAsync(() -> Server.get().getPlayerList().getPlayers()
-                    .forEach(player -> LostTrinketsAPI.getTrinkets(player).removeDisabled(player)));
-        }
+
+        // TODO: handle server reload somehow
+        // MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        // if (server != null) {
+        //     server.runAsync(() -> Server.get().getPlayerList().getPlayers()
+        //             .forEach(player -> LostTrinketsAPI.getTrinkets(player).removeDisabled(player)));
+        // }
     }
 
     public static Set<ITrinket> getTrinkets() {
