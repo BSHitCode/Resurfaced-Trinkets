@@ -47,6 +47,7 @@ public class EventHandler {
     @SubscribeEvent
     public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
         FireMindTrinket.onLivingUpdate(event.getEntityLiving());
+        TargetHandler.onLivingUpdate(event.getEntityLiving());
     }
 
     @SubscribeEvent
@@ -188,5 +189,10 @@ public class EventHandler {
     @SubscribeEvent
     public static void onEnderTeleport(EnderTeleportEvent event) {
         StickyMindTrinket.onEnderTeleport(event.getEntityLiving(), (cancel) -> event.setCanceled(cancel));
+    }
+
+    @SubscribeEvent
+    public static void setTarget(LivingSetAttackTargetEvent event) {
+        TargetHandler.setTarget(event.getEntityLiving(), event.getTarget());
     }
 }
