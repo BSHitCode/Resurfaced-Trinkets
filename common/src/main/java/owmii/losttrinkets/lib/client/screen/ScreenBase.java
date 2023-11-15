@@ -4,12 +4,8 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.client.util.InputMappings;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class ScreenBase extends Screen {
     public final Minecraft mc = Minecraft.getInstance();
     public int x, y, w, h;
@@ -41,8 +37,7 @@ public class ScreenBase extends Screen {
         if (super.keyPressed(keyCode, scanCode, modifiers)) {
             return true;
         } else {
-            InputMappings.Input code = InputMappings.getInputByCode(keyCode, scanCode);
-            if (keyCode == 256 || Minecraft.getInstance().gameSettings.keyBindInventory.isActiveAndMatches(code)) {
+            if (keyCode == 256 || Minecraft.getInstance().gameSettings.keyBindInventory.matchesKey(keyCode, scanCode)) {
                 closeScreen();
                 return true;
             }
