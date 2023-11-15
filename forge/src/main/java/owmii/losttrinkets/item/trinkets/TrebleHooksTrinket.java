@@ -11,9 +11,6 @@ import net.minecraft.loot.*;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.event.entity.player.ItemFishedEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.Rarity;
 import owmii.losttrinkets.api.trinket.Trinket;
@@ -21,15 +18,12 @@ import owmii.losttrinkets.item.Itms;
 
 import java.util.List;
 
-@Mod.EventBusSubscriber
 public class TrebleHooksTrinket extends Trinket<TrebleHooksTrinket> {
     public TrebleHooksTrinket(Rarity rarity, Properties properties) {
         super(rarity, properties);
     }
 
-    @SubscribeEvent
-    public static void onFished(ItemFishedEvent event) {
-        PlayerEntity player = event.getPlayer();
+    public static void onFished(PlayerEntity player, FishingBobberEntity hook) {
         World world = player.world;
         if (world instanceof ServerWorld) {
             if (LostTrinketsAPI.getTrinkets(player).isActive(Itms.TREBLE_HOOKS)) {
@@ -37,7 +31,6 @@ public class TrebleHooksTrinket extends Trinket<TrebleHooksTrinket> {
                 ItemStack stack1 = player.getHeldItemOffhand();
                 ItemStack rod = stack.getItem() instanceof FishingRodItem ? stack : stack1;
                 for (int i = 0; i < 2; i++) {
-                    FishingBobberEntity hook = event.getHookEntity();
                     Entity entity = hook.getShooter();
                     if (entity != null) {
                         LootContext.Builder builder = (new LootContext.Builder((ServerWorld) world)).withParameter(LootParameters.ORIGIN, hook.getPositionVec()).withParameter(LootParameters.TOOL, rod).withParameter(LootParameters.THIS_ENTITY, hook).withRandom(world.rand).withLuck((float) EnchantmentHelper.getFishingLuckBonus(rod) + player.getLuck());

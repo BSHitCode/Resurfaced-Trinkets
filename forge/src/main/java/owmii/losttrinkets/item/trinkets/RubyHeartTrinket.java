@@ -11,11 +11,6 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.DamageSource;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.Rarity;
 import owmii.losttrinkets.api.trinket.Trinket;
@@ -28,7 +23,6 @@ import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-@Mod.EventBusSubscriber
 public class RubyHeartTrinket extends Trinket<RubyHeartTrinket> {
     private static HashMap<UUID, Float> lastHealths = new HashMap<>();
 
@@ -36,19 +30,14 @@ public class RubyHeartTrinket extends Trinket<RubyHeartTrinket> {
         super(rarity, properties);
     }
 
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void saveHealthTickStart(TickEvent.ServerTickEvent event) {
+    public static void saveHealthTickStart() {
         // Save player health at the beginning of the server tick
-        if (event.phase == TickEvent.Phase.START) {
-            lastHealths = Server.get().getPlayerList().getPlayers().stream()
-                    .collect(Collectors.toMap(Entity::getUniqueID, LivingEntity::getHealth, Math::max, HashMap::new));
-        }
+        lastHealths = Server.get().getPlayerList().getPlayers().stream()
+                .collect(Collectors.toMap(Entity::getUniqueID, LivingEntity::getHealth, Math::max, HashMap::new));
     }
 
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void saveHealthHurt(LivingHurtEvent event) {
+    public static void saveHealthHurt(LivingEntity entity) {
         // Save player health before the player is hurt
-        LivingEntity entity = event.getEntityLiving();
         if (entity instanceof ServerPlayerEntity) {
             lastHealths.merge(entity.getUniqueID(), entity.getHealth(), Math::max);
         }

@@ -11,6 +11,7 @@ import owmii.losttrinkets.client.handler.hud.HudHandler;
 import owmii.losttrinkets.client.render.entity.EntityRenderer;
 import owmii.losttrinkets.client.render.tile.TileRenderer;
 import owmii.losttrinkets.client.screen.Screens;
+import owmii.losttrinkets.item.trinkets.MagnetoTrinket;
 
 public final class LostTrinketsClient {
     public static void init() {
@@ -18,6 +19,7 @@ public final class LostTrinketsClient {
         modEventBus.addListener(LostTrinketsClient::clientSetup);
 
         HudHandler.register();
+        MagnetoTrinket.register();
 
         MinecraftForge.EVENT_BUS.addListener((RenderLivingEvent.Pre event) -> {
             EventHandler.onBreakSpeed(

@@ -12,9 +12,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.util.Constants;
+import owmii.losttrinkets.EnvHandler;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.Rarity;
 import owmii.losttrinkets.api.trinket.Trinket;
@@ -47,11 +45,11 @@ public class OctopickTrinket extends Trinket<OctopickTrinket> {
     }
 
     private static boolean mine(ServerPlayerEntity player, ServerWorld world, BlockPos pos, BlockState state) {
-        if (ForgeHooks.canHarvestBlock(state, player, world, pos)) {
+        if (EnvHandler.INSTANCE.canHarvestBlock(state, player, world, pos)) {
             Trinkets trinkets = LostTrinketsAPI.getTrinkets(player);
             if (trinkets.isActive(Itms.OCTOPICK)) {
                 Set<BlockPos> toBreak = Sets.newLinkedHashSet();
-                if (Tags.Blocks.ORES.contains(state.getBlock()) || state.getBlock() == Blocks.OBSIDIAN) {
+                if (EnvHandler.INSTANCE.isOreBlock(state.getBlock()) || state.getBlock() == Blocks.OBSIDIAN) {
                     toBreak.add(pos);
                     for (BlockPos pos1 : BlockPos.getAllInBoxMutable(pos.add(-1, -1, -1), pos.add(1, 1, 1))) {
                         if (toBreak.contains(pos1)) continue;
@@ -73,7 +71,11 @@ public class OctopickTrinket extends Trinket<OctopickTrinket> {
                         BlockState breakState = world.getBlockState(breakPos);
                         if (breakState.canHarvestBlock(world, breakPos, player)) {
                             if (player.interactionManager.tryHarvestBlock(breakPos)) {
-                                world.playEvent(Constants.WorldEvents.BREAK_BLOCK_EFFECTS, breakPos, Block.getStateId(breakState));
+                                // Use the same constant as in Block.onBlockHarvested!
+                                world.playEvent(2001, breakPos, Block.getStateId(breakState));
+
+                                // TODO: maybe call also onBlockHarvested ??
+                                // breakState.getBlock().onBlockHarvested(world, breakPos, breakState, player);
                             }
                         }
                     });

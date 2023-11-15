@@ -1,15 +1,28 @@
 package owmii.losttrinkets.forge;
 
 import java.util.Collection;
+import java.util.function.Function;
 
+import javax.annotation.Nullable;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.PortalInfo;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.loot.LootTable;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.server.ChunkManager;
 import net.minecraft.world.server.ServerChunkProvider;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.util.ITeleporter;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.LogicalSidedProvider;
 import owmii.losttrinkets.EnvHandler;
@@ -47,5 +60,26 @@ public class ForgeEnvHandler implements EnvHandler {
         }
 
         return true;
+    }
+
+    @Override
+    public boolean canHarvestBlock(BlockState state, PlayerEntity player, IWorld world, BlockPos pos) {
+        return ForgeHooks.canHarvestBlock(state, player, world, pos);
+    }
+
+    @Override
+    public boolean isOreBlock(Block block) {
+        return Tags.Blocks.ORES.contains(block);
+    }
+
+    @Override
+    public void teleport(PlayerEntity player, ServerWorld world, PortalInfo target) {
+        player.changeDimension(world, new ITeleporter() {
+            @Override
+            @Nullable
+            public PortalInfo getPortalInfo(Entity entity, ServerWorld destWorld, Function<ServerWorld, PortalInfo> defaultPortalInfo) {
+                return target;
+            }
+        });
     }
 }

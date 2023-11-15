@@ -18,15 +18,13 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.util.ITeleporter;
+import owmii.losttrinkets.EnvHandler;
 import owmii.losttrinkets.api.trinket.ITickableTrinket;
 import owmii.losttrinkets.api.trinket.Rarity;
 import owmii.losttrinkets.api.trinket.Trinket;
 
-import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 public class WarmVoidTrinket extends Trinket<WarmVoidTrinket> implements ITickableTrinket {
     public WarmVoidTrinket(Rarity rarity, Properties properties) {
@@ -52,10 +50,13 @@ public class WarmVoidTrinket extends Trinket<WarmVoidTrinket> implements ITickab
         player.setMotion(Vector3d.ZERO);
         player.fallDistance = 0;
         if (player.getServerWorld() != info.spawnWorld) {
-            player.changeDimension(info.spawnWorld, new WarmVoidTeleporter(info));
+            // player.changeDimension(info.spawnWorld, new WarmVoidTeleporter(info));
+            EnvHandler.INSTANCE.teleport(player, info.spawnWorld, new PortalInfo(info.spawnPos, Vector3d.ZERO, info.spawnAngle, 0));
         } else {
             player.connection.setPlayerLocation(info.spawnPos.getX(), info.spawnPos.getY(), info.spawnPos.getZ(), info.spawnAngle, 0);
-            info.repositionEntity.accept(player);
+
+            // TODO: find out if this is neccessary...
+            // info.repositionEntity.accept(player);
         }
     }
 
@@ -109,7 +110,7 @@ public class WarmVoidTrinket extends Trinket<WarmVoidTrinket> implements ITickab
         );
     }
 
-    private static class WarmVoidTeleporter implements ITeleporter {
+    /* private static class WarmVoidTeleporter implements ITeleporter {
         private final SpawnPointInfo info;
 
         public WarmVoidTeleporter(SpawnPointInfo info) {
@@ -131,7 +132,7 @@ public class WarmVoidTrinket extends Trinket<WarmVoidTrinket> implements ITickab
         public PortalInfo getPortalInfo(Entity entity, ServerWorld destWorld, Function<ServerWorld, PortalInfo> defaultPortalInfo) {
             return new PortalInfo(info.spawnPos, Vector3d.ZERO, info.spawnAngle, 0);
         }
-    }
+    } */
 
     private static class SpawnPointInfo {
         public final ServerWorld spawnWorld;

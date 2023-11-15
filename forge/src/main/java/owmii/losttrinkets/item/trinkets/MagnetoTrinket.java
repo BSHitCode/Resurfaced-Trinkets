@@ -1,5 +1,6 @@
 package owmii.losttrinkets.item.trinkets;
 
+import me.shedaniel.architectury.event.events.InteractionEvent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
@@ -8,10 +9,6 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.Rarity;
 import owmii.losttrinkets.api.trinket.Trinket;
@@ -23,23 +20,23 @@ import owmii.losttrinkets.network.packet.MagnetoPacket;
 
 import java.util.List;
 
-@Mod.EventBusSubscriber(Dist.CLIENT)
 public class MagnetoTrinket extends Trinket<MagnetoTrinket> {
     public MagnetoTrinket(Rarity rarity, Properties properties) {
         super(rarity, properties);
+    }
+
+    public static void register() {
+        InteractionEvent.CLIENT_RIGHT_CLICK_AIR.register((player, hand) -> {
+            if (KeyHandler.MAGNETO.isInvalid() && hand == Hand.MAIN_HAND) {
+                trySendCollect(player);
+            }
+        });
     }
 
     public static void trySendCollect(PlayerEntity player) {
         Trinkets trinkets = LostTrinketsAPI.getTrinkets(player);
         if (trinkets.isActive(Itms.MAGNETO)) {
             LostTrinketsForge.NET.toServer(new MagnetoPacket());
-        }
-    }
-
-    @SubscribeEvent
-    public static void collectUse(PlayerInteractEvent.RightClickEmpty event) {
-        if (KeyHandler.MAGNETO.isInvalid() && event.getHand() == Hand.MAIN_HAND) {
-            trySendCollect(event.getPlayer());
         }
     }
 

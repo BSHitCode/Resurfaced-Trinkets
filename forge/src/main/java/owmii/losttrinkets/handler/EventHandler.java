@@ -9,9 +9,11 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
+import net.minecraftforge.event.entity.player.ItemFishedEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import owmii.losttrinkets.api.LostTrinketsAPI;
@@ -32,6 +34,13 @@ public class EventHandler {
             }
             Trinkets trinkets = LostTrinketsAPI.getTrinkets(player);
             trinkets.getTickable().forEach(trinket -> trinket.tick(player.world, player.getPosition(), player));
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void saveHealthTickStart(TickEvent.ServerTickEvent event) {
+        if (event.phase == TickEvent.Phase.START) {
+            RubyHeartTrinket.saveHealthTickStart();
         }
     }
 
@@ -71,6 +80,11 @@ public class EventHandler {
         }
         MadAuraTrinket.onAttack(event.getEntityLiving(), event.getSource(), (cancel) -> event.setCanceled(cancel));
         OctopusLegTrinket.onAttack(event.getEntityLiving(), event.getSource());
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void saveHealthHurt(LivingHurtEvent event) {
+        RubyHeartTrinket.saveHealthHurt(event.getEntityLiving());
     }
 
     @SubscribeEvent
@@ -164,5 +178,15 @@ public class EventHandler {
     @SubscribeEvent
     public static void onBreak(BlockEvent.BreakEvent event) {
         OctopickTrinket.onBreak(event.getPlayer(), event.getPos(), event.getState(), (cancel) -> event.setCanceled(cancel));
+    }
+
+    @SubscribeEvent
+    public static void onFished(ItemFishedEvent event) {
+        TrebleHooksTrinket.onFished(event.getPlayer(), event.getHookEntity());
+    }
+
+    @SubscribeEvent
+    public static void onEnderTeleport(EnderTeleportEvent event) {
+        StickyMindTrinket.onEnderTeleport(event.getEntityLiving(), (cancel) -> event.setCanceled(cancel));
     }
 }
