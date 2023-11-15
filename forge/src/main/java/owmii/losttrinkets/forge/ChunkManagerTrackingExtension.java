@@ -1,4 +1,4 @@
-package owmii.losttrinkets.forge.mixin;
+package owmii.losttrinkets.forge;
 
 import java.util.Collection;
 

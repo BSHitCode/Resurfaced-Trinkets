@@ -11,9 +11,10 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.world.server.ChunkManager;
+import owmii.losttrinkets.forge.ChunkManagerTrackingExtension;
 
 @Mixin(ChunkManager.class)
-public class ChunkManagerMixin {
+abstract class ChunkManagerMixin implements ChunkManagerTrackingExtension {
 	@Shadow
 	@Final
 	// We can abuse type erasure here and just get the type in the map as the accessor.

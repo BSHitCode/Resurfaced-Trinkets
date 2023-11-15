@@ -4,7 +4,8 @@
     "package": "owmii.losttrinkets.forge.mixin",
     "compatibilityLevel": "JAVA_8",
     "mixins": [
-        "ChunkManagerMixin"
+        "ChunkManagerMixin",
+        "EntityTrackerAccessor"
     ],
     "client": [],
     "server": [],
