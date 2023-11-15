@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import me.shedaniel.autoconfig.ConfigHolder;
 import owmii.losttrinkets.client.Sounds;
+import owmii.losttrinkets.command.MainCommand;
 import owmii.losttrinkets.config.SunkenTrinketsConfig;
 import owmii.losttrinkets.entity.Entities;
 import owmii.losttrinkets.item.Itms;
@@ -24,5 +25,6 @@ public class LostTrinkets {
         Entities.setup();
         Sounds.setup();
         Network.register();
+        MainCommand.register();
     }
 }

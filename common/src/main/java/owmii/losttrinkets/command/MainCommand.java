@@ -1,21 +1,19 @@
 package owmii.losttrinkets.command;
 
 import com.mojang.brigadier.CommandDispatcher;
+
+import me.shedaniel.architectury.event.events.CommandRegistrationEvent;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.command.arguments.EntityArgument;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import owmii.losttrinkets.LostTrinkets;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.handler.UnlockManager;
 
 import java.util.Collection;
 
-@Mod.EventBusSubscriber
 public class MainCommand {
     public static void register(CommandDispatcher<CommandSource> dispatcher) {
         dispatcher.register(Commands.literal(LostTrinkets.MOD_ID)
@@ -46,8 +44,9 @@ public class MainCommand {
                 }))));
     }
 
-    @SubscribeEvent
-    public static void register(RegisterCommandsEvent event) {
-        register(event.getDispatcher());
+    public static void register() {
+        CommandRegistrationEvent.EVENT.register((dispatcher, selection) -> {
+            register(dispatcher);
+        });
     }
 }
