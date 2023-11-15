@@ -16,6 +16,7 @@ import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.server.ServerWorld;
+import owmii.losttrinkets.api.player.PlayerData;
 
 public interface EnvHandler {
     EnvHandler INSTANCE = Util.make(() -> {

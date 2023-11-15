@@ -8,6 +8,7 @@ import java.util.List;
 
 import io.netty.buffer.Unpooled;
 import me.shedaniel.architectury.networking.NetworkManager;
+import me.shedaniel.architectury.networking.NetworkManager.PacketContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -36,18 +37,8 @@ public final class Network {
     }
 
     public static void register() {
-        NetworkManager.registerReceiver(NetworkManager.Side.C2S, PACKET_ID, (buf, ctx) -> {
-            int packetId = buf.readVarInt();
-
-            try {
-                IPacket packet = decoders.get(packetId).newInstance(buf);
-                ctx.queue(() -> {
-                    packet.handle(ctx.getPlayer());
-                });
-            } catch (ReflectiveOperationException e) {
-                throw new RuntimeException("Failed to construct packet of type " + packetId, e);
-            }
-        });
+        NetworkManager.registerReceiver(NetworkManager.Side.C2S, PACKET_ID, Network::handlePacket);
+        NetworkManager.registerReceiver(NetworkManager.Side.S2C, PACKET_ID, Network::handlePacket);
 
         register(SyncDataPacket.class);
         register(SetActivePacket.class);
@@ -56,6 +47,19 @@ public final class Network {
         register(TrinketUnlockedPacket.class);
         register(SyncFlyPacket.class);
         register(MagnetoPacket.class);
+    }
+
+    private static void handlePacket(PacketBuffer buf, PacketContext ctx) {
+        int packetId = buf.readVarInt();
+
+        try {
+            IPacket packet = decoders.get(packetId).newInstance(buf);
+            ctx.queue(() -> {
+                packet.handle(ctx.getPlayer());
+            });
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException("Failed to construct packet of type " + packetId, e);
+        }
     }
 
     private static PacketBuffer encodePacket(IPacket packet) {

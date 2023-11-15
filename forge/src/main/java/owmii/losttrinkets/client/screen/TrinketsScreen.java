@@ -59,7 +59,7 @@ public class TrinketsScreen extends AbstractLTScreen {
                         }
                         addButton(new IconButton(this.x + j2 * this.btnDim, this.y + j1 * this.btnDim, locked ? Textures.TRINKET_BG_LOCKED : Textures.TRINKET_BG_ADD, button -> {
                             if (locked) {
-                                LostTrinketsForge.NET.toServer(new UnlockSlotPacket());
+                                Network.toServer(new UnlockSlotPacket());
                                 setRefreshScreen(this);
                             } else {
                                 this.mc.displayGuiScreen(new AvailableTrinketsScreen(this, 0));
