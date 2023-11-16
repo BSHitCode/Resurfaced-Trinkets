@@ -17,13 +17,11 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 
 import owmii.losttrinkets.LostTrinkets;
-import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.player.PlayerData;
 import owmii.losttrinkets.config.SunkenTrinketsConfig;
 import owmii.losttrinkets.entity.DarkVexEntity;
 import owmii.losttrinkets.entity.Entities;
 import owmii.losttrinkets.handler.DataManager;
-import owmii.losttrinkets.impl.LostTrinketsAPIImpl;
 
 @Mod(LostTrinkets.MOD_ID)
 public class LostTrinketsForge {
@@ -35,8 +33,6 @@ public class LostTrinketsForge {
         EventBuses.registerModEventBus(LostTrinkets.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
 
         LostTrinkets.init();
-
-        LostTrinketsAPI.init(new LostTrinketsAPIImpl());
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.addListener(LostTrinketsForge::setup);
