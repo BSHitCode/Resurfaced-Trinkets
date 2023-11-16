@@ -27,7 +27,6 @@ import net.minecraftforge.common.util.ITeleporter;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.LogicalSidedProvider;
 import owmii.losttrinkets.EnvHandler;
-import owmii.losttrinkets.api.player.PlayerData;
 import owmii.losttrinkets.lib.compat.botania.BotaniaCompat;
 
 public class ForgeEnvHandler implements EnvHandler {
@@ -94,11 +93,6 @@ public class ForgeEnvHandler implements EnvHandler {
                 return target;
             }
         });
-    }
-
-    @Override
-    public PlayerData getPlayerData(PlayerEntity player) {
-        return player.getCapability(LostTrinketsForge.PLAYERDATA_CAP).orElse(new PlayerData());
     }
 
     @Override

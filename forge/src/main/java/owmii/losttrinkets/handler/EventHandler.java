@@ -55,6 +55,7 @@ public class EventHandler {
     public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
         FireMindTrinket.onLivingUpdate(event.getEntityLiving());
         TargetHandler.onLivingUpdate(event.getEntityLiving());
+        DataManager.update(event.getEntityLiving());
     }
 
     @SubscribeEvent
@@ -218,5 +219,35 @@ public class EventHandler {
     public static void bonemeal(BonemealEvent event) {
         // TODO: this is also triggered in forge when right-clicking with bonemeal onto ANY block; including stone
         UnlockHandler.bonemeal(event.getPlayer());
+    }
+
+    @SubscribeEvent
+    public static void clone(PlayerEvent.Clone event) {
+        DataManager.clone(event.getOriginal(), event.getPlayer(), event.isWasDeath());
+    }
+
+    @SubscribeEvent
+    public static void loggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        DataManager.loggedIn(event.getPlayer());
+    }
+
+    @SubscribeEvent
+    public static void loggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
+        DataManager.loggedOut(event.getPlayer());
+    }
+
+    @SubscribeEvent
+    public static void changedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
+        DataManager.sync(event.getPlayer());
+    }
+
+    @SubscribeEvent
+    public static void respawn(PlayerEvent.PlayerRespawnEvent event) {
+        DataManager.sync(event.getPlayer());
+    }
+
+    @SubscribeEvent
+    public static void trackPlayer(PlayerEvent.StartTracking event) {
+        DataManager.trackPlayer(event.getTarget(), event.getPlayer());
     }
 }

@@ -16,7 +16,6 @@ import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.server.ServerWorld;
-import owmii.losttrinkets.api.player.PlayerData;
 
 public interface EnvHandler {
     EnvHandler INSTANCE = Util.make(() -> {
@@ -43,8 +42,6 @@ public interface EnvHandler {
     boolean isOreBlock(Block block);
 
     void teleport(PlayerEntity player, ServerWorld world, PortalInfo target);
-
-    PlayerData getPlayerData(PlayerEntity player);
 
     boolean isFakePlayer(PlayerEntity player);
 
