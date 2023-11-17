@@ -24,6 +24,11 @@ public class TrebleHooksTrinket extends Trinket<TrebleHooksTrinket> {
     }
 
     public static void onFished(PlayerEntity player, FishingBobberEntity hook) {
+        // TODO: this is potentially NOT minecraft-update safe;
+        // Alternatives:
+        //  - patch FishingBobberEntity.handleHookRetraction() to call loottable.generate 3 times and merge the resulting lists
+        //  - patch LootPool.generate() to look at the THIS_ENTITY param if it is for fishing (must be FishingBobberEntity);
+        //    and look at KILLER_ENTITY for the (potential) player
         World world = player.world;
         if (world instanceof ServerWorld) {
             if (LostTrinketsAPI.getTrinkets(player).isActive(Itms.TREBLE_HOOKS)) {
