@@ -186,7 +186,7 @@ public class EventHandler {
 
     @SubscribeEvent
     public static void onBreakSpeed(PlayerEvent.BreakSpeed event) {
-        MinersPickTrinket.onBreakSpeed(event.getPlayer(), () -> event.getOriginalSpeed(), (v) -> event.setNewSpeed(v));
+        event.setNewSpeed(MinersPickTrinket.onBreakSpeed(event.getPlayer(), event.getOriginalSpeed()));
     }
 
     @SubscribeEvent

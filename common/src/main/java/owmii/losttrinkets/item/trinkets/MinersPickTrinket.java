@@ -1,8 +1,5 @@
 package owmii.losttrinkets.item.trinkets;
 
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-
 import net.minecraft.entity.player.PlayerEntity;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.Rarity;
@@ -14,9 +11,10 @@ public class MinersPickTrinket extends Trinket<MinersPickTrinket> {
         super(rarity, properties);
     }
 
-    public static void onBreakSpeed(PlayerEntity player, Supplier<Float> getOriginalSpeed, Consumer<Float> setNewSpeed) {
+    public static float onBreakSpeed(PlayerEntity player, float originalSpeed) {
         if (LostTrinketsAPI.getTrinkets(player).isActive(Itms.MINERS_PICK)) {
-            setNewSpeed.accept(getOriginalSpeed.get() + 3.7F);
+            return originalSpeed + 3.7F;
         }
+        return originalSpeed;
     }
 }
