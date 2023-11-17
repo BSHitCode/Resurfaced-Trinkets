@@ -81,12 +81,13 @@ public final class Network {
 
     public static void toTrackingAndSelf(IPacket msg, Entity entity) {
         Collection<ServerPlayerEntity> trackingPlayers = EnvHandler.INSTANCE.getTrackingPlayers(entity);
-        PacketBuffer buf = encodePacket(msg);
+        // Important: DO NOT PASS THE BUFFER AROUND! Bad things happens.
+        // Just stick with encodePacket() for each of these calls...
         if (!trackingPlayers.isEmpty()) {
-            NetworkManager.sendToPlayers(trackingPlayers, PACKET_ID, buf);
+            NetworkManager.sendToPlayers(trackingPlayers, PACKET_ID, encodePacket(msg));
         }
         if (entity instanceof ServerPlayerEntity) {
-            NetworkManager.sendToPlayer((ServerPlayerEntity) entity, PACKET_ID, buf);
+            NetworkManager.sendToPlayer((ServerPlayerEntity) entity, PACKET_ID, encodePacket(msg));
         }
     }
 
