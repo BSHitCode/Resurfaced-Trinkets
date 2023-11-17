@@ -1,5 +1,6 @@
 package owmii.losttrinkets.item.trinkets;
 
+import me.shedaniel.architectury.utils.GameInstance;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -13,7 +14,6 @@ import owmii.losttrinkets.api.trinket.Rarity;
 import owmii.losttrinkets.api.trinket.Trinket;
 import owmii.losttrinkets.entity.Entities;
 import owmii.losttrinkets.item.Itms;
-import owmii.losttrinkets.lib.util.Server;
 
 import java.util.ArrayList;
 import java.util.Collection;
