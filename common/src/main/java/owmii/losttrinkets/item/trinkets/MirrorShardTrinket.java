@@ -29,7 +29,6 @@ public class MirrorShardTrinket extends Trinket<MirrorShardTrinket> {
 
     private static void mirrorDamage(LivingEntity entity, DamageSource source, float amount) {
         Entity trueSource = source.getTrueSource();
-        Entity immediateSource = source.getImmediateSource();
         if (entity instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) entity;
             Trinkets trinkets = LostTrinketsAPI.getTrinkets(player);

@@ -4,7 +4,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.PortalInfo;
 import net.minecraft.command.impl.SpawnPointCommand;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.play.ServerPlayNetHandler;
@@ -138,6 +137,7 @@ public class WarmVoidTrinket extends Trinket<WarmVoidTrinket> implements ITickab
         public final ServerWorld spawnWorld;
         public final Vector3d spawnPos;
         public final float spawnAngle;
+        @SuppressWarnings("unused")
         public final Consumer<ServerPlayerEntity> repositionEntity;
 
         public SpawnPointInfo(ServerWorld spawnWorld, Vector3d spawnPos, float spawnAngle, Consumer<ServerPlayerEntity> repositionEntity) {

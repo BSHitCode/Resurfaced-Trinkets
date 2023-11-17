@@ -7,7 +7,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.world.World;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.Rarity;
 import owmii.losttrinkets.api.trinket.Trinket;
@@ -20,7 +19,6 @@ public class MadAuraTrinket extends Trinket<MadAuraTrinket> {
     }
 
     public static void onAttack(LivingEntity entity, DamageSource source, Consumer<Boolean> setCanceled) {
-        World world = entity.getEntityWorld();
         Entity immediateSource = source.getImmediateSource();
         if (entity instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) entity;

@@ -22,7 +22,7 @@ public class DataManager {
         Trinkets trinkets = LostTrinketsAPI.getTrinkets(newPlayer);
         trinkets.getActiveTrinkets().forEach(trinket -> {
             if (trinket instanceof Trinket) {
-                ((Trinket) trinket).applyAttributes(newPlayer);
+                ((Trinket<?>) trinket).applyAttributes(newPlayer);
             }
         });
         if (!wasDeath) {

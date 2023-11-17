@@ -1,6 +1,5 @@
 package owmii.losttrinkets.network.packet;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,7 +11,6 @@ import owmii.losttrinkets.network.IPacket;
 import owmii.losttrinkets.lib.util.Magnet;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 public class MagnetoPacket implements IPacket {
     public MagnetoPacket() {}

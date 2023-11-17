@@ -1,18 +1,13 @@
 package owmii.losttrinkets.forge;
 
 import me.shedaniel.architectury.platform.forge.EventBuses;
-import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.client.ConfigGuiHandler;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 
@@ -20,7 +15,6 @@ import owmii.losttrinkets.LostTrinkets;
 import owmii.losttrinkets.config.SunkenTrinketsConfig;
 import owmii.losttrinkets.entity.DarkVexEntity;
 import owmii.losttrinkets.entity.Entities;
-import owmii.losttrinkets.handler.DataManager;
 
 @Mod(LostTrinkets.MOD_ID)
 public class LostTrinketsForge {

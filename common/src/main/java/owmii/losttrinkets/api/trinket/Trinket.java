@@ -24,7 +24,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
-public class Trinket<T extends Trinket> extends Item implements ITrinket {
+public class Trinket<T extends Trinket<?>> extends Item implements ITrinket {
     private final Map<Attribute, AttributeModifier> attributes = Maps.newHashMap();
     private final Rarity rarity;
     protected boolean unlockable = true;
@@ -83,7 +83,7 @@ public class Trinket<T extends Trinket> extends Item implements ITrinket {
         return this.unlockable;
     }
 
-    public Trinket noUnlock() {
+    public Trinket<T> noUnlock() {
         this.unlockable = false;
         return this;
     }

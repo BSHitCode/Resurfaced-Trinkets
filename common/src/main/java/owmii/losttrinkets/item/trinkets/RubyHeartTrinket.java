@@ -20,11 +20,13 @@ import owmii.losttrinkets.item.Itms;
 
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class RubyHeartTrinket extends Trinket<RubyHeartTrinket> {
     private static HashMap<UUID, Float> lastHealths = new HashMap<>();
+    private static BinaryOperator<Float> MAX = (a, b) -> Math.max(a, b);
 
     public RubyHeartTrinket(Rarity rarity, Properties properties) {
         super(rarity, properties);
@@ -33,13 +35,13 @@ public class RubyHeartTrinket extends Trinket<RubyHeartTrinket> {
     public static void saveHealthTickStart(MinecraftServer server) {
         // Save player health at the beginning of the server tick
         lastHealths = server.getPlayerList().getPlayers().stream()
-                .collect(Collectors.toMap(Entity::getUniqueID, LivingEntity::getHealth, Math::max, HashMap::new));
+                .collect(Collectors.toMap(Entity::getUniqueID, LivingEntity::getHealth, MAX, HashMap::new));
     }
 
     public static void saveHealthHurt(LivingEntity entity) {
         // Save player health before the player is hurt
         if (entity instanceof ServerPlayerEntity) {
-            lastHealths.merge(entity.getUniqueID(), entity.getHealth(), Math::max);
+            lastHealths.merge(entity.getUniqueID(), entity.getHealth(), MAX);
         }
     }
 

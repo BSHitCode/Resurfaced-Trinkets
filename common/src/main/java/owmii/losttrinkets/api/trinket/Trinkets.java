@@ -153,7 +153,7 @@ public class Trinkets {
                 this.targeting.remove(trinket);
             }
             if (trinket instanceof Trinket) {
-                ((Trinket) trinket).removeAttributes(player);
+                ((Trinket<?>) trinket).removeAttributes(player);
             }
             trinket.onDeactivated(player.world, player.getPosition(), player);
             this.data.setSync(true);
@@ -172,7 +172,7 @@ public class Trinkets {
                 this.targeting.add((ITargetingTrinket) trinket);
             }
             if (trinket instanceof Trinket) {
-                ((Trinket) trinket).applyAttributes(player);
+                ((Trinket<?>) trinket).applyAttributes(player);
             }
             trinket.onActivated(player.world, player.getPosition(), player);
             this.data.setSync(true);

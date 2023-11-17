@@ -2,11 +2,8 @@ package owmii.losttrinkets.fabric;
 
 import java.util.Collection;
 
-import me.shedaniel.architectury.hooks.PlayerHooks;
 import me.shedaniel.architectury.hooks.TagHooks;
-import me.shedaniel.architectury.utils.GameInstance;
 import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
-import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback.Registry;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -14,8 +11,6 @@ import net.minecraft.block.PortalInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.loot.LootTable;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tags.ITag;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;

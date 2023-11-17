@@ -6,6 +6,7 @@ import net.minecraft.world.World;
 
 import java.util.Optional;
 
+@SuppressWarnings("resource")
 public class MC {
     public static Optional<PlayerEntity> player() {
         return Optional.ofNullable(get().player);

@@ -33,6 +33,7 @@ public class ScreenBase extends Screen {
     }
 
     @Override
+    @SuppressWarnings("resource")
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if (super.keyPressed(keyCode, scanCode, modifiers)) {
             return true;
