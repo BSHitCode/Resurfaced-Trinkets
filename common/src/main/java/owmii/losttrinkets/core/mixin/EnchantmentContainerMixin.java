@@ -4,13 +4,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.EnchantmentContainer;
 import net.minecraft.util.IWorldPosCallable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.Trinkets;
 import owmii.losttrinkets.item.Itms;
@@ -27,13 +25,22 @@ public class EnchantmentContainerMixin {
         this.player = playerInventory.player;
     }
 
-    @Inject(method = "getPower", at = @At("TAIL"), cancellable = true, remap = false)
-    private void getPower(World world, BlockPos pos, CallbackInfoReturnable<Float> cir) {
+    @ModifyArg(
+        method = "func_217002_a", // func_217002_a is a lambda in onCraftMatrixChanged
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/enchantment/EnchantmentHelper;calcItemStackEnchantability(Ljava/util/Random;IILnet/minecraft/item/ItemStack;)I"
+        ),
+        index = 2,
+        remap = false
+    )
+    private int modifyPower(int in) {
         if (this.player != null) {
             Trinkets trinkets = LostTrinketsAPI.getTrinkets(this.player);
             if (trinkets.isActive(Itms.BOOK_O_ENCHANTING)) {
-                cir.setReturnValue(15.0F);
+                return 15;
             }
         }
+        return in;
     }
 }
