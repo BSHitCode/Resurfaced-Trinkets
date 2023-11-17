@@ -9,6 +9,7 @@ import owmii.losttrinkets.client.Sounds;
 import owmii.losttrinkets.command.MainCommand;
 import owmii.losttrinkets.config.SunkenTrinketsConfig;
 import owmii.losttrinkets.entity.Entities;
+import owmii.losttrinkets.handler.CommonEventHandler;
 import owmii.losttrinkets.impl.LostTrinketsAPIImpl;
 import owmii.losttrinkets.item.Itms;
 import owmii.losttrinkets.network.Network;
@@ -28,6 +29,7 @@ public class LostTrinkets {
         Sounds.setup();
         Network.register();
         MainCommand.register();
+        CommonEventHandler.register();
 
         LostTrinketsAPI.init(new LostTrinketsAPIImpl());
     }

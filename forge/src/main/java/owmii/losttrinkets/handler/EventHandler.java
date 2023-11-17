@@ -3,7 +3,9 @@ package owmii.losttrinkets.handler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.CreeperEntity;
+import net.minecraft.entity.monster.EndermanEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.HoeItem;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -28,67 +30,10 @@ import owmii.losttrinkets.item.trinkets.*;
 @Mod.EventBusSubscriber
 public class EventHandler {
     @SubscribeEvent
-    public static void tick(TickEvent.PlayerTickEvent event) {
-        PlayerEntity player = event.player;
-        if (event.phase == TickEvent.Phase.END) {
-            PlayerData data = LostTrinketsAPI.getData(player);
-            if (data.unlockDelay > 0) {
-                data.unlockDelay--;
-            }
-            Trinkets trinkets = LostTrinketsAPI.getTrinkets(player);
-            trinkets.getTickable().forEach(trinket -> trinket.tick(player.world, player.getPosition(), player));
-
-            if (event.side == LogicalSide.SERVER) {
-                UnlockHandler.tickPlayerOnServer(player);
-            }
-        }
-    }
-
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void saveHealthTickStart(TickEvent.ServerTickEvent event) {
-        if (event.phase == TickEvent.Phase.START) {
-            RubyHeartTrinket.saveHealthTickStart();
-        }
-    }
-
-    @SubscribeEvent
     public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
         FireMindTrinket.onLivingUpdate(event.getEntityLiving());
         TargetHandler.onLivingUpdate(event.getEntityLiving());
         DataManager.update(event.getEntityLiving());
-    }
-
-    @SubscribeEvent
-    public static void onExplosionStart(ExplosionEvent.Start event) {
-        Entity entity = event.getExplosion().getExploder();
-        if (entity instanceof CreeperEntity) {
-            CreeperEntity creeper = ((CreeperEntity) entity);
-            LivingEntity target = creeper.getAttackTarget();
-            if (target instanceof PlayerEntity) {
-                PlayerEntity player = (PlayerEntity) target;
-                Trinkets trinkets = LostTrinketsAPI.getTrinkets(player);
-                if (trinkets.isActive(Itms.CREEPO)) {
-                    event.setCanceled(true);
-                }
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public static void joinWorld(EntityJoinWorldEvent event) {
-        OctopickTrinket.collectDrops(event.getEntity(), (cancel) -> event.setCanceled(cancel));
-        BigFootTrinket.addAvoidGoal(event.getEntity());
-    }
-
-    @SubscribeEvent
-    public static void onAttack(LivingAttackEvent event) {
-        DamageSource source = event.getSource();
-        if (source == null) return;
-        if (BlazeHeartTrinket.isImmuneToFire(event.getEntityLiving(), event.getSource())) {
-            event.setCanceled(true);
-        }
-        MadAuraTrinket.onAttack(event.getEntityLiving(), event.getSource(), (cancel) -> event.setCanceled(cancel));
-        OctopusLegTrinket.onAttack(event.getEntityLiving(), event.getSource());
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
@@ -98,45 +43,7 @@ public class EventHandler {
 
     @SubscribeEvent
     public static void onHurt(LivingHurtEvent event) {
-        DamageSource source = event.getSource();
-        if (source == null) return;
-
-        DarkDaggerTrinket.onHurt(event.getSource(), event.getAmount(), event.getEntityLiving());
-        DarkEggTrinket.onHurt(event.getEntityLiving(), event.getSource());
-        DropSpindleTrinket.onHurt(event.getSource());
-        EmberTrinket.onHurt(event.getEntityLiving(), event.getSource());
-        GoldenSwatterTrinket.onHurt(event.getEntityLiving(), event.getSource());
-        MadPiggyTrinket.onHurt(event.getEntityLiving(), event.getSource());
-        MirrorShardTrinket.onHurt(event.getEntityLiving(), event.getSource(), event.getAmount());
-        SerpentToothTrinket.onHurt(event.getSource(), event.getEntityLiving());
-        StarfishTrinket.onHurt(event.getSource(), event.getAmount());
-        SlingshotTrinket.onHurt(event.getSource(), event.getEntityLiving());
-        WitherNailTrinket.onHurt(event.getSource(), event.getEntityLiving());
-
-        if (source.getTrueSource() instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) source.getTrueSource();
-            Trinkets trinkets = LostTrinketsAPI.getTrinkets(player);
-            float amount = event.getAmount();
-            if (trinkets.isActive(Itms.SILVER_NAIL)) {
-                amount *= 1.1F;
-            }
-            if (trinkets.isActive(Itms.GLORY_SHARDS)) {
-                amount *= 1.2F;
-            }
-            event.setAmount(amount);
-        }
-    }
-
-    @SubscribeEvent
-    public static void onDeath(LivingDeathEvent event) {
-        DamageSource source = event.getSource();
-        if (source == null) return;
-        RubyHeartTrinket.onDeath(event.getSource(), event.getEntityLiving(), (cancel) -> event.setCanceled(cancel));
-    }
-
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void kill(LivingDeathEvent event) {
-        UnlockHandler.kill(event.getSource(), event.getEntityLiving());
+        event.setAmount(CommonEventHandler.onHurt(event.getSource(), event.getEntityLiving(), event.getAmount()));
     }
 
     @SubscribeEvent
@@ -190,11 +97,6 @@ public class EventHandler {
     }
 
     @SubscribeEvent
-    public static void onBreak(BlockEvent.BreakEvent event) {
-        OctopickTrinket.onBreak(event.getPlayer(), event.getPos(), event.getState(), (cancel) -> event.setCanceled(cancel));
-    }
-
-    @SubscribeEvent
     public static void onEnderTeleport(EntityTeleportEvent.EnderEntity event) {
         StickyMindTrinket.onEnderTeleport(event.getEntityLiving(), (cancel) -> event.setCanceled(cancel));
     }
@@ -202,31 +104,6 @@ public class EventHandler {
     @SubscribeEvent
     public static void setTarget(LivingSetAttackTargetEvent event) {
         TargetHandler.setTarget(event.getEntityLiving(), event.getTarget());
-    }
-
-    @SubscribeEvent
-    public static void clone(PlayerEvent.Clone event) {
-        DataManager.clone(event.getOriginal(), event.getPlayer(), event.isWasDeath());
-    }
-
-    @SubscribeEvent
-    public static void loggedIn(PlayerEvent.PlayerLoggedInEvent event) {
-        DataManager.loggedIn(event.getPlayer());
-    }
-
-    @SubscribeEvent
-    public static void loggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
-        DataManager.loggedOut(event.getPlayer());
-    }
-
-    @SubscribeEvent
-    public static void changedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
-        DataManager.sync(event.getPlayer());
-    }
-
-    @SubscribeEvent
-    public static void respawn(PlayerEvent.PlayerRespawnEvent event) {
-        DataManager.sync(event.getPlayer());
     }
 
     @SubscribeEvent
