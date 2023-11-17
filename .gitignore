@@ -24,6 +24,9 @@ build
 eclipse
 run
 jars
+logs
+.mixin.out
+.architectury-transformer
 
 # Files from Forge MDK
 forge*changelog.txt
