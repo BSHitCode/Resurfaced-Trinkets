@@ -205,18 +205,6 @@ public class EventHandler {
     }
 
     @SubscribeEvent
-    public static void useHoe(UseHoeEvent event) {
-        // TODO: this is also triggered in forge when right-clicking with a hoe onto ANY block; including stone
-        UnlockHandler.useHoe(event.getPlayer());
-    }
-
-    @SubscribeEvent
-    public static void bonemeal(BonemealEvent event) {
-        // TODO: this is also triggered in forge when right-clicking with bonemeal onto ANY block; including stone
-        UnlockHandler.bonemeal(event.getPlayer());
-    }
-
-    @SubscribeEvent
     public static void clone(PlayerEvent.Clone event) {
         DataManager.clone(event.getOriginal(), event.getPlayer(), event.isWasDeath());
     }

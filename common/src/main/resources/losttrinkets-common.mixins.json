@@ -15,7 +15,9 @@
 	"EnchantmentContainerMixin",
 	"EnderPearlItemMixin",
 	"PigEntityMixin",
-	"FishingBobberEntityMixin"
+	"FishingBobberEntityMixin",
+	"HoeItemMixin",
+	"BoneMealItemMixin"
   ],
   "client": [],
   "server": [],
