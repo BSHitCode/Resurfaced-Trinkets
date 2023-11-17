@@ -17,7 +17,8 @@
 	"PigEntityMixin",
 	"FishingBobberEntityMixin",
 	"HoeItemMixin",
-	"BoneMealItemMixin"
+	"BoneMealItemMixin",
+	"EntityMixin"
   ],
   "client": [],
   "server": [],
