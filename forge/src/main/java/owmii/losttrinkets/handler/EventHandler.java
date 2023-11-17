@@ -195,11 +195,6 @@ public class EventHandler {
     }
 
     @SubscribeEvent
-    public static void onFished(ItemFishedEvent event) {
-        TrebleHooksTrinket.onFished(event.getPlayer(), event.getHookEntity());
-    }
-
-    @SubscribeEvent
     public static void onEnderTeleport(EntityTeleportEvent.EnderEntity event) {
         StickyMindTrinket.onEnderTeleport(event.getEntityLiving(), (cancel) -> event.setCanceled(cancel));
     }

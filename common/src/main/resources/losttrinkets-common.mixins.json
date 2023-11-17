@@ -14,7 +14,8 @@
 	"MerchantResultSlotMixin",
 	"EnchantmentContainerMixin",
 	"EnderPearlItemMixin",
-	"PigEntityMixin"
+	"PigEntityMixin",
+	"FishingBobberEntityMixin"
   ],
   "client": [],
   "server": [],

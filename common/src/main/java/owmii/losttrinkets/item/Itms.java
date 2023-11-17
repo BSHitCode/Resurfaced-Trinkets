@@ -63,7 +63,7 @@ public class Itms {
     public static final Supplier<Trinket<?>> GLASS_SHARD = register("glass_shard", Trinket::new, Rarity.RARE);
     public static final Supplier<BlazeHeartTrinket> BLAZE_HEART = register("blaze_heart", BlazeHeartTrinket::new, Rarity.RARE);
     public static final Supplier<ThaGhostTrinket> THA_GHOST = register("tha_ghost", ThaGhostTrinket::new, Rarity.RARE);
-    public static final Supplier<TrebleHooksTrinket> TREBLE_HOOKS = register("treble_hooks", TrebleHooksTrinket::new, Rarity.RARE);
+    public static final Supplier<Trinket<?>> TREBLE_HOOKS = register("treble_hooks", Trinket::new, Rarity.RARE);
     public static final Supplier<ThaWizardTrinket> THA_WIZARD = register("tha_wizard", ThaWizardTrinket::new, Rarity.RARE);
     public static final Supplier<ThaBatTrinket> THA_BAT = register("tha_bat", ThaBatTrinket::new, Rarity.RARE);
     public static final Supplier<Trinket<?>> BLANK_EYES = register("blank_eyes", Trinket::new, Rarity.RARE);
