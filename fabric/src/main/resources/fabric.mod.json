@@ -1,0 +1,40 @@
+{
+    "schemaVersion": 1,
+    "id": "losttrinkets",
+    "version": "${version}",
+    "name": "Sunken Trinkets",
+    "description": "70+ Unlockable trinkets with different useful abilities.",
+    "authors": [
+        "owmii",
+        "Mai-Lapyst"
+    ],
+    "contact": {
+        "homepage": "https://modrinth.com/mod/lost-trinkets",
+        "sources": "https://github.com/Bithero-Studio/Lost-Trinkets"
+    },
+    "license": "LGPLv3",
+    "icon": "icon.png",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "owmii.losttrinkets.fabric.LostTrinketsFabric"
+        ],
+        "client": [
+            "owmii.losttrinkets.fabric.client.LostTrinketsFabricClient"
+        ],
+        "fabric-datagen": [
+            "owmii.losttrinkets.fabric.data.DataEvents"
+        ]
+    },
+    "mixins": [
+        "losttrinkets-common.mixins.json",
+        "losttrinkets-fabric.mixins.json"
+    ],
+    "depends": {
+        "fabricloader": ">=0.13.0",
+        "fabric": ">=0.34.2",
+        "minecraft": ">=1.16.5",
+        "architectury": ">=1.32.68",
+        "cloth-config2": ">=4.17.101"
+    }
+}
