@@ -54,7 +54,7 @@ public class CommonEventHandler {
             }
         });
         TickEvent.SERVER_PRE.register((server) -> {
-            RubyHeartTrinket.saveHealthTickStart();
+            RubyHeartTrinket.saveHealthTickStart(server);
         });
         // onLivingUpdate is handled by fabric:LivingEntityMixin.tick() forge:LivingUpdateEvent
         ExplosionEvent.PRE.register((world, explosion) -> {

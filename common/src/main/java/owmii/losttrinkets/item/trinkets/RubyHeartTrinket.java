@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.DamageSource;
 import owmii.losttrinkets.api.LostTrinketsAPI;
@@ -22,8 +23,6 @@ import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import me.shedaniel.architectury.utils.GameInstance;
-
 public class RubyHeartTrinket extends Trinket<RubyHeartTrinket> {
     private static HashMap<UUID, Float> lastHealths = new HashMap<>();
 
@@ -31,9 +30,9 @@ public class RubyHeartTrinket extends Trinket<RubyHeartTrinket> {
         super(rarity, properties);
     }
 
-    public static void saveHealthTickStart() {
+    public static void saveHealthTickStart(MinecraftServer server) {
         // Save player health at the beginning of the server tick
-        lastHealths = GameInstance.getServer().getPlayerList().getPlayers().stream()
+        lastHealths = server.getPlayerList().getPlayers().stream()
                 .collect(Collectors.toMap(Entity::getUniqueID, LivingEntity::getHealth, Math::max, HashMap::new));
     }
 
