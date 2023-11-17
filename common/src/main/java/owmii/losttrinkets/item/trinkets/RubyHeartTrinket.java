@@ -16,12 +16,13 @@ import owmii.losttrinkets.api.trinket.Rarity;
 import owmii.losttrinkets.api.trinket.Trinket;
 import owmii.losttrinkets.api.trinket.Trinkets;
 import owmii.losttrinkets.item.Itms;
-import owmii.losttrinkets.lib.util.Server;
 
 import java.util.HashMap;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+
+import me.shedaniel.architectury.utils.GameInstance;
 
 public class RubyHeartTrinket extends Trinket<RubyHeartTrinket> {
     private static HashMap<UUID, Float> lastHealths = new HashMap<>();
@@ -32,7 +33,7 @@ public class RubyHeartTrinket extends Trinket<RubyHeartTrinket> {
 
     public static void saveHealthTickStart() {
         // Save player health at the beginning of the server tick
-        lastHealths = Server.get().getPlayerList().getPlayers().stream()
+        lastHealths = GameInstance.getServer().getPlayerList().getPlayers().stream()
                 .collect(Collectors.toMap(Entity::getUniqueID, LivingEntity::getHealth, Math::max, HashMap::new));
     }
 

@@ -1,10 +1,11 @@
 package owmii.losttrinkets.handler;
 
 import com.google.common.collect.Sets;
+
+import me.shedaniel.architectury.utils.GameInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
 import net.minecraft.util.WeightedRandom;
@@ -21,7 +22,6 @@ import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.player.PlayerData;
 import owmii.losttrinkets.api.trinket.ITrinket;
 import owmii.losttrinkets.api.trinket.Trinkets;
-import owmii.losttrinkets.lib.util.Server;
 import owmii.losttrinkets.network.Network;
 import owmii.losttrinkets.network.packet.TrinketUnlockedPacket;
 
@@ -84,7 +84,7 @@ public class UnlockManager {
                     ITextComponent trinketName = stack.getDisplayName().deepCopy().modifyStyle(style -> {
                         return style.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new HoverEvent.ItemHover(stack)));
                     });
-                    Server.get().getPlayerList().func_232641_a_(new TranslationTextComponent("chat.losttrinkets.unlocked.trinket", player.getDisplayName(), trinketName).mergeStyle(TextFormatting.DARK_AQUA), ChatType.SYSTEM, Util.DUMMY_UUID);
+                    GameInstance.getServer().getPlayerList().func_232641_a_(new TranslationTextComponent("chat.losttrinkets.unlocked.trinket", player.getDisplayName(), trinketName).mergeStyle(TextFormatting.DARK_AQUA), ChatType.SYSTEM, Util.DUMMY_UUID);
                 }
                 return true;
             }
@@ -149,7 +149,7 @@ public class UnlockManager {
         // TODO: handle server reload somehow
         // MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         // if (server != null) {
-        //     server.runAsync(() -> Server.get().getPlayerList().getPlayers()
+        //     server.runAsync(() -> GameInstance.getServer().getPlayerList().getPlayers()
         //             .forEach(player -> LostTrinketsAPI.getTrinkets(player).removeDisabled(player)));
         // }
     }

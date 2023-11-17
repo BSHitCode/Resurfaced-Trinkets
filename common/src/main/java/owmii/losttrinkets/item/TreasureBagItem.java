@@ -3,7 +3,7 @@ package owmii.losttrinkets.item;
 import java.util.List;
 
 import me.shedaniel.architectury.hooks.ItemStackHooks;
-
+import me.shedaniel.architectury.utils.GameInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
@@ -18,7 +18,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
-import owmii.losttrinkets.EnvHandler;
 import owmii.losttrinkets.LostTrinkets;
 
 public class TreasureBagItem extends Item {
@@ -34,7 +33,7 @@ public class TreasureBagItem extends Item {
             LootContext.Builder builder = new LootContext.Builder((ServerWorld) world);
             builder.withParameter(LootParameters.ORIGIN, player.getPositionVec()).withSeed(world.rand.nextLong());
             builder.withLuck(player.getLuck()).withParameter(LootParameters.THIS_ENTITY, player);
-            LootTable lootTable = EnvHandler.INSTANCE.getLootTableFromLocation(lootTableId);
+            LootTable lootTable = GameInstance.getServer().getLootTableManager().getLootTableFromLocation(lootTableId);
             List<ItemStack> stacks = lootTable.generate(builder.build(LootParameterSets.GIFT));
             stacks.forEach(stack -> ItemStackHooks.giveItem((ServerPlayerEntity) player, stack.copy()));
             if (!player.isCreative()) {

@@ -11,10 +11,7 @@ import net.minecraft.block.PortalInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.loot.LootTable;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.server.ChunkManager;
@@ -22,26 +19,13 @@ import net.minecraft.world.server.ServerChunkProvider;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ITeleporter;
-import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.LogicalSidedProvider;
 import owmii.losttrinkets.EnvHandler;
 import owmii.losttrinkets.lib.compat.botania.BotaniaCompat;
 
 public class ForgeEnvHandler implements EnvHandler {
     public static final String PREVENT_REMOTE_MOVEMENT = "PreventRemoteMovement";
     public static final String ALLOW_MACHINE_REMOTE_MOVEMENT = "AllowMachineRemoteMovement";
-
-    @Override
-    public MinecraftServer getServerInstance() {
-        return LogicalSidedProvider.INSTANCE.get(LogicalSide.SERVER);
-    }
-
-    @Override
-    public LootTable getLootTableFromLocation(ResourceLocation location) {
-        return this.getServerInstance().getLootTableManager().getLootTableFromLocation(location);
-    }
 
     /**
      * Checks if the entity can be collected by a magnet, vacuum or similar.
@@ -93,11 +77,6 @@ public class ForgeEnvHandler implements EnvHandler {
                 return target;
             }
         });
-    }
-
-    @Override
-    public boolean isFakePlayer(PlayerEntity player) {
-        return (player instanceof FakePlayer);
     }
 
     @Override

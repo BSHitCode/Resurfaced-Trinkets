@@ -48,7 +48,7 @@ public class TreasureRingTrinket extends Trinket<TreasureRingTrinket> {
                     LootContext.Builder builder = new LootContext.Builder((ServerWorld) player.world);
                     builder.withParameter(LootParameters.ORIGIN, target.getPositionVec()).withSeed(player.world.rand.nextLong());
                     builder.withLuck(player.getLuck()).withParameter(LootParameters.THIS_ENTITY, player);
-                    LootTable lootTable = Server.get().getLootTableManager().getLootTableFromLocation(LOOTS.get(player.world.rand.nextInt(LOOTS.size())));
+                    LootTable lootTable = GameInstance.getServer().getLootTableManager().getLootTableFromLocation(LOOTS.get(player.world.rand.nextInt(LOOTS.size())));
                     List<ItemStack> stacks = lootTable.generate(builder.build(LootParameterSets.CHEST));
                     stacks.forEach(stack -> drops.add(new ItemEntity(target.world, target.getPosX(), target.getPosY(), target.getPosZ(), stack)));
                 }

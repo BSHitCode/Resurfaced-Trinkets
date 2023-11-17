@@ -1,5 +1,6 @@
 package owmii.losttrinkets.handler;
 
+import me.shedaniel.architectury.hooks.PlayerHooks;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -59,7 +60,7 @@ public class UnlockHandler {
     }
 
     private static void queueUnlock(PlayerEntity player, Type type) {
-        if (!player.world.isRemote && !EnvHandler.INSTANCE.isFakePlayer(player)) {
+        if (!player.world.isRemote && !PlayerHooks.isFake(player)) {
             MAP.put(player.getUniqueID(), type);
         }
     }

@@ -29,10 +29,6 @@ public interface EnvHandler {
         }
     });
 
-    MinecraftServer getServerInstance();
-
-    LootTable getLootTableFromLocation(ResourceLocation location);
-
     boolean magnetCanCollect(Entity entity, boolean automated);
 
     Collection<ServerPlayerEntity> getTrackingPlayers(Entity entity);
@@ -42,8 +38,6 @@ public interface EnvHandler {
     boolean isOreBlock(Block block);
 
     void teleport(PlayerEntity player, ServerWorld world, PortalInfo target);
-
-    boolean isFakePlayer(PlayerEntity player);
 
     default boolean shouldRiderSit(Entity entity) {
         return true;
