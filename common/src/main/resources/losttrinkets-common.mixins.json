@@ -20,7 +20,9 @@
 	"BoneMealItemMixin",
 	"EntityMixin"
   ],
-  "client": [],
+  "client": [
+	"LivingRendererMixin"
+  ],
   "server": [],
   "injectors": {
 	"defaultRequire": 1
