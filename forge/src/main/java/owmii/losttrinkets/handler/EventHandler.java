@@ -200,7 +200,7 @@ public class EventHandler {
     }
 
     @SubscribeEvent
-    public static void onEnderTeleport(EnderTeleportEvent event) {
+    public static void onEnderTeleport(EntityTeleportEvent.EnderEntity event) {
         StickyMindTrinket.onEnderTeleport(event.getEntityLiving(), (cancel) -> event.setCanceled(cancel));
     }
 
