@@ -13,7 +13,7 @@
         "sources": "https://github.com/Bithero-Studio/Lost-Trinkets"
     },
     "license": "LGPLv3",
-    "icon": "icon.png",
+    "icon": "logo.png",
     "environment": "*",
     "entrypoints": {
         "main": [
