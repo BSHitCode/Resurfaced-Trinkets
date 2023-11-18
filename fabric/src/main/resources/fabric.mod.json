@@ -9,8 +9,9 @@
         "Mai-Lapyst"
     ],
     "contact": {
-        "homepage": "https://modrinth.com/mod/lost-trinkets",
-        "sources": "https://github.com/Bithero-Studio/Lost-Trinkets"
+        "homepage": "https://modrinth.com/mod/sunken-trinkets",
+        "sources": "https://github.com/Bithero-Studio/Sunken-Trinkets",
+        "issues": "https://github.com/Bithero-Studio/Sunken-Trinkets/issues"
     },
     "license": "LGPLv3",
     "icon": "logo.png",

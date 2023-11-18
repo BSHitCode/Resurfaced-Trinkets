@@ -1,13 +1,13 @@
 modLoader="javafml" 
 loaderVersion="[36,)"
-issueTrackerURL="https://github.com/Bithero-Studio/Lost-Trinkets/issues"
+issueTrackerURL="https://github.com/Bithero-Studio/Sunken-Trinkets/issues"
 license="LGPLv3"
 
 [[mods]]
 modId="losttrinkets"
 version="${version}"
 displayName="Lost Trinkets Rediscovered"
-displayURL="https://modrinth.com/mod/lost-trinkets"
+displayURL="https://modrinth.com/mod/sunken-trinkets"
 logoFile="logo.png"
 logoBlur=false
 authors="owmii,Mai-Lapyst"
