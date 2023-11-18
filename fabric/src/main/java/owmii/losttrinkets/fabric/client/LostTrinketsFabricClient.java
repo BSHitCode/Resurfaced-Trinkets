@@ -14,8 +14,6 @@ public class LostTrinketsFabricClient implements ClientModInitializer {
         HudHandler.register();
         MagnetoTrinket.register();
         KeyHandler.register();
-
-        // TODO: EventHandler.onRenderLiving
     }
 
 }
