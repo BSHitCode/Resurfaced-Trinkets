@@ -27,6 +27,7 @@ jars
 logs
 .mixin.out
 .architectury-transformer
+t.sh
 
 # Files from Forge MDK
 forge*changelog.txt
