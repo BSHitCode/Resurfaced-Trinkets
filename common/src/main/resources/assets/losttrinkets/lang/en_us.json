@@ -1,6 +1,6 @@
 {
-  "itemGroup.losttrinkets": "Lost Trinkets",
-  "key.categories.losttrinkets": "Lost Trinkets",
+  "itemGroup.losttrinkets.tab": "Sunken Trinkets",
+  "key.categories.losttrinkets": "Sunken Trinkets",
   "key.losttrinkets.trinket": "Open Trinkets GUI",
   "key.losttrinkets.magneto": "Magneto: Collect",
   "item.losttrinkets.piggy": "Piggy",
