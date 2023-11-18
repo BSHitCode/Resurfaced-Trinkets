@@ -5,7 +5,8 @@
     "compatibilityLevel": "JAVA_8",
     "mixins": [
         "ThreadedAnvilChunkStorageMixin",
-        "EntityTrackerAccessor"
+        "EntityTrackerAccessor",
+        "EnchantmentContainerMixin"
     ],
     "client": [],
     "server": [],
