@@ -1,3 +1,16 @@
+0.1.28
+- Migrated buildprocess to architectury
+- Reworked config to utilize cloth as config api
+- Integrated Lollipop (owmii's utility lib) into mod itself
+- Restructured Mod internally to make use of architectury & to de-forge most of the core functionality
+- Added a fabric port
+- Fixed bug where right-clicking anywhere with a hoe / bonemeal would grant a try in discovering trinkets
+- Userdata now is saved directly into a user's NBT data; old data from forge capabilities is migrated over
+- Fixed bug where the "sticky mind" trinket prevented players from teleporting via enderpearls
+- Fixed bug where when a player had "tha ghost" equipped and "minds eye", the armor layer would not get rendered
+- Switched internally to yarn mappings
+- Rebranded everything user faceing to "Sunken Trinkets"
+
 0.1.27
 - Fixed some trinkets not working.
 
