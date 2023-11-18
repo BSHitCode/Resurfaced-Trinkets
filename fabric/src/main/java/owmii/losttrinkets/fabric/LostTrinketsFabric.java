@@ -10,8 +10,6 @@ import owmii.losttrinkets.handler.DataManager;
 
 public class LostTrinketsFabric implements ModInitializer {
 
-    // TODO: https://shedaniel.gitbook.io/cloth-config/advanced/modmenu-integration
-
     public LostTrinketsFabric() {
     }
 
