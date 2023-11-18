@@ -42,6 +42,7 @@ allprojects {
     repositories {
         maven { url "https://dvs1.progwml6.com/files/maven" } //JEI
         maven { url "https://maven.blamejared.com" } // Botania
+        maven { url "https://maven.terraformersmc.com/releases/" } // ModMenu
     }
 
     tasks.withType(JavaCompile) {

@@ -22,8 +22,8 @@
         "client": [
             "owmii.losttrinkets.fabric.client.LostTrinketsFabricClient"
         ],
-        "fabric-datagen": [
-            "owmii.losttrinkets.fabric.data.DataEvents"
+        "modmenu": [
+            "owmii.losttrinkets.fabric.modmenu.ModMenuIntegration"
         ]
     },
     "mixins": [
