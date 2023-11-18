@@ -1,4 +1,13 @@
-# Lost Trinkets
- Lost Trinkets adds more than 70+ unlockable trinkets with different abilities and rarities.
+# Sunken Trinkets
+Sunken Trinkets adds more than 70+ unlockable trinkets with different abilities and rarities.
 
-<a href="https://www.curseforge.com/minecraft/mc-mods/lost-trinkets" target="_blank"><img src="http://cf.way2muchnoise.eu/all_404038_downloads.svg" />  </a><a href="https://www.curseforge.com/minecraft/mc-mods/lost-trinkets" target="_blank"><img src="http://cf.way2muchnoise.eu/versions/404038.svg" />  </a><a href="https://discord.gg/A8TP9JY" target="_blank"><img src="https://img.shields.io/discord/461794532422582282.svg" /></a>
+[Download on modrinth!](https://modrinth.com/mod/sunken-trinkets)
+
+## License
+
+This mod is licensed under the LGPLv3. For more informations see the `LICENSE` file.
+
+## About
+This is a fork & continuation of owmii's great "Lost Trinkets" mod, which only ever got updated to 1.16.5, and only ever ran on forge. With this mod, I try to re-aweaken the mod a little bit by not only updateing it to newer minecraft versions, but also by providing a fabric version.
+
+Big thanks to owmii's great work on "Lost Trinkets"!
