@@ -2,21 +2,21 @@ package owmii.losttrinkets.item.trinkets;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.PortalInfo;
-import net.minecraft.command.impl.SpawnPointCommand;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.play.ServerPlayNetHandler;
-import net.minecraft.network.play.client.CClientStatusPacket;
-import net.minecraft.network.play.server.SChangeGameStatePacket;
+import net.minecraft.network.packet.c2s.play.ClientStatusC2SPacket;
+import net.minecraft.network.packet.s2c.play.GameStateChangeS2CPacket;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.management.PlayerList;
-import net.minecraft.tags.BlockTags;
+import net.minecraft.server.PlayerManager;
+import net.minecraft.server.command.SpawnPointCommand;
+import net.minecraft.server.network.ServerPlayNetworkHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 import owmii.losttrinkets.EnvHandler;
 import owmii.losttrinkets.api.trinket.ITickableTrinket;
 import owmii.losttrinkets.api.trinket.Rarity;
@@ -26,15 +26,15 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 public class WarmVoidTrinket extends Trinket<WarmVoidTrinket> implements ITickableTrinket {
-    public WarmVoidTrinket(Rarity rarity, Properties properties) {
+    public WarmVoidTrinket(Rarity rarity, Settings properties) {
         super(rarity, properties);
     }
 
     @Override
     public void tick(World world, BlockPos pos, PlayerEntity player) {
         // TODO 1.17: Update -64
-        if (player instanceof ServerPlayerEntity && player.getPosY() + Math.min(0, player.getMotion().getY()) <= -64) {
-            if (!player.isPassenger() && !player.isBeingRidden()) {
+        if (player instanceof ServerPlayerEntity && player.getY() + Math.min(0, player.getVelocity().getY()) <= -64) {
+            if (!player.hasVehicle() && !player.hasPassengers()) {
                 teleportToSpawnPoint((ServerPlayerEntity) player);
             }
         }
@@ -46,13 +46,13 @@ public class WarmVoidTrinket extends Trinket<WarmVoidTrinket> implements ITickab
     private static void teleportToSpawnPoint(ServerPlayerEntity player) {
         player.stopRiding();
         SpawnPointInfo info = getSpawnPointInfo(player);
-        player.setMotion(Vector3d.ZERO);
+        player.setVelocity(Vec3d.ZERO);
         player.fallDistance = 0;
         if (player.getServerWorld() != info.spawnWorld) {
             // player.changeDimension(info.spawnWorld, new WarmVoidTeleporter(info));
-            EnvHandler.INSTANCE.teleport(player, info.spawnWorld, new PortalInfo(info.spawnPos, Vector3d.ZERO, info.spawnAngle, 0));
+            EnvHandler.INSTANCE.teleport(player, info.spawnWorld, new TeleportTarget(info.spawnPos, Vec3d.ZERO, info.spawnAngle, 0));
         } else {
-            player.connection.setPlayerLocation(info.spawnPos.getX(), info.spawnPos.getY(), info.spawnPos.getZ(), info.spawnAngle, 0);
+            player.networkHandler.requestTeleport(info.spawnPos.getX(), info.spawnPos.getY(), info.spawnPos.getZ(), info.spawnAngle, 0);
 
             // TODO: find out if this is neccessary...
             // info.repositionEntity.accept(player);
@@ -60,50 +60,50 @@ public class WarmVoidTrinket extends Trinket<WarmVoidTrinket> implements ITickab
     }
 
     /**
-     * Follow code in {@link ServerPlayNetHandler#processClientStatus(CClientStatusPacket)}.
-     * Based on {@link PlayerList#func_232644_a_(ServerPlayerEntity, boolean)}.
+     * Follow code in {@link ServerPlayNetworkHandler#onClientStatus(ClientStatusC2SPacket)}.
+     * Based on {@link PlayerManager#respawnPlayer(ServerPlayerEntity, boolean)}.
      */
     private static SpawnPointInfo getSpawnPointInfo(ServerPlayerEntity player) {
         MinecraftServer server = player.getServerWorld().getServer();
-        BlockPos spawnPosRaw = player.func_241140_K_();
-        float spawnAngle = player.func_242109_L();
-        boolean spawnForced = player.func_241142_M_();
-        ServerWorld spawnWorldRaw = server.getWorld(player.func_241141_L_());
-        Optional<Vector3d> spawnPos;
+        BlockPos spawnPosRaw = player.getSpawnPointPosition();
+        float spawnAngle = player.getSpawnAngle();
+        boolean spawnForced = player.isSpawnPointSet();
+        ServerWorld spawnWorldRaw = server.getWorld(player.getSpawnPointDimension());
+        Optional<Vec3d> spawnPos;
         if (spawnWorldRaw != null && spawnPosRaw != null) {
-            spawnPos = PlayerEntity.func_242374_a(spawnWorldRaw, spawnPosRaw, spawnAngle, spawnForced, true);
+            spawnPos = PlayerEntity.findRespawnPosition(spawnWorldRaw, spawnPosRaw, spawnAngle, spawnForced, true);
         } else {
             spawnPos = Optional.empty();
         }
 
-        ServerWorld spawnWorld = spawnWorldRaw != null && spawnPos.isPresent() ? spawnWorldRaw : server.func_241755_D_();
+        ServerWorld spawnWorld = spawnWorldRaw != null && spawnPos.isPresent() ? spawnWorldRaw : server.getOverworld();
 
         Consumer<ServerPlayerEntity> repositionEntity = callbackPlayer -> {
             if (spawnPos.isPresent()) {
                 BlockState blockstate = spawnWorld.getBlockState(spawnPosRaw);
-                boolean isRespawnAnchor = blockstate.matchesBlock(Blocks.RESPAWN_ANCHOR);
-                Vector3d spawnPosResolved = spawnPos.get();
+                boolean isRespawnAnchor = blockstate.isOf(Blocks.RESPAWN_ANCHOR);
+                Vec3d spawnPosResolved = spawnPos.get();
                 float spawnAngleResolved;
                 if (!blockstate.isIn(BlockTags.BEDS) && !isRespawnAnchor) {
                     spawnAngleResolved = spawnAngle;
                 } else {
-                    Vector3d vector3d1 = Vector3d.copyCenteredHorizontally(spawnPosRaw).subtract(spawnPosResolved).normalize();
+                    Vec3d vector3d1 = Vec3d.ofBottomCenter(spawnPosRaw).subtract(spawnPosResolved).normalize();
                     spawnAngleResolved = (float) MathHelper.wrapDegrees(MathHelper.atan2(vector3d1.z, vector3d1.x) * (double) (180F / (float) Math.PI) - 90.0D);
                 }
 
-                callbackPlayer.setLocationAndAngles(spawnPosResolved.x, spawnPosResolved.y, spawnPosResolved.z, spawnAngleResolved, 0.0F);
-                callbackPlayer.func_242111_a(spawnWorld.getDimensionKey(), spawnPosRaw, spawnAngle, spawnForced, false);
+                callbackPlayer.refreshPositionAndAngles(spawnPosResolved.x, spawnPosResolved.y, spawnPosResolved.z, spawnAngleResolved, 0.0F);
+                callbackPlayer.setSpawnPoint(spawnWorld.getRegistryKey(), spawnPosRaw, spawnAngle, spawnForced, false);
             } else if (spawnPosRaw != null) {
-                callbackPlayer.connection.sendPacket(new SChangeGameStatePacket(SChangeGameStatePacket.SPAWN_NOT_VALID, 0.0F));
+                callbackPlayer.networkHandler.sendPacket(new GameStateChangeS2CPacket(GameStateChangeS2CPacket.NO_RESPAWN_BLOCK, 0.0F));
             }
 
-            while (!spawnWorld.hasNoCollisions(callbackPlayer) && callbackPlayer.getPosY() < 256.0D) {
-                callbackPlayer.setPosition(callbackPlayer.getPosX(), callbackPlayer.getPosY() + 1.0D, callbackPlayer.getPosZ());
+            while (!spawnWorld.isSpaceEmpty(callbackPlayer) && callbackPlayer.getY() < 256.0D) {
+                callbackPlayer.setPosition(callbackPlayer.getX(), callbackPlayer.getY() + 1.0D, callbackPlayer.getZ());
             }
         };
         return new SpawnPointInfo(
                 spawnWorld,
-                spawnPos.orElseGet(() -> Vector3d.copyCenteredHorizontally(spawnWorld.getSpawnPoint())),
+                spawnPos.orElseGet(() -> Vec3d.ofBottomCenter(spawnWorld.getSpawnPos())),
                 spawnAngle,
                 repositionEntity
         );
@@ -135,12 +135,12 @@ public class WarmVoidTrinket extends Trinket<WarmVoidTrinket> implements ITickab
 
     private static class SpawnPointInfo {
         public final ServerWorld spawnWorld;
-        public final Vector3d spawnPos;
+        public final Vec3d spawnPos;
         public final float spawnAngle;
         @SuppressWarnings("unused")
         public final Consumer<ServerPlayerEntity> repositionEntity;
 
-        public SpawnPointInfo(ServerWorld spawnWorld, Vector3d spawnPos, float spawnAngle, Consumer<ServerPlayerEntity> repositionEntity) {
+        public SpawnPointInfo(ServerWorld spawnWorld, Vec3d spawnPos, float spawnAngle, Consumer<ServerPlayerEntity> repositionEntity) {
             this.spawnWorld = spawnWorld;
             this.spawnPos = spawnPos;
             this.spawnAngle = spawnAngle;

@@ -1,34 +1,34 @@
 package owmii.losttrinkets.lib.client.screen;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.Identifier;
 import owmii.losttrinkets.LostTrinkets;
 
-public class Texture extends AbstractGui {
+public class Texture extends DrawableHelper {
     public static final Texture EMPTY = new Texture(
-        new ResourceLocation(LostTrinkets.MOD_ID, "textures/gui/empty.png"), 0, 0, 0, 0
+        new Identifier(LostTrinkets.MOD_ID, "textures/gui/empty.png"), 0, 0, 0, 0
     );
 
-    private final ResourceLocation location;
+    private final Identifier location;
     private final int width, height;
     private final int u, v;
     private final int tw, th;
 
-    public Texture(ResourceLocation location, int width, int height) {
+    public Texture(Identifier location, int width, int height) {
         this(location, width, height, 0, 0, width, height);
     }
 
-    public Texture(ResourceLocation location, int width, int height, int u, int v) {
+    public Texture(Identifier location, int width, int height, int u, int v) {
         this(location, width, height, u, v, 256, 256);
     }
 
-    public Texture(ResourceLocation location, int width, int height, int u, int v, int dim) {
+    public Texture(Identifier location, int width, int height, int u, int v, int dim) {
         this(location, width, height, u, v, dim, dim);
     }
 
-    public Texture(ResourceLocation location, int width, int height, int u, int v, int tw, int th) {
+    public Texture(Identifier location, int width, int height, int u, int v, int tw, int th) {
         this.location = location;
         this.width = width;
         this.height = height;
@@ -50,12 +50,12 @@ public class Texture extends AbstractGui {
     public void draw(MatrixStack matrix, int x, int y) {
         if (!isEmpty()) {
             bindTexture(getLocation());
-            blit(matrix, x, y, getU(), getV(), getWidth(), getHeight(), this.tw, this.th);
+            drawTexture(matrix, x, y, getU(), getV(), getWidth(), getHeight(), this.tw, this.th);
         }
     }
 
-    public void bindTexture(ResourceLocation guiTexture) {
-        Minecraft.getInstance().getTextureManager().bindTexture(guiTexture);
+    public void bindTexture(Identifier guiTexture) {
+        MinecraftClient.getInstance().getTextureManager().bindTexture(guiTexture);
     }
 
     public Texture addW(int width) {
@@ -98,7 +98,7 @@ public class Texture extends AbstractGui {
         return new Texture(this.location, this.width, this.height, this.u + u, this.v + v);
     }
 
-    public ResourceLocation getLocation() {
+    public Identifier getLocation() {
         return this.location;
     }
 

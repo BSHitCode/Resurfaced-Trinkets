@@ -1,16 +1,16 @@
 package owmii.losttrinkets.lib.client.screen;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.client.gui.widget.ClickableWidget;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.Text;
 
 public class ScreenBase extends Screen {
-    public final Minecraft mc = Minecraft.getInstance();
+    public final MinecraftClient mc = MinecraftClient.getInstance();
     public int x, y, w, h;
 
-    protected ScreenBase(ITextComponent title) {
+    protected ScreenBase(Text title) {
         super(title);
     }
 
@@ -24,7 +24,7 @@ public class ScreenBase extends Screen {
     @Override
     public void render(MatrixStack matrix, int mx, int my, float pt) {
         super.render(matrix, mx, my, pt);
-        for (Widget widget : this.buttons) {
+        for (ClickableWidget widget : this.buttons) {
             if (widget.isHovered()) {
                 widget.renderToolTip(matrix, mx, my);
                 return;
@@ -38,8 +38,8 @@ public class ScreenBase extends Screen {
         if (super.keyPressed(keyCode, scanCode, modifiers)) {
             return true;
         } else {
-            if (keyCode == 256 || Minecraft.getInstance().gameSettings.keyBindInventory.matchesKey(keyCode, scanCode)) {
-                closeScreen();
+            if (keyCode == 256 || MinecraftClient.getInstance().options.keyInventory.matchesKey(keyCode, scanCode)) {
+                onClose();
                 return true;
             }
         }
@@ -55,7 +55,7 @@ public class ScreenBase extends Screen {
         return mouseX >= x && mouseY >= y && mouseX < x + w && mouseY < y + h;
     }
 
-    public <T extends Widget> T addButton2(T button) {
+    public <T extends ClickableWidget> T addButton2(T button) {
         return addButton(button);
     }
 }

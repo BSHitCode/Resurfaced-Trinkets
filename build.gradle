@@ -16,8 +16,8 @@ subprojects {
 
     dependencies {
         minecraft "com.mojang:minecraft:${project.minecraft_version}"
-        mappings "de.oceanlabs.mcp:mcp_snapshot:20210309-1.16.5"
-        // mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+        // mappings "de.oceanlabs.mcp:mcp_snapshot:20210309-1.16.5"
+        mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     }
 
     architectury {

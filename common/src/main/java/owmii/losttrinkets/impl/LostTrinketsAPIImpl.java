@@ -22,12 +22,12 @@ public class LostTrinketsAPIImpl implements ILostTrinketsAPI {
 
     @Override
     public boolean unlock(PlayerEntity player, ITrinket trinket) {
-        if (!player.world.isRemote && isEnabled(trinket) && !getTrinkets(player).has(trinket)) {
-            List<ITrinket> trinketList = UNLOCK_QUEUE.get(player.getUniqueID());
+        if (!player.world.isClient && isEnabled(trinket) && !getTrinkets(player).has(trinket)) {
+            List<ITrinket> trinketList = UNLOCK_QUEUE.get(player.getUuid());
             if (trinketList != null) {
                 trinketList.add(trinket);
             } else trinketList = Lists.newArrayList(trinket);
-            UNLOCK_QUEUE.put(player.getUniqueID(), trinketList);
+            UNLOCK_QUEUE.put(player.getUuid(), trinketList);
             return true;
         }
         return false;
@@ -35,8 +35,8 @@ public class LostTrinketsAPIImpl implements ILostTrinketsAPI {
 
     @Override
     public void unlock(PlayerEntity player) {
-        if (!player.world.isRemote) {
-            WEIGHTED_UNLOCK_QUEUE.add(player.getUniqueID());
+        if (!player.world.isClient) {
+            WEIGHTED_UNLOCK_QUEUE.add(player.getUuid());
         }
     }
 

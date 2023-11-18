@@ -1,7 +1,7 @@
 package owmii.losttrinkets.api.trinket;
 
-import net.minecraft.util.text.Color;
-import net.minecraft.util.text.Style;
+import net.minecraft.text.Style;
+import net.minecraft.text.TextColor;
 
 public enum Rarity {
     COMMON(4800, 0x777777),
@@ -19,7 +19,7 @@ public enum Rarity {
     Rarity(int weight, int color) {
         this.weight = weight;
         this.color = color;
-        this.style = Style.EMPTY.setColor(Color.fromInt(this.color));
+        this.style = Style.EMPTY.withColor(TextColor.fromRgb(this.color));
     }
 
     public int getWeight() {

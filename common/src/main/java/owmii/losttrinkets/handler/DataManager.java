@@ -3,7 +3,7 @@ package owmii.losttrinkets.handler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 import owmii.losttrinkets.LostTrinkets;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.player.PlayerData;
@@ -51,7 +51,7 @@ public class DataManager {
 
     public static void loggedOut(PlayerEntity player) {
         PlayerData data = LostTrinketsAPI.getData(player);
-        data.wasFlying = player.abilities.isFlying;
+        data.wasFlying = player.abilities.flying;
     }
 
     public static void trackPlayer(Entity target, PlayerEntity player) {

@@ -9,11 +9,11 @@ import me.shedaniel.architectury.event.events.PlayerEvent;
 import me.shedaniel.architectury.event.events.TickEvent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.monster.CreeperEntity;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.DamageSource;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.ActionResult;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.player.PlayerData;
 import owmii.losttrinkets.api.trinket.Trinkets;
@@ -45,7 +45,7 @@ public class CommonEventHandler {
                 data.unlockDelay--;
             }
             Trinkets trinkets = LostTrinketsAPI.getTrinkets(player);
-            trinkets.getTickable().forEach(trinket -> trinket.tick(player.world, player.getPosition(), player));
+            trinkets.getTickable().forEach(trinket -> trinket.tick(player.world, player.getBlockPos(), player));
 
             if (player instanceof ServerPlayerEntity) {
                 UnlockHandler.tickPlayerOnServer(player);
@@ -56,70 +56,70 @@ public class CommonEventHandler {
         });
         // onLivingUpdate is handled by fabric:LivingEntityMixin.tick() forge:LivingUpdateEvent
         ExplosionEvent.PRE.register((world, explosion) -> {
-            Entity entity = explosion.exploder;
+            Entity entity = explosion.entity;
             if (entity instanceof CreeperEntity) {
                 CreeperEntity creeper = ((CreeperEntity) entity);
-                LivingEntity target = creeper.getAttackTarget();
+                LivingEntity target = creeper.getTarget();
                 if (target instanceof PlayerEntity) {
                     PlayerEntity player = (PlayerEntity) target;
                     Trinkets trinkets = LostTrinketsAPI.getTrinkets(player);
                     if (trinkets.isActive(Itms.CREEPO)) {
-                        return ActionResultType.FAIL;
+                        return ActionResult.FAIL;
                     }
                 }
             }
-            return ActionResultType.PASS;
+            return ActionResult.PASS;
         });
         EntityEvent.ADD.register((entity, world) -> {
-            AtomicReference<ActionResultType> result = new AtomicReference<>(ActionResultType.PASS);
+            AtomicReference<ActionResult> result = new AtomicReference<>(ActionResult.PASS);
             OctopickTrinket.collectDrops(entity, (cancel) -> {
-                result.set(cancel ? ActionResultType.FAIL : ActionResultType.PASS);
+                result.set(cancel ? ActionResult.FAIL : ActionResult.PASS);
             });
             BigFootTrinket.addAvoidGoal(entity);
             return result.get();
         });
         EntityEvent.LIVING_ATTACK.register((entity, source, amount) -> {
-            if (source == null) return ActionResultType.PASS;
+            if (source == null) return ActionResult.PASS;
 
-            AtomicReference<ActionResultType> result = new AtomicReference<>(ActionResultType.PASS);
+            AtomicReference<ActionResult> result = new AtomicReference<>(ActionResult.PASS);
             if (BlazeHeartTrinket.isImmuneToFire(entity, source)) {
-                result.set(ActionResultType.FAIL);;
+                result.set(ActionResult.FAIL);;
             }
             MadAuraTrinket.onAttack(entity, source, (cancel) -> {
-                result.set(cancel ? ActionResultType.FAIL : ActionResultType.PASS);
+                result.set(cancel ? ActionResult.FAIL : ActionResult.PASS);
             });
             OctopusLegTrinket.onAttack(entity, source);
             return result.get();
         });
-        // saveHealthHurt is handed by fabric:PlayerEntityMixin.damageEntity() / forge:LivingHurtEvent
-        // onHurt is handled by fabric:LivingEntityMixin.damageEntity() / fabric:PlayerEntityMixin.damageEntity() / forge:LivingHurtEvent
+        // saveHealthHurt is handed by fabric:PlayerEntityMixin.applyDamage() / forge:LivingHurtEvent
+        // onHurt is handled by fabric:LivingEntityMixin.applyDamage() / fabric:PlayerEntityMixin.applyDamage() / forge:LivingHurtEvent
         EntityEvent.LIVING_DEATH.register((entity, source) -> {
-            if (source == null) return ActionResultType.PASS;
-            AtomicReference<ActionResultType> result = new AtomicReference<>(ActionResultType.PASS);
+            if (source == null) return ActionResult.PASS;
+            AtomicReference<ActionResult> result = new AtomicReference<>(ActionResult.PASS);
             RubyHeartTrinket.onDeath(source, entity, (cancel) -> {
-                result.set(cancel ? ActionResultType.FAIL : ActionResultType.PASS);
+                result.set(cancel ? ActionResult.FAIL : ActionResult.PASS);
             });
             return result.get();
         });
         EntityEvent.LIVING_DEATH.register((entity, source) -> {
             UnlockHandler.kill(source, entity);
-            return ActionResultType.PASS;
+            return ActionResult.PASS;
         });
-        // onDrops is handled by fabric:LivingEntityMixin.spawnDrops() / forge:LivingDropsEvent
-        // onPotion is handled by fabric:LivingEntityMixin.isPotionApplicable() / forge:PotionApplicableEvent
+        // onDrops is handled by fabric:LivingEntityMixin.drop() / forge:LivingDropsEvent
+        // onPotion is handled by fabric:LivingEntityMixin.canHaveStatusEffect() / forge:PotionApplicableEvent
         // onCriticalHit is handled by fabric:PlayerEntityMixin.modifyCriticalHitFlag() / forge:CriticalHitEvent
-        // onLooting is handled by fabric:EnchantmentHelperMixin.getLootingModifier() / forge:LootingLevelEvent
-        // onUseFinish fabric:LivingEntityMixin.onItemUseFinish() / forge:LivingEntityUseItemEvent.Finish
-        // onBreakSpeed is handled by fabric:PlayerEntityMixin.getDigSpeed() / forge:PlayerEvent.BreakSpeed
+        // onLooting is handled by fabric:EnchantmentHelperMixin.getLooting() / forge:LootingLevelEvent
+        // onUseFinish fabric:LivingEntityMixin.consumeItem() / forge:LivingEntityUseItemEvent.Finish
+        // onBreakSpeed is handled by fabric:PlayerEntityMixin.getBlockBreakingSpeed() / forge:PlayerEvent.BreakSpeed
         BlockEvent.BREAK.register((world, pos, state, player, xp) -> {
-            AtomicReference<ActionResultType> result = new AtomicReference<>(ActionResultType.PASS);
+            AtomicReference<ActionResult> result = new AtomicReference<>(ActionResult.PASS);
             OctopickTrinket.onBreak(player, pos, state, (cancel) -> {
-                result.set(cancel ? ActionResultType.FAIL : ActionResultType.PASS);
+                result.set(cancel ? ActionResult.FAIL : ActionResult.PASS);
             });
             return result.get();
         });
-        // onEnderTeleport is handled by fabric:EndermanEntityMixin.teleportTo() / fabric:ShulkerEntityMixin.tryTeleportToNewPosition() / forge:EntityTeleportEvent.EnderEntity
-        // setTarget is handled by fabric:MobEntityMixin.setAttackTarget() / forge:LivingSetAttackTargetEvent
+        // onEnderTeleport is handled by fabric:EndermanEntityMixin.teleportTo() / fabric:ShulkerEntityMixin.tryTeleport() / forge:EntityTeleportEvent.EnderEntity
+        // setTarget is handled by fabric:MobEntityMixin.setTarget() / forge:LivingSetAttackTargetEvent
         PlayerEvent.PLAYER_CLONE.register((oldPlayer, newPlayer, wonGame) -> {
             DataManager.clone(oldPlayer, newPlayer, !wonGame);
         });
@@ -147,8 +147,8 @@ public class CommonEventHandler {
         SlingshotTrinket.onHurt(source, entityLiving);
         WitherNailTrinket.onHurt(source, entityLiving);
 
-        if (source.getTrueSource() instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) source.getTrueSource();
+        if (source.getAttacker() instanceof PlayerEntity) {
+            PlayerEntity player = (PlayerEntity) source.getAttacker();
             Trinkets trinkets = LostTrinketsAPI.getTrinkets(player);
             if (trinkets.isActive(Itms.SILVER_NAIL)) {
                 amount *= 1.1F;

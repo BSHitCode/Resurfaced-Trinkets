@@ -2,7 +2,7 @@ package owmii.losttrinkets.item.trinkets;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Food;
+import net.minecraft.item.FoodComponent;
 import net.minecraft.item.ItemStack;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.Rarity;
@@ -11,7 +11,7 @@ import owmii.losttrinkets.api.trinket.Trinkets;
 import owmii.losttrinkets.item.Itms;
 
 public class GoldenMelonTrinket extends Trinket<GoldenMelonTrinket> {
-    public GoldenMelonTrinket(Rarity rarity, Properties properties) {
+    public GoldenMelonTrinket(Rarity rarity, Settings properties) {
         super(rarity, properties);
     }
 
@@ -20,10 +20,10 @@ public class GoldenMelonTrinket extends Trinket<GoldenMelonTrinket> {
             PlayerEntity player = (PlayerEntity) entity;
             Trinkets trinkets = LostTrinketsAPI.getTrinkets(player);
             if (item.isFood()) {
-                Food food = item.getItem().getFood();
-                if (food != null && food.getEffects().isEmpty()) {
+                FoodComponent food = item.getItem().getFoodComponent();
+                if (food != null && food.getStatusEffects().isEmpty()) {
                     if (trinkets.isActive(Itms.GOLDEN_MELON)) {
-                        player.heal(food.getHealing());
+                        player.heal(food.getHunger());
                     }
                 }
             }

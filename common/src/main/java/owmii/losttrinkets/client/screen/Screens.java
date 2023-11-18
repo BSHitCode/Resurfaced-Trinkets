@@ -1,10 +1,10 @@
 package owmii.losttrinkets.client.screen;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.MinecraftClient;
 
 public class Screens {
     public static void checkScreenRefresh() {
-        Minecraft mc = Minecraft.getInstance();
+        MinecraftClient mc = MinecraftClient.getInstance();
         if (mc.currentScreen instanceof AbstractLTScreen) {
             ((AbstractLTScreen) mc.currentScreen).refresh();
         }

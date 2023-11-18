@@ -9,12 +9,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.util.DamageSource;
 import owmii.losttrinkets.handler.CommonEventHandler;
 import owmii.losttrinkets.handler.DataManager;
 import owmii.losttrinkets.handler.TargetHandler;
@@ -40,54 +39,54 @@ abstract class LivingEntityMixin {
         DataManager.update(entity);
     }
 
-    @Inject(method = "spawnDrops", at = @At("TAIL"))
-    public void spawnDrops(DamageSource damageSourceIn, CallbackInfo ci) {
+    @Inject(method = "drop", at = @At("TAIL"))
+    public void drop(DamageSource damageSourceIn, CallbackInfo ci) {
         Collection<ItemEntity> drops = new ArrayList<>();
         LivingEntity entity = (LivingEntity) (Object) this;
         ButchersCleaverTrinket.dropExtra(damageSourceIn, entity, drops);
         TreasureRingTrinket.onDrops(damageSourceIn, entity, drops);
         GoldenSkullTrinket.onDrops(damageSourceIn, entity, drops);
-        drops.forEach(e -> entity.world.addEntity(e));
+        drops.forEach(e -> entity.world.spawnEntity(e));
     }
 
-    @Inject(method = "isPotionApplicable", at = @At("HEAD"), cancellable = true)
-    public void isPotionApplicable(EffectInstance potionEffect, CallbackInfoReturnable<Boolean> cir) {
+    @Inject(method = "canHaveStatusEffect", at = @At("HEAD"), cancellable = true)
+    public void canHaveStatusEffect(StatusEffectInstance potionEffect, CallbackInfoReturnable<Boolean> cir) {
         Runnable denyResult = () -> {
             cir.setReturnValue(false);
             cir.cancel();
         };
         LivingEntity entity = (LivingEntity) (Object) this;
-        CoffeeBeanTrinket.onPotion(entity, potionEffect.getPotion(), denyResult);
-        MagicalHerbsTrinket.onPotion(entity, potionEffect.getPotion(), denyResult);
-        OxalisTrinket.onPotion(entity, potionEffect.getPotion(), denyResult);
-        TeaLeafTrinket.onPotion(entity, potionEffect.getPotion(), denyResult);
+        CoffeeBeanTrinket.onPotion(entity, potionEffect.getEffectType(), denyResult);
+        MagicalHerbsTrinket.onPotion(entity, potionEffect.getEffectType(), denyResult);
+        OxalisTrinket.onPotion(entity, potionEffect.getEffectType(), denyResult);
+        TeaLeafTrinket.onPotion(entity, potionEffect.getEffectType(), denyResult);
     }
 
     @Inject(
-        method = "onItemUseFinish",
+        method = "consumeItem",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/entity/LivingEntity;triggerItemUseEffects(Lnet/minecraft/item/ItemStack;I)V",
+            target = "Lnet/minecraft/entity/LivingEntity;spawnConsumptionEffects(Lnet/minecraft/item/ItemStack;I)V",
             shift = At.Shift.AFTER
         )
     )
-    public void onItemUseFinish(CallbackInfo ci) {
+    public void consumeItem(CallbackInfo ci) {
         LivingEntity entity = (LivingEntity) (Object) this;
-        ItemStack item = entity.getActiveItemStack();
+        ItemStack item = entity.getActiveItem();
         GoldenMelonTrinket.onUseFinish(entity, item);
         LunchBagTrinket.onUseFinish(entity, item);
     }
 
     @Redirect(
-        method = "damageEntity",
+        method = "applyDamage",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/entity/LivingEntity;applyArmorCalculations(Lnet/minecraft/util/DamageSource;F)F"
+            target = "Lnet/minecraft/entity/LivingEntity;applyArmorToDamage(Lnet/minecraft/entity/damage/DamageSource;F)F"
         )
     )
-    private float damageEntity(LivingEntity self, DamageSource source, float damageAmount) {
+    private float applyDamage(LivingEntity self, DamageSource source, float damageAmount) {
         damageAmount = CommonEventHandler.onHurt(source, self, damageAmount);
-        return ((ArmorCalculationInvokerMixin)self).invokeApplyArmorCalculations(source, damageAmount);
+        return ((ArmorCalculationInvokerMixin)self).invokeApplyArmorToDamage(source, damageAmount);
     }
 
 }

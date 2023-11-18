@@ -5,7 +5,7 @@ import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.util.registry.Registry;
 import owmii.losttrinkets.LostTrinkets;
@@ -15,11 +15,11 @@ import owmii.losttrinkets.handler.UnlockManager;
 public class JEI implements IModPlugin {
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        UnlockManager.getTrinkets().stream().map(ItemStack::new).forEach(stack -> registration.addIngredientInfo(stack, VanillaTypes.ITEM, Util.makeTranslationKey("info", Registry.ITEM.getKey(stack.getItem()))));
+        UnlockManager.getTrinkets().stream().map(ItemStack::new).forEach(stack -> registration.addIngredientInfo(stack, VanillaTypes.ITEM, Util.createTranslationKey("info", Registry.ITEM.getId(stack.getItem()))));
     }
 
     @Override
-    public ResourceLocation getPluginUid() {
-        return new ResourceLocation(LostTrinkets.MOD_ID, "main");
+    public Identifier getPluginUid() {
+        return new Identifier(LostTrinkets.MOD_ID, "main");
     }
 }

@@ -4,17 +4,17 @@ import com.google.common.collect.Sets;
 
 import me.shedaniel.architectury.utils.GameInstance;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.network.MessageType;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.HoverEvent;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
-import net.minecraft.util.WeightedRandom;
+import net.minecraft.util.collection.WeightedPicker;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.text.ChatType;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.util.text.event.HoverEvent;
 // import net.minecraftforge.fml.server.ServerLifecycleHooks;
 // import net.minecraftforge.registries.ForgeRegistries;
 import owmii.losttrinkets.LostTrinkets;
@@ -58,7 +58,7 @@ public class UnlockManager {
                         .map(WeightedTrinket::new)
                         .collect(Collectors.toList()));
                 if (!WEIGHTED_TRINKETS.isEmpty()) {
-                    WeightedTrinket item = WeightedRandom.getRandomItem(player.world.rand, WEIGHTED_TRINKETS);
+                    WeightedTrinket item = WeightedPicker.getRandom(player.world.random, WEIGHTED_TRINKETS);
                     unlock(player, item.trinket, checkDelay);
                 }
             }
@@ -79,12 +79,12 @@ public class UnlockManager {
                     data.unlockDelay = LostTrinkets.config().unlockCooldown;
                 }
                 if (doNotification) {
-                    Network.toClient(new TrinketUnlockedPacket(Objects.requireNonNull(Registry.ITEM.getKey(trinket.asItem())).toString()), player);
+                    Network.toClient(new TrinketUnlockedPacket(Objects.requireNonNull(Registry.ITEM.getId(trinket.asItem())).toString()), player);
                     ItemStack stack = new ItemStack(trinket);
-                    ITextComponent trinketName = stack.getDisplayName().deepCopy().modifyStyle(style -> {
-                        return style.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new HoverEvent.ItemHover(stack)));
+                    Text trinketName = stack.getName().shallowCopy().styled(style -> {
+                        return style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new HoverEvent.ItemStackContent(stack)));
                     });
-                    GameInstance.getServer().getPlayerList().func_232641_a_(new TranslationTextComponent("chat.losttrinkets.unlocked.trinket", player.getDisplayName(), trinketName).mergeStyle(TextFormatting.DARK_AQUA), ChatType.SYSTEM, Util.DUMMY_UUID);
+                    GameInstance.getServer().getPlayerManager().broadcastChatMessage(new TranslatableText("chat.losttrinkets.unlocked.trinket", player.getDisplayName(), trinketName).formatted(Formatting.DARK_AQUA), MessageType.SYSTEM, Util.NIL_UUID);
                 }
                 return true;
             }
@@ -93,7 +93,7 @@ public class UnlockManager {
     }
 
 
-    static class WeightedTrinket extends WeightedRandom.Item {
+    static class WeightedTrinket extends WeightedPicker.Entry {
         private final ITrinket trinket;
 
         public WeightedTrinket(ITrinket trinket) {
@@ -107,16 +107,16 @@ public class UnlockManager {
     }
 
     public static void refresh() {
-        Set<ResourceLocation> banned = LostTrinkets.config().blackList.stream()
-                .map(ResourceLocation::new)
+        Set<Identifier> banned = LostTrinkets.config().blackList.stream()
+                .map(Identifier::new)
                 .collect(Collectors.toCollection(Sets::newLinkedHashSet));
-        Set<ResourceLocation> nonRandom = LostTrinkets.config().nonRandom.stream()
-                .map(ResourceLocation::new)
+        Set<Identifier> nonRandom = LostTrinkets.config().nonRandom.stream()
+                .map(Identifier::new)
                 .collect(Collectors.toCollection(Sets::newLinkedHashSet));
-        Set<ResourceLocation> seen = Sets.newLinkedHashSet();
+        Set<Identifier> seen = Sets.newLinkedHashSet();
         LOGGER.info(MARKER, "Gathering Trinkets...");
         ALL_TRINKETS.forEach(trinket -> {
-            ResourceLocation rl = Registry.ITEM.getKey(trinket.asItem());
+            Identifier rl = Registry.ITEM.getId(trinket.asItem());
             seen.add(rl);
             if (banned.contains(rl)) {
                 TRINKETS.remove(trinket);

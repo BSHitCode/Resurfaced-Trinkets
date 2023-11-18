@@ -1,12 +1,12 @@
 package owmii.losttrinkets.client.screen;
 
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 // import net.minecraftforge.fml.client.gui.GuiUtils;
 import owmii.losttrinkets.LostTrinkets;
 import owmii.losttrinkets.api.LostTrinketsAPI;
@@ -25,7 +25,7 @@ public class TrinketsScreen extends AbstractLTScreen {
     private int x, y, columns = 10, rows = 4, btnDim = 28;
 
     public TrinketsScreen() {
-        super(new TranslationTextComponent("gui.losttrinkets.trinket.active"));
+        super(new TranslatableText("gui.losttrinkets.trinket.active"));
     }
 
     @Override
@@ -43,15 +43,15 @@ public class TrinketsScreen extends AbstractLTScreen {
                     if (i + 1 <= all.size()) {
                         ITrinket trinket = all.get(i);
                         addButton(new TrinketButton(this.x + j2 * this.btnDim, this.y + j1 * this.btnDim, Textures.TRINKET_ACTIVE_BG, trinket, button -> {
-                            this.mc.displayGuiScreen(new TrinketOptionScreen(trinket, this));
+                            this.mc.openScreen(new TrinketOptionScreen(trinket, this));
                         }, (button, matrix, i1, i2) -> {
                             ItemStack stack = new ItemStack(trinket);
-                            ArrayList<ITextComponent> list = Lists.newArrayList();
-                            list.add(stack.getDisplayName());
+                            ArrayList<Text> list = Lists.newArrayList();
+                            list.add(stack.getName());
                             trinket.addTrinketDescription(stack, list);
-                            list.add(new TranslationTextComponent("gui.losttrinkets.rarity." + trinket.getRarity().name().toLowerCase(Locale.ENGLISH)).mergeStyle(TextFormatting.DARK_GRAY));
+                            list.add(new TranslatableText("gui.losttrinkets.rarity." + trinket.getRarity().name().toLowerCase(Locale.ENGLISH)).formatted(Formatting.DARK_GRAY));
                             //GuiUtils.drawHoveringText(matrix, list, i1, i2, this.width, this.height, 240, this.font);
-                            this.func_243308_b(matrix, list, i1, i2);
+                            this.renderTooltip(matrix, list, i1, i2);
                         }));
                     } else {
                         boolean locked = i + 1 > trinkets.getSlots();
@@ -63,18 +63,18 @@ public class TrinketsScreen extends AbstractLTScreen {
                                 Network.toServer(new UnlockSlotPacket());
                                 setRefreshScreen(this);
                             } else {
-                                this.mc.displayGuiScreen(new AvailableTrinketsScreen(this, 0));
+                                this.mc.openScreen(new AvailableTrinketsScreen(this, 0));
                             }
                         }, this).setTooltip(tooltip -> {
                             if (locked) {
-                                tooltip.add(new TranslationTextComponent("gui.losttrinkets.trinket.slot.locked").mergeStyle(TextFormatting.DARK_PURPLE));
+                                tooltip.add(new TranslatableText("gui.losttrinkets.trinket.slot.locked").formatted(Formatting.DARK_PURPLE));
                                 if (!this.mc.player.isCreative()) {
-                                    tooltip.add(new TranslationTextComponent("gui.losttrinkets.trinket.slot.cost", cost).mergeStyle(TextFormatting.DARK_GRAY));
+                                    tooltip.add(new TranslatableText("gui.losttrinkets.trinket.slot.cost", cost).formatted(Formatting.DARK_GRAY));
                                 }
-                                tooltip.add(new StringTextComponent(""));
-                                tooltip.add(new TranslationTextComponent("gui.losttrinkets.trinket.slot.click.unlock").mergeStyle(TextFormatting.GRAY));
+                                tooltip.add(new LiteralText(""));
+                                tooltip.add(new TranslatableText("gui.losttrinkets.trinket.slot.click.unlock").formatted(Formatting.GRAY));
                             } else {
-                                tooltip.add(new TranslationTextComponent("gui.losttrinkets.trinket.slot.click.add").mergeStyle(TextFormatting.GRAY));
+                                tooltip.add(new TranslatableText("gui.losttrinkets.trinket.slot.click.add").formatted(Formatting.GRAY));
                             }
                         }));
                         if (locked) {
@@ -91,6 +91,6 @@ public class TrinketsScreen extends AbstractLTScreen {
         renderBackground(matrix);
         super.render(matrix, mx, my, pt);
         String s = getTitle().getString();
-        this.font.drawStringWithShadow(matrix, s, this.width / 2 - this.font.getStringWidth(s) / 2, this.y - 20, 0x999999);
+        this.textRenderer.drawWithShadow(matrix, s, this.width / 2 - this.textRenderer.getWidth(s) / 2, this.y - 20, 0x999999);
     }
 }

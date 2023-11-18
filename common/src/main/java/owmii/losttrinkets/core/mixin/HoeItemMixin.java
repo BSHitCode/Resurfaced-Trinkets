@@ -6,23 +6,23 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.item.HoeItem;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.util.ActionResultType;
+import net.minecraft.item.ItemUsageContext;
+import net.minecraft.util.ActionResult;
 import owmii.losttrinkets.handler.UnlockHandler;
 
 @Mixin(HoeItem.class)
 public class HoeItemMixin {
 
     @Inject(
-        method = "onItemUse",
+        method = "useOnBlock",
         at = @At(
             value = "INVOKE",
             target = 
-                "Lnet/minecraft/world/World;playSound(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/SoundEvent;Lnet/minecraft/util/SoundCategory;FF)V",
+                "Lnet/minecraft/world/World;playSound(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/sound/SoundEvent;Lnet/minecraft/sound/SoundCategory;FF)V",
             shift = At.Shift.BEFORE
         )
     )
-    private void onHoeUse(ItemUseContext context, CallbackInfoReturnable<ActionResultType> ci) {
+    private void onHoeUse(ItemUsageContext context, CallbackInfoReturnable<ActionResult> ci) {
         UnlockHandler.useHoe(context.getPlayer());
     }
 

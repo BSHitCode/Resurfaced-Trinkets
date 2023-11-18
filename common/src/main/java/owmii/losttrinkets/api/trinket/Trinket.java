@@ -1,19 +1,19 @@
 package owmii.losttrinkets.api.trinket;
 
 import com.google.common.collect.Maps;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
+import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.attribute.EntityAttributeInstance;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.lib.client.util.MC;
@@ -25,46 +25,46 @@ import java.util.Map;
 import java.util.UUID;
 
 public class Trinket<T extends Trinket<?>> extends Item implements ITrinket {
-    private final Map<Attribute, AttributeModifier> attributes = Maps.newHashMap();
+    private final Map<EntityAttribute, EntityAttributeModifier> attributes = Maps.newHashMap();
     private final Rarity rarity;
     protected boolean unlockable = true;
 
-    public Trinket(Rarity rarity, Properties properties) {
-        super(properties.maxStackSize(1));
+    public Trinket(Rarity rarity, Settings properties) {
+        super(properties.maxCount(1));
         this.rarity = rarity;
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
         if (LostTrinketsAPI.get().unlock(player, this)) {
-            ItemStack stack = player.getHeldItem(hand);
+            ItemStack stack = player.getStackInHand(hand);
             if (!player.isCreative()) {
-                stack.shrink(1);
+                stack.decrement(1);
             }
-            return ActionResult.resultConsume(stack);
+            return TypedActionResult.consume(stack);
         }
-        return super.onItemRightClick(world, player, hand);
+        return super.use(world, player, hand);
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext flag) {
         if (LostTrinketsAPI.get().isDisabled(this)) {
-            tooltip.add(new TranslationTextComponent("gui.losttrinkets.status.disabled").mergeStyle(TextFormatting.DARK_RED));
+            tooltip.add(new TranslatableText("gui.losttrinkets.status.disabled").formatted(Formatting.DARK_RED));
         } else {
             PlayerEntity player = MC.player().orElse(null);
             if (player != null && LostTrinketsAPI.getTrinkets(player).has(this)) {
-                tooltip.add(new TranslationTextComponent("gui.losttrinkets.status.owned").mergeStyle(TextFormatting.BLUE));
+                tooltip.add(new TranslatableText("gui.losttrinkets.status.owned").formatted(Formatting.BLUE));
             } else if (LostTrinketsAPI.get().isNonRandom(this)) {
-                tooltip.add(new TranslationTextComponent("gui.losttrinkets.status.non_random").mergeStyle(TextFormatting.DARK_GRAY));
+                tooltip.add(new TranslatableText("gui.losttrinkets.status.non_random").formatted(Formatting.DARK_GRAY));
             }
         }
         addTrinketDescription(stack, tooltip);
-        tooltip.add(new TranslationTextComponent("gui.losttrinkets.rarity." + getRarity().name().toLowerCase(Locale.ENGLISH)).mergeStyle(TextFormatting.DARK_GRAY));
+        tooltip.add(new TranslatableText("gui.losttrinkets.rarity." + getRarity().name().toLowerCase(Locale.ENGLISH)).formatted(Formatting.DARK_GRAY));
     }
 
     @Override
-    public ITextComponent getDisplayName(ItemStack stack) {
-        return super.getDisplayName(stack).deepCopy().mergeStyle(this.getRarity().getStyle());
+    public Text getName(ItemStack stack) {
+        return super.getName(stack).shallowCopy().fillStyle(this.getRarity().getStyle());
     }
 
     @Override
@@ -94,39 +94,39 @@ public class Trinket<T extends Trinket<?>> extends Item implements ITrinket {
     }
 
     @SuppressWarnings("unchecked")
-    public T add(Attribute attribute, String uuid, double amount) {
-        AttributeModifier attributemodifier = new AttributeModifier(UUID.fromString(uuid), "Attribute", amount, AttributeModifier.Operation.ADDITION);
+    public T add(EntityAttribute attribute, String uuid, double amount) {
+        EntityAttributeModifier attributemodifier = new EntityAttributeModifier(UUID.fromString(uuid), "Attribute", amount, EntityAttributeModifier.Operation.ADDITION);
         getAttributes().put(attribute, attributemodifier);
         return (T) this;
     }
 
     public void applyAttributes(PlayerEntity player) {
-        for (Map.Entry<Attribute, AttributeModifier> entry : getAttributes().entrySet()) {
-            ModifiableAttributeInstance attribute = player.getAttribute(entry.getKey());
+        for (Map.Entry<EntityAttribute, EntityAttributeModifier> entry : getAttributes().entrySet()) {
+            EntityAttributeInstance attribute = player.getAttributeInstance(entry.getKey());
             if (attribute != null) {
-                AttributeModifier attributeModifier = entry.getValue();
+                EntityAttributeModifier attributeModifier = entry.getValue();
                 if (!attribute.hasModifier(attributeModifier)) {
-                    attribute.applyPersistentModifier(attributeModifier);
+                    attribute.addPersistentModifier(attributeModifier);
                 }
             }
         }
     }
 
     public void removeAttributes(PlayerEntity player) {
-        for (Map.Entry<Attribute, AttributeModifier> entry : getAttributes().entrySet()) {
-            ModifiableAttributeInstance attribute = player.getAttribute(entry.getKey());
+        for (Map.Entry<EntityAttribute, EntityAttributeModifier> entry : getAttributes().entrySet()) {
+            EntityAttributeInstance attribute = player.getAttributeInstance(entry.getKey());
             if (attribute != null) {
                 attribute.removeModifier(entry.getValue());
             }
         }
     }
 
-    public Map<Attribute, AttributeModifier> getAttributes() {
+    public Map<EntityAttribute, EntityAttributeModifier> getAttributes() {
         return this.attributes;
     }
 
     @Override
-    public boolean hasEffect(ItemStack stack) {
+    public boolean hasGlint(ItemStack stack) {
         return true;
     }
 }

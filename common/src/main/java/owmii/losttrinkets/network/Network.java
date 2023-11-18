@@ -11,15 +11,15 @@ import me.shedaniel.architectury.networking.NetworkManager;
 import me.shedaniel.architectury.networking.NetworkManager.PacketContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Identifier;
 import owmii.losttrinkets.EnvHandler;
 import owmii.losttrinkets.LostTrinkets;
 import owmii.losttrinkets.network.packet.*;
 
 public final class Network {
-    private static final ResourceLocation PACKET_ID = new ResourceLocation(LostTrinkets.MOD_ID, "packet");
+    private static final Identifier PACKET_ID = new Identifier(LostTrinkets.MOD_ID, "packet");
     private static int nextId = 0;
     private static List<Constructor<? extends IPacket>> decoders = new ArrayList<>();
     private static IdentityHashMap<Class<?>, Integer> packetIds = new IdentityHashMap<>();
@@ -27,7 +27,7 @@ public final class Network {
     public static <T extends IPacket> void register(Class<T> packetClass) {
         Constructor<T> constructor = null;
         try {
-            constructor = packetClass.getConstructor(PacketBuffer.class);
+            constructor = packetClass.getConstructor(PacketByteBuf.class);
             decoders.add(constructor);
             packetIds.put(packetClass, nextId);
             nextId++;
@@ -49,7 +49,7 @@ public final class Network {
         register(MagnetoPacket.class);
     }
 
-    private static void handlePacket(PacketBuffer buf, PacketContext ctx) {
+    private static void handlePacket(PacketByteBuf buf, PacketContext ctx) {
         int packetId = buf.readVarInt();
 
         try {
@@ -62,8 +62,8 @@ public final class Network {
         }
     }
 
-    private static PacketBuffer encodePacket(IPacket packet) {
-        PacketBuffer buf = new PacketBuffer(Unpooled.buffer());
+    private static PacketByteBuf encodePacket(IPacket packet) {
+        PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
         buf.writeVarInt(packetIds.get(packet.getClass()));
         packet.encode(buf);
         return buf;

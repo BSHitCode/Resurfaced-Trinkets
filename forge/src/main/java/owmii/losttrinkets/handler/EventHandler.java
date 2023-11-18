@@ -1,7 +1,7 @@
 package owmii.losttrinkets.handler;
 
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -42,10 +42,10 @@ public class EventHandler {
     @SubscribeEvent
     public static void onPotion(PotionEvent.PotionApplicableEvent event) {
         Runnable denyResult = () -> event.setResult(net.minecraftforge.eventbus.api.Event.Result.DENY);
-        CoffeeBeanTrinket.onPotion(event.getEntityLiving(), event.getPotionEffect().getPotion(), denyResult);
-        MagicalHerbsTrinket.onPotion(event.getEntityLiving(), event.getPotionEffect().getPotion(), denyResult);
-        OxalisTrinket.onPotion(event.getEntityLiving(), event.getPotionEffect().getPotion(), denyResult);
-        TeaLeafTrinket.onPotion(event.getEntityLiving(), event.getPotionEffect().getPotion(), denyResult);
+        CoffeeBeanTrinket.onPotion(event.getEntityLiving(), event.getPotionEffect().getEffectType(), denyResult);
+        MagicalHerbsTrinket.onPotion(event.getEntityLiving(), event.getPotionEffect().getEffectType(), denyResult);
+        OxalisTrinket.onPotion(event.getEntityLiving(), event.getPotionEffect().getEffectType(), denyResult);
+        TeaLeafTrinket.onPotion(event.getEntityLiving(), event.getPotionEffect().getEffectType(), denyResult);
     }
 
     @SubscribeEvent
@@ -57,8 +57,8 @@ public class EventHandler {
     public static void onLooting(LootingLevelEvent event) {
         DamageSource source = event.getDamageSource();
         if (source == null) return;
-        if (source.getTrueSource() instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) source.getTrueSource();
+        if (source.getAttacker() instanceof PlayerEntity) {
+            PlayerEntity player = (PlayerEntity) source.getAttacker();
             Trinkets trinkets = LostTrinketsAPI.getTrinkets(player);
             int looting = event.getLootingLevel();
             if (trinkets.isActive(Itms.GOLDEN_HORSESHOE)) {

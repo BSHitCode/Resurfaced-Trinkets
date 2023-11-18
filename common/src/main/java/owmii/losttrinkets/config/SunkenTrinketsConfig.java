@@ -26,7 +26,7 @@ import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import me.shedaniel.clothconfig2.impl.builders.SubCategoryBuilder;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.text.TranslatableText;
 import owmii.losttrinkets.LostTrinkets;
 
 @Config(name = "losttrinkets")
@@ -85,8 +85,8 @@ public class SunkenTrinketsConfig implements ConfigData {
         return this.slotCost + ((currentSlosts - startSlots) * this.slotUpFactor);
     }
 
-    private static TranslationTextComponent tr(final String key) {
-        return new TranslationTextComponent("gui.losttrinkets.config." + key);
+    private static TranslatableText tr(final String key) {
+        return new TranslatableText("gui.losttrinkets.config." + key);
     }
 
     private static SubCategoryBuilder makeUnlocksSubcategory(

@@ -7,7 +7,7 @@ import owmii.losttrinkets.api.trinket.Trinket;
 import owmii.losttrinkets.item.Itms;
 
 public class MinersPickTrinket extends Trinket<MinersPickTrinket> {
-    public MinersPickTrinket(Rarity rarity, Properties properties) {
+    public MinersPickTrinket(Rarity rarity, Settings properties) {
         super(rarity, properties);
     }
 

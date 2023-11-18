@@ -8,7 +8,7 @@ import owmii.losttrinkets.api.trinket.Rarity;
 import owmii.losttrinkets.api.trinket.Trinket;
 
 public class HorseshoeTrinket extends Trinket<HorseshoeTrinket> implements ITickableTrinket {
-    public HorseshoeTrinket(Rarity rarity, Properties properties) {
+    public HorseshoeTrinket(Rarity rarity, Settings properties) {
         super(rarity, properties);
     }
 

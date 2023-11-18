@@ -4,10 +4,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 import me.shedaniel.architectury.utils.GameInstance;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 
 public class Server {
     public static Optional<ServerPlayerEntity> getPlayerByUUID(UUID uuid) {
-        return Optional.ofNullable(GameInstance.getServer().getPlayerList().getPlayerByUUID(uuid));
+        return Optional.ofNullable(GameInstance.getServer().getPlayerManager().getPlayer(uuid));
     }
 }

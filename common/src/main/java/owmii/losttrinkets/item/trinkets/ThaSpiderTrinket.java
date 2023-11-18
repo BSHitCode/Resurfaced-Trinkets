@@ -9,7 +9,7 @@ import owmii.losttrinkets.api.trinket.Trinkets;
 import owmii.losttrinkets.item.Itms;
 
 public class ThaSpiderTrinket extends Trinket<ThaSpiderTrinket> {
-    public ThaSpiderTrinket(Rarity rarity, Properties properties) {
+    public ThaSpiderTrinket(Rarity rarity, Settings properties) {
         super(rarity, properties);
     }
 
@@ -17,7 +17,7 @@ public class ThaSpiderTrinket extends Trinket<ThaSpiderTrinket> {
         if (entity instanceof PlayerEntity) {
             Trinkets trinkets = LostTrinketsAPI.getTrinkets((PlayerEntity) entity);
             if (trinkets.isActive(Itms.THA_SPIDER)) {
-                return entity.collidedHorizontally;
+                return entity.horizontalCollision;
             }
         }
         return false;

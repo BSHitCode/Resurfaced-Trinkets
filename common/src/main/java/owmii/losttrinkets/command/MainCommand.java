@@ -3,11 +3,11 @@ package owmii.losttrinkets.command;
 import com.mojang.brigadier.CommandDispatcher;
 
 import me.shedaniel.architectury.event.events.CommandRegistrationEvent;
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
-import net.minecraft.command.arguments.EntityArgument;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.command.argument.EntityArgumentType;
+import net.minecraft.server.command.CommandManager;
+import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.TranslatableText;
 import owmii.losttrinkets.LostTrinkets;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.handler.UnlockManager;
@@ -15,28 +15,28 @@ import owmii.losttrinkets.handler.UnlockManager;
 import java.util.Collection;
 
 public class MainCommand {
-    public static void register(CommandDispatcher<CommandSource> dispatcher) {
-        dispatcher.register(Commands.literal(LostTrinkets.MOD_ID)
-                .then(Commands.literal("unlock").requires(source -> {
+    public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
+        dispatcher.register(CommandManager.literal(LostTrinkets.MOD_ID)
+                .then(CommandManager.literal("unlock").requires(source -> {
                     return source.hasPermissionLevel(2);
-                }).then(Commands.argument("targets", EntityArgument.players()).then(Commands.literal("all").executes(context -> {
-                    Collection<ServerPlayerEntity> players = EntityArgument.getPlayers(context, "targets");
+                }).then(CommandManager.argument("targets", EntityArgumentType.players()).then(CommandManager.literal("all").executes(context -> {
+                    Collection<ServerPlayerEntity> players = EntityArgumentType.getPlayers(context, "targets");
                     players.forEach(player -> {
                         UnlockManager.getTrinkets().forEach(trinket -> {
                             UnlockManager.unlock(player, trinket, false, false);
                         });
                     });
-                    context.getSource().sendFeedback(new TranslationTextComponent("chat.losttrinkets.unlocked.all"), true);
+                    context.getSource().sendFeedback(new TranslatableText("chat.losttrinkets.unlocked.all"), true);
                     return players.size();
-                })).then(Commands.literal("random").executes(context -> {
-                    Collection<ServerPlayerEntity> players = EntityArgument.getPlayers(context, "targets");
+                })).then(CommandManager.literal("random").executes(context -> {
+                    Collection<ServerPlayerEntity> players = EntityArgumentType.getPlayers(context, "targets");
                     players.forEach(LostTrinketsAPI.get()::unlock);
                     return players.size();
                 }))))
-                .then(Commands.literal("clear").requires(source -> {
+                .then(CommandManager.literal("clear").requires(source -> {
                     return source.hasPermissionLevel(2);
-                }).then(Commands.argument("targets", EntityArgument.players()).executes(context -> {
-                    Collection<ServerPlayerEntity> players = EntityArgument.getPlayers(context, "targets");
+                }).then(CommandManager.argument("targets", EntityArgumentType.players()).executes(context -> {
+                    Collection<ServerPlayerEntity> players = EntityArgumentType.getPlayers(context, "targets");
                     players.forEach(player -> {
                         LostTrinketsAPI.getTrinkets(player).clear();
                     });

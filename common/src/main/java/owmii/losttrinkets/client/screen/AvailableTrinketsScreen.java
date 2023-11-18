@@ -1,13 +1,13 @@
 package owmii.losttrinkets.client.screen;
 
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.client.resource.language.I18n;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 //import net.minecraftforge.fml.client.gui.GuiUtils;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.ITrinket;
@@ -27,7 +27,7 @@ public class AvailableTrinketsScreen extends AbstractLTScreen {
     private int x, y, columns = 14, rows = 5, btnDim = 28, headID;
 
     public AvailableTrinketsScreen(@Nullable Screen prevScreen, int headID) {
-        super(new TranslationTextComponent("gui.losttrinkets.trinket.available"));
+        super(new TranslatableText("gui.losttrinkets.trinket.available"));
         this.prevScreen = prevScreen;
         this.headID = headID;
     }
@@ -52,12 +52,12 @@ public class AvailableTrinketsScreen extends AbstractLTScreen {
                             setRefreshScreen(new TrinketsScreen());
                         }, (button, matrix, i1, i2) -> {
                             ItemStack stack = new ItemStack(trinket);
-                            List<ITextComponent> list = Lists.newArrayList();
-                            list.add(stack.getDisplayName());
+                            List<Text> list = Lists.newArrayList();
+                            list.add(stack.getName());
                             trinket.addTrinketDescription(stack, list);
-                            list.add(new TranslationTextComponent("gui.losttrinkets.rarity." + trinket.getRarity().name().toLowerCase(Locale.ENGLISH)).mergeStyle(TextFormatting.DARK_GRAY));
+                            list.add(new TranslatableText("gui.losttrinkets.rarity." + trinket.getRarity().name().toLowerCase(Locale.ENGLISH)).formatted(Formatting.DARK_GRAY));
                             //GuiUtils.drawHoveringText(matrix, list, i1, i2, this.width, this.height, 240, this.font);
-                            this.func_243308_b(matrix, list, i1, i2);
+                            this.renderTooltip(matrix, list, i1, i2);
                         }));
                         cur++;
                     }
@@ -68,12 +68,12 @@ public class AvailableTrinketsScreen extends AbstractLTScreen {
             int i = this.columns * this.rows;
             if (cur == this.columns * this.rows && total > this.headID) {
                 addButton(new IconButton(60 + x1, y1, Textures.TRINKET_NEXT, button -> {
-                    this.mc.displayGuiScreen(new AvailableTrinketsScreen(this.prevScreen, this.headID + i));
+                    this.mc.openScreen(new AvailableTrinketsScreen(this.prevScreen, this.headID + i));
                 }, this));
             }
             if (this.headID > 0) {
                 addButton(new IconButton(x1, y1, Textures.TRINKET_PREV, button -> {
-                    this.mc.displayGuiScreen(new AvailableTrinketsScreen(this.prevScreen, Math.max(0, this.headID - i)));
+                    this.mc.openScreen(new AvailableTrinketsScreen(this.prevScreen, Math.max(0, this.headID - i)));
                 }, this));
             }
         }
@@ -87,19 +87,19 @@ public class AvailableTrinketsScreen extends AbstractLTScreen {
             if (all.isEmpty()) {
                 int x = this.width / 2;
                 int y = this.height / 2;
-                String name = I18n.format("gui.losttrinkets.trinket.empty");
-                this.font.drawString(matrix, name, x - this.font.getStringWidth(name) / 2, y - 5, 0x999999);
+                String name = I18n.translate("gui.losttrinkets.trinket.empty");
+                this.textRenderer.draw(matrix, name, x - this.textRenderer.getWidth(name) / 2, y - 5, 0x999999);
             }
         }
         super.render(matrix, mx, my, pt);
         String s = getTitle().getString();
-        this.font.drawStringWithShadow(matrix, s, this.width / 2 - this.font.getStringWidth(s) / 2, this.y - 20, 0x999999);
+        this.textRenderer.drawWithShadow(matrix, s, this.width / 2 - this.textRenderer.getWidth(s) / 2, this.y - 20, 0x999999);
     }
 
     @Override
-    public void closeScreen() {
+    public void onClose() {
         if (this.prevScreen instanceof TrinketsScreen) {
-            this.mc.displayGuiScreen(this.prevScreen);
+            this.mc.openScreen(this.prevScreen);
         }
     }
 }

@@ -2,9 +2,9 @@ package owmii.losttrinkets.api.trinket;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import owmii.losttrinkets.LostTrinkets;
 import owmii.losttrinkets.api.LostTrinketsAPI;
@@ -29,23 +29,23 @@ public class Trinkets {
         this.data = data;
     }
 
-    public CompoundNBT serializeNBT() {
-        CompoundNBT nbt = new CompoundNBT();
+    public NbtCompound serializeNBT() {
+        NbtCompound nbt = new NbtCompound();
         nbt.putInt("slots", this.slots);
         nbt.putBoolean("slots_set", this.slotsSet);
-        ListNBT availableTrinkets = new ListNBT();
+        NbtList availableTrinkets = new NbtList();
         this.available.forEach((trinket) -> {
-            CompoundNBT nbt1 = new CompoundNBT();
-            ResourceLocation location = Registry.ITEM.getKey(trinket.asItem());
+            NbtCompound nbt1 = new NbtCompound();
+            Identifier location = Registry.ITEM.getId(trinket.asItem());
             Objects.requireNonNull(location);
             nbt1.putString("trinket", location.toString());
             availableTrinkets.add(nbt1);
         });
         nbt.put("available_trinkets", availableTrinkets);
-        ListNBT activeTrinkets = new ListNBT();
+        NbtList activeTrinkets = new NbtList();
         this.active.forEach((trinket) -> {
-            CompoundNBT nbt1 = new CompoundNBT();
-            ResourceLocation location = Registry.ITEM.getKey(trinket.asItem());
+            NbtCompound nbt1 = new NbtCompound();
+            Identifier location = Registry.ITEM.getId(trinket.asItem());
             Objects.requireNonNull(location);
             nbt1.putString("trinket", location.toString());
             activeTrinkets.add(nbt1);
@@ -54,26 +54,26 @@ public class Trinkets {
         return nbt;
     }
 
-    public void deserializeNBT(CompoundNBT nbt) {
+    public void deserializeNBT(NbtCompound nbt) {
         this.slots = nbt.getInt("slots");
         this.slotsSet = nbt.getBoolean("slots_set");
-        ListNBT availableTrinkets = nbt.getList("available_trinkets", (byte)10);
+        NbtList availableTrinkets = nbt.getList("available_trinkets", (byte)10);
         this.available.clear();
         for (int i = 0; i < availableTrinkets.size(); i++) {
-            CompoundNBT nbt1 = availableTrinkets.getCompound(i);
-            Item trinket = Registry.ITEM.getOrDefault(new ResourceLocation(nbt1.getString("trinket")));
+            NbtCompound nbt1 = availableTrinkets.getCompound(i);
+            Item trinket = Registry.ITEM.get(new Identifier(nbt1.getString("trinket")));
             if (trinket instanceof ITrinket) {
                 this.available.add((ITrinket) trinket);
             }
         }
 
-        ListNBT activeTrinkets = nbt.getList("active_trinkets", (byte)10);
+        NbtList activeTrinkets = nbt.getList("active_trinkets", (byte)10);
         this.active.clear();
         this.tickable.clear();
         this.targeting.clear();
         for (int i = 0; i < activeTrinkets.size(); i++) {
-            CompoundNBT nbt1 = activeTrinkets.getCompound(i);
-            Item item = Registry.ITEM.getOrDefault(new ResourceLocation(nbt1.getString("trinket")));
+            NbtCompound nbt1 = activeTrinkets.getCompound(i);
+            Item item = Registry.ITEM.get(new Identifier(nbt1.getString("trinket")));
             if (item instanceof ITrinket) {
                 ITrinket trinket = (ITrinket) item;
                 if (this.active.size() < this.slots) {
@@ -155,7 +155,7 @@ public class Trinkets {
             if (trinket instanceof Trinket) {
                 ((Trinket<?>) trinket).removeAttributes(player);
             }
-            trinket.onDeactivated(player.world, player.getPosition(), player);
+            trinket.onDeactivated(player.world, player.getBlockPos(), player);
             this.data.setSync(true);
             return true;
         }
@@ -174,7 +174,7 @@ public class Trinkets {
             if (trinket instanceof Trinket) {
                 ((Trinket<?>) trinket).applyAttributes(player);
             }
-            trinket.onActivated(player.world, player.getPosition(), player);
+            trinket.onActivated(player.world, player.getBlockPos(), player);
             this.data.setSync(true);
             return true;
         }

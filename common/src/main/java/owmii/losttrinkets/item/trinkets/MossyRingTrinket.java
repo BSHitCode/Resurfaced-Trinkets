@@ -10,16 +10,16 @@ import owmii.losttrinkets.api.trinket.Rarity;
 import owmii.losttrinkets.api.trinket.Trinket;
 
 public class MossyRingTrinket extends Trinket<MossyRingTrinket> implements ITickableTrinket {
-    public MossyRingTrinket(Rarity rarity, Properties properties) {
+    public MossyRingTrinket(Rarity rarity, Settings properties) {
         super(rarity, properties);
     }
 
     @Override
     public void tick(World world, BlockPos pos, PlayerEntity player) {
         // Don't repair item if player is currently swinging (workaround for MinecraftForge#7606 and MC-176559)
-        if (world.getGameTime() % 40 == 0 && !player.isSwingInProgress) {
+        if (world.getTime() % 40 == 0 && !player.handSwinging) {
             for (Hand hand : Hand.values()) {
-                ItemStack stack = player.getHeldItem(hand);
+                ItemStack stack = player.getStackInHand(hand);
                 if (!stack.isEmpty() && stack.isDamaged()) {
                     stack.setDamage(stack.getDamage() - 1);
                     break;

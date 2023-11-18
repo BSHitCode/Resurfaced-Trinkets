@@ -16,11 +16,11 @@ abstract class EntityMixin {
     // While this is only used in LivingRenderer, and even annotated to be Client-only,
     // we still apply this to both sides, so Mods wo rely on it get the proper value too.
     @Inject(
-        method = "isInvisibleToPlayer",
+        method = "isInvisibleTo",
         at = @At("HEAD"),
         cancellable = true
     )
-    private void isInvisibleToPlayer(PlayerEntity player, CallbackInfoReturnable<Boolean> cir) {
+    private void isInvisibleTo(PlayerEntity player, CallbackInfoReturnable<Boolean> cir) {
         if (LostTrinketsAPI.getTrinkets(player).isActive(Itms.MINDS_EYE)) {
             cir.setReturnValue(false);
         }

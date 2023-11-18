@@ -1,6 +1,6 @@
 package owmii.losttrinkets.lib.client.util;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 
@@ -16,7 +16,7 @@ public class MC {
         return Optional.ofNullable(get().world);
     }
 
-    public static Minecraft get() {
-        return Minecraft.getInstance();
+    public static MinecraftClient get() {
+        return MinecraftClient.getInstance();
     }
 }

@@ -1,11 +1,11 @@
 package owmii.losttrinkets.item.trinkets;
 
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffectType;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.EffectType;
-import net.minecraft.potion.Effects;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import owmii.losttrinkets.api.LostTrinketsAPI;
@@ -17,16 +17,16 @@ import owmii.losttrinkets.item.Itms;
 import java.util.Iterator;
 
 public class MagicalHerbsTrinket extends Trinket<MagicalHerbsTrinket> {
-    public MagicalHerbsTrinket(Rarity rarity, Properties properties) {
+    public MagicalHerbsTrinket(Rarity rarity, Settings properties) {
         super(rarity, properties);
     }
 
-    public static void onPotion(LivingEntity entity, Effect effect, Runnable denyResult) {
+    public static void onPotion(LivingEntity entity, StatusEffect effect, Runnable denyResult) {
         if (entity instanceof PlayerEntity) {
             Trinkets trinkets = LostTrinketsAPI.getTrinkets((PlayerEntity) entity);
             if (trinkets.isActive(Itms.MAGICAL_HERBS)) {
-                if (effect.getEffectType().equals(EffectType.HARMFUL) ||
-                        effect.equals(Effects.BAD_OMEN)) {
+                if (effect.getType().equals(StatusEffectType.HARMFUL) ||
+                        effect.equals(StatusEffects.BAD_OMEN)) {
                     denyResult.run();
                 }
             }
@@ -35,13 +35,13 @@ public class MagicalHerbsTrinket extends Trinket<MagicalHerbsTrinket> {
 
     @Override
     public void onActivated(World world, BlockPos pos, PlayerEntity player) {
-        if (world.isRemote) return;
-        Iterator<EffectInstance> iterator = player.getActivePotionMap().values().iterator();
+        if (world.isClient) return;
+        Iterator<StatusEffectInstance> iterator = player.getActiveStatusEffects().values().iterator();
         while (iterator.hasNext()) {
-            EffectInstance effect = iterator.next();
-            if (effect.getPotion().getEffectType().equals(EffectType.HARMFUL) ||
-                    effect.getPotion().equals(Effects.BAD_OMEN)) {
-                player.onFinishedPotionEffect(effect);
+            StatusEffectInstance effect = iterator.next();
+            if (effect.getEffectType().getType().equals(StatusEffectType.HARMFUL) ||
+                    effect.getEffectType().equals(StatusEffects.BAD_OMEN)) {
+                player.onStatusEffectRemoved(effect);
                 iterator.remove();
             }
         }

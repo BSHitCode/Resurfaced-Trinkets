@@ -7,19 +7,19 @@ import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.PortalInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.tags.ITag;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.tag.Tag;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.TeleportTarget;
+import net.minecraft.world.WorldAccess;
 import owmii.losttrinkets.EnvHandler;
 
 public class FabricEnvHandler implements EnvHandler {
-    static final ITag.INamedTag<Block> ORES = TagHooks.getBlockOptional(new ResourceLocation("c", "ores"));
+    static final Tag.Identified<Block> ORES = TagHooks.getBlockOptional(new Identifier("c", "ores"));
 
     @Override
     public boolean magnetCanCollect(Entity entity, boolean automated) {
@@ -33,7 +33,7 @@ public class FabricEnvHandler implements EnvHandler {
     }
 
     @Override
-    public boolean canHarvestBlock(BlockState state, PlayerEntity player, IWorld world, BlockPos pos) {
+    public boolean canHarvestBlock(BlockState state, PlayerEntity player, WorldAccess world, BlockPos pos) {
         // TODO: figure this out
         return true;
     }
@@ -45,7 +45,7 @@ public class FabricEnvHandler implements EnvHandler {
     }
 
     @Override
-    public void teleport(PlayerEntity player, ServerWorld world, PortalInfo target) {
+    public void teleport(PlayerEntity player, ServerWorld world, TeleportTarget target) {
         FabricDimensions.teleport(player, world, target);
     }
 }

@@ -2,12 +2,12 @@ package owmii.losttrinkets.client.handler;
 
 import me.shedaniel.architectury.event.events.client.ClientRawInputEvent;
 import me.shedaniel.architectury.registry.KeyBindings;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.util.ActionResultType;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.util.ActionResult;
 import owmii.losttrinkets.client.screen.TrinketsScreen;
 import owmii.losttrinkets.item.trinkets.MagnetoTrinket;
 
-import static net.minecraft.client.util.InputMappings.Type.KEYSYM;
+import static net.minecraft.client.util.InputUtil.Type.KEYSYM;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
 
 public class KeyHandler {
@@ -19,13 +19,13 @@ public class KeyHandler {
         KeyBindings.registerKeyBinding(TRINKET_GUI);
         KeyBindings.registerKeyBinding(MAGNETO);
         ClientRawInputEvent.KEY_PRESSED.register((client, keyCode, scanCode, action, modifiers) -> {
-            if (TRINKET_GUI.isPressed()) {
-                client.displayGuiScreen(new TrinketsScreen());
+            if (TRINKET_GUI.wasPressed()) {
+                client.openScreen(new TrinketsScreen());
             }
-            if (MAGNETO.isPressed()) {
+            if (MAGNETO.wasPressed()) {
                 MagnetoTrinket.trySendCollect(client.player);
             }
-            return ActionResultType.PASS;
+            return ActionResult.PASS;
         });
     }
 }

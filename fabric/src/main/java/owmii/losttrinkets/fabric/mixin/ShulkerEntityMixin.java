@@ -7,16 +7,16 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.monster.ShulkerEntity;
+import net.minecraft.entity.mob.ShulkerEntity;
 import owmii.losttrinkets.item.trinkets.StickyMindTrinket;
 
 @Debug(export = true)
 @Mixin(ShulkerEntity.class)
 abstract class ShulkerEntityMixin {
-    @Inject(method = "tryTeleportToNewPosition", at = @At("HEAD"), cancellable = true)
-    protected void tryTeleportToNewPosition(CallbackInfoReturnable<Boolean> cir) {
+    @Inject(method = "tryTeleport", at = @At("HEAD"), cancellable = true)
+    protected void tryTeleport(CallbackInfoReturnable<Boolean> cir) {
         ShulkerEntity shulker = (ShulkerEntity) (Object) this;
-        if (!shulker.isAIDisabled() && shulker.isAlive()) {
+        if (!shulker.isAiDisabled() && shulker.isAlive()) {
             StickyMindTrinket.onEnderTeleport((LivingEntity) (Object) this, (cancel) -> {
                 if (cancel) {
                     cir.setReturnValue(false);

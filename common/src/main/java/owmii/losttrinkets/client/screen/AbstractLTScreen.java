@@ -1,24 +1,24 @@
 package owmii.losttrinkets.client.screen;
 
-import net.minecraft.util.text.ITextComponent;
 import owmii.losttrinkets.client.handler.KeyHandler;
 import owmii.losttrinkets.lib.client.screen.ScreenBase;
 
 import javax.annotation.Nullable;
+import net.minecraft.text.Text;
 
 public class AbstractLTScreen extends ScreenBase {
     private boolean refresh;
     @Nullable
     private AbstractLTScreen toRefresh;
 
-    protected AbstractLTScreen(ITextComponent title) {
+    protected AbstractLTScreen(Text title) {
         super(title);
     }
 
     @Override
     public void tick() {
         if (this.refresh && this.toRefresh != null) {
-            this.mc.displayGuiScreen(this.toRefresh);
+            this.mc.openScreen(this.toRefresh);
             this.refresh = false;
             this.toRefresh = null;
         }
@@ -39,7 +39,7 @@ public class AbstractLTScreen extends ScreenBase {
         } else {
             if (KeyHandler.TRINKET_GUI.matchesKey(p_231046_1_, p_231046_2_)) {
                 if (this.mc.player != null) {
-                    closeScreen();
+                    onClose();
                 }
                 return true;
             }

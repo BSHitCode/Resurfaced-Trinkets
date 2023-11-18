@@ -1,6 +1,6 @@
 package owmii.losttrinkets.client.screen;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Identifier;
 import owmii.losttrinkets.LostTrinkets;
 import owmii.losttrinkets.lib.client.screen.Texture;
 
@@ -14,6 +14,6 @@ public class Textures {
     public static final Texture TRINKET_NEXT = register("trinket", 26, 15, 26, 26);
 
     static Texture register(String path, int width, int height, int u, int v) {
-        return new Texture(new ResourceLocation(LostTrinkets.MOD_ID, "textures/gui/" + path + ".png"), width, height, u, v);
+        return new Texture(new Identifier(LostTrinkets.MOD_ID, "textures/gui/" + path + ".png"), width, height, u, v);
     }
 }

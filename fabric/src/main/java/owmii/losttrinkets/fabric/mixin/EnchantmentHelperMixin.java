@@ -15,8 +15,8 @@ import owmii.losttrinkets.item.Itms;
 @Mixin(EnchantmentHelper.class)
 abstract class EnchantmentHelperMixin {
 
-    @Inject(method = "getLootingModifier", at = @At("RETURN"), cancellable = true)
-    private static void getLootingModifier(LivingEntity entityIn, CallbackInfoReturnable<Integer> cir) {
+    @Inject(method = "getLooting", at = @At("RETURN"), cancellable = true)
+    private static void getLooting(LivingEntity entityIn, CallbackInfoReturnable<Integer> cir) {
         if (entityIn instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) entityIn;
             Trinkets trinkets = LostTrinketsAPI.getTrinkets(player);

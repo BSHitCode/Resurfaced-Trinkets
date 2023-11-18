@@ -9,23 +9,23 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.world.server.ChunkManager;
-import owmii.losttrinkets.forge.ChunkManagerTrackingExtension;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ThreadedAnvilChunkStorage;
+import owmii.losttrinkets.forge.ThreadedAnvilChunkStorageTrackingExtension;
 
-@Mixin(ChunkManager.class)
-abstract class ChunkManagerMixin implements ChunkManagerTrackingExtension {
+@Mixin(ThreadedAnvilChunkStorage.class)
+abstract class ThreadedAnvilChunkStorageMixin implements ThreadedAnvilChunkStorageTrackingExtension {
 	@Shadow
 	@Final
 	// We can abuse type erasure here and just get the type in the map as the accessor.
 	// This allows us to avoid an access widener for the package-private `EntityTracker` subclass.
-	private Int2ObjectMap<EntityTrackerAccessor> entities;
+	private Int2ObjectMap<EntityTrackerAccessor> entityTrackers;
 
 	public Collection<ServerPlayerEntity> forge_getTrackingPlayers(Entity entity) {
-		EntityTrackerAccessor accessor = this.entities.get(entity.getEntityId());
+		EntityTrackerAccessor accessor = this.entityTrackers.get(entity.getEntityId());
 
 		if (accessor != null) {
-			return accessor.getTrackingPlayers();
+			return accessor.getPlayersTracking();
 		}
 
 		return Collections.emptySet();

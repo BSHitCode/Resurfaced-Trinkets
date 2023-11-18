@@ -1,9 +1,9 @@
 package owmii.losttrinkets.item.trinkets;
 
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.Effects;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import owmii.losttrinkets.api.LostTrinketsAPI;
@@ -13,15 +13,15 @@ import owmii.losttrinkets.api.trinket.Trinkets;
 import owmii.losttrinkets.item.Itms;
 
 public class TeaLeafTrinket extends Trinket<TeaLeafTrinket> {
-    public TeaLeafTrinket(Rarity rarity, Properties properties) {
+    public TeaLeafTrinket(Rarity rarity, Settings properties) {
         super(rarity, properties);
     }
 
-    public static void onPotion(LivingEntity entity, Effect effect, Runnable denyResult) {
+    public static void onPotion(LivingEntity entity, StatusEffect effect, Runnable denyResult) {
         if (entity instanceof PlayerEntity) {
             Trinkets trinkets = LostTrinketsAPI.getTrinkets((PlayerEntity) entity);
             if (trinkets.isActive(Itms.TEA_LEAF)) {
-                if (effect.equals(Effects.WITHER) || effect.equals(Effects.POISON)) {
+                if (effect.equals(StatusEffects.WITHER) || effect.equals(StatusEffects.POISON)) {
                     denyResult.run();
                 }
             }
@@ -30,8 +30,8 @@ public class TeaLeafTrinket extends Trinket<TeaLeafTrinket> {
 
     @Override
     public void onActivated(World world, BlockPos pos, PlayerEntity player) {
-        if (world.isRemote) return;
-        player.removePotionEffect(Effects.POISON);
-        player.removePotionEffect(Effects.WITHER);
+        if (world.isClient) return;
+        player.removeStatusEffect(StatusEffects.POISON);
+        player.removeStatusEffect(StatusEffects.WITHER);
     }
 }

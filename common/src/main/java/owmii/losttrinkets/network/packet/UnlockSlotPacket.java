@@ -1,7 +1,7 @@
 package owmii.losttrinkets.network.packet;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.PacketByteBuf;
 import owmii.losttrinkets.LostTrinkets;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.Trinkets;
@@ -10,10 +10,10 @@ import owmii.losttrinkets.network.IPacket;
 public class UnlockSlotPacket implements IPacket {
     public UnlockSlotPacket() {}
 
-    public UnlockSlotPacket(PacketBuffer buffer) {}
+    public UnlockSlotPacket(PacketByteBuf buffer) {}
 
     @Override
-    public void encode(PacketBuffer buffer) {
+    public void encode(PacketByteBuf buffer) {
     }
 
     @Override
@@ -26,7 +26,7 @@ public class UnlockSlotPacket implements IPacket {
                     trinkets.unlockSlot();
                 } else if (player.experienceLevel >= cost) {
                     if (trinkets.unlockSlot()) {
-                        player.addExperienceLevel(-cost);
+                        player.addExperienceLevels(-cost);
                     }
                 }
             }

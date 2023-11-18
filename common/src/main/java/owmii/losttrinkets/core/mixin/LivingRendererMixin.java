@@ -3,16 +3,15 @@ package owmii.losttrinkets.core.mixin;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.LivingRenderer;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.potion.Effects;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.item.Itms;
 
-@Mixin(LivingRenderer.class)
+@Mixin(LivingEntityRenderer.class)
 abstract class LivingRendererMixin {
 
     @Redirect(
@@ -29,10 +28,10 @@ abstract class LivingRendererMixin {
         // How it works:
         // we check if the entity to be rendered is a player; if so, we check if
         // they have the invisibility potion active, the THA_GHOST trinket equipped
-        // and check isInvisibleToPlayer(<current client's player>); if all is true,
+        // and check isInvisibleTo(<current client's player>); if all is true,
         // we do not render the layers.
         //
-        // We insert the check to isInvisibleToPlayer() to also check if the current
+        // We insert the check to isInvisibleTo() to also check if the current
         // player of the client has the MINDS_EYE trinket equiped, which negates THA_GHOST.
 
         // TODO: improve visuals by modifing all layers for players to render translucent instead
@@ -51,9 +50,9 @@ abstract class LivingRendererMixin {
         if (living instanceof PlayerEntity) {
             PlayerEntity playerEntity = (PlayerEntity) living;
             if (
-                playerEntity.isPotionActive(Effects.INVISIBILITY)
+                playerEntity.hasStatusEffect(StatusEffects.INVISIBILITY)
                 && LostTrinketsAPI.getTrinkets(playerEntity).isActive(Itms.THA_GHOST)
-                && playerEntity.isInvisibleToPlayer(Minecraft.getInstance().player)
+                && playerEntity.isInvisibleTo(MinecraftClient.getInstance().player)
             ) {
                 return true;
             }

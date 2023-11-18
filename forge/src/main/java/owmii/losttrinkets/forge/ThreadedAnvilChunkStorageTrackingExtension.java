@@ -3,8 +3,8 @@ package owmii.losttrinkets.forge;
 import java.util.Collection;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 
-public interface ChunkManagerTrackingExtension {
+public interface ThreadedAnvilChunkStorageTrackingExtension {
     Collection<ServerPlayerEntity> forge_getTrackingPlayers(Entity entity);
 }

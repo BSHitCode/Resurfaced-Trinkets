@@ -1,6 +1,6 @@
 package owmii.losttrinkets.api.trinket;
 
-import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 
 public interface ITargetingTrinket extends ITrinket {

@@ -12,8 +12,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.DamageSource;
 import owmii.losttrinkets.handler.CommonEventHandler;
 import owmii.losttrinkets.item.trinkets.CreepoTrinket;
 import owmii.losttrinkets.item.trinkets.MinersPickTrinket;
@@ -25,12 +25,12 @@ abstract class PlayerEntityMixin {
     @Unique
     private Entity attackTargetEntity;
 
-    @Inject(method = "attackTargetEntityWithCurrentItem", at = @At("HEAD"))
+    @Inject(method = "attack", at = @At("HEAD"))
     public void captureAttackTargetEntity(Entity targetEntity, CallbackInfo ci) {
         this.attackTargetEntity = targetEntity;
     }
 
-    @Inject(method = "attackTargetEntityWithCurrentItem", at = @At("RETURN"))
+    @Inject(method = "attack", at = @At("RETURN"))
     public void resetAttackTargetEntity(CallbackInfo ci) {
         this.attackTargetEntity = null;
     }
@@ -43,7 +43,7 @@ abstract class PlayerEntityMixin {
      * second store happens.
      */
     @ModifyVariable(
-        method = "attackTargetEntityWithCurrentItem",
+        method = "attack",
         at = @At(value = "STORE", ordinal = 1),
         index = 8
     )
@@ -52,23 +52,23 @@ abstract class PlayerEntityMixin {
         return original;
     }
 
-    @Inject(method = "getDigSpeed", at = @At("RETURN"), cancellable = true)
-    public void getDigSpeed(BlockState state, CallbackInfoReturnable<Float> cir) {
+    @Inject(method = "getBlockBreakingSpeed", at = @At("RETURN"), cancellable = true)
+    public void getBlockBreakingSpeed(BlockState state, CallbackInfoReturnable<Float> cir) {
         cir.setReturnValue(MinersPickTrinket.onBreakSpeed((PlayerEntity) (Object) this, cir.getReturnValue()));
     }
 
     @Redirect(
-        method = "damageEntity",
+        method = "applyDamage",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/entity/player/PlayerEntity;applyArmorCalculations(Lnet/minecraft/util/DamageSource;F)F"
+            target = "Lnet/minecraft/entity/player/PlayerEntity;applyArmorToDamage(Lnet/minecraft/entity/damage/DamageSource;F)F"
         )
     )
-    public float damageEntity(PlayerEntity self, DamageSource source, float damageAmount) {
+    public float applyDamage(PlayerEntity self, DamageSource source, float damageAmount) {
         RubyHeartTrinket.saveHealthHurt(self);
 
         damageAmount = CommonEventHandler.onHurt(source, self, damageAmount);
-        return ((ArmorCalculationInvokerMixin)self).invokeApplyArmorCalculations(source, damageAmount);
+        return ((ArmorCalculationInvokerMixin)self).invokeApplyArmorToDamage(source, damageAmount);
     }
 
 }

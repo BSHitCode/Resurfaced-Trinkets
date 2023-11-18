@@ -4,8 +4,8 @@ import java.util.Optional;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import owmii.losttrinkets.api.trinket.ITrinket;
 import owmii.losttrinkets.client.Sounds;
@@ -25,19 +25,19 @@ public class TrinketUnlockedPacket implements IPacket {
         this("");
     }
 
-    public TrinketUnlockedPacket(PacketBuffer buffer) {
+    public TrinketUnlockedPacket(PacketByteBuf buffer) {
         this(buffer.readString(32767));
     }
 
     @Override
-    public void encode(PacketBuffer buffer) {
+    public void encode(PacketByteBuf buffer) {
         buffer.writeString(this.key);
     }
 
     @Override
     public void handle(PlayerEntity _sender) {
         MC.player().ifPresent(player -> {
-            Optional<Item> optItem = Registry.ITEM.getOptional(new ResourceLocation(this.key));
+            Optional<Item> optItem = Registry.ITEM.getOrEmpty(new Identifier(this.key));
             if (!optItem.isPresent()) {
                 return;
             }

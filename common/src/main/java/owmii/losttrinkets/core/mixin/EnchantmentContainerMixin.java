@@ -2,8 +2,10 @@ package owmii.losttrinkets.core.mixin;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.EnchantmentContainer;
-import net.minecraft.util.IWorldPosCallable;
+import net.minecraft.screen.EnchantmentScreenHandler;
+import net.minecraft.screen.ScreenHandlerContext;
+
+import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -15,21 +17,22 @@ import owmii.losttrinkets.item.Itms;
 
 import javax.annotation.Nullable;
 
-@Mixin(EnchantmentContainer.class)
+@Debug(export = true)
+@Mixin(EnchantmentScreenHandler.class)
 public class EnchantmentContainerMixin {
     @Nullable
     private PlayerEntity player;
 
-    @Inject(method = "<init>(ILnet/minecraft/entity/player/PlayerInventory;Lnet/minecraft/util/IWorldPosCallable;)V", at = @At("RETURN"))
-    private void enchantmentContainer(int id, PlayerInventory playerInventory, IWorldPosCallable worldPosCallable, CallbackInfo ci) {
+    @Inject(method = "<init>(ILnet/minecraft/entity/player/PlayerInventory;Lnet/minecraft/screen/ScreenHandlerContext;)V", at = @At("RETURN"))
+    private void enchantmentContainer(int id, PlayerInventory playerInventory, ScreenHandlerContext worldPosCallable, CallbackInfo ci) {
         this.player = playerInventory.player;
     }
 
     @ModifyArg(
-        method = "func_217002_a", // func_217002_a is a lambda in onCraftMatrixChanged
+        method = "method_17411", // lambda in onContentChanged
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/enchantment/EnchantmentHelper;calcItemStackEnchantability(Ljava/util/Random;IILnet/minecraft/item/ItemStack;)I"
+            target = "Lnet/minecraft/enchantment/EnchantmentHelper;calculateRequiredExperienceLevel(Ljava/util/Random;IILnet/minecraft/item/ItemStack;)I"
         ),
         index = 2,
         remap = false

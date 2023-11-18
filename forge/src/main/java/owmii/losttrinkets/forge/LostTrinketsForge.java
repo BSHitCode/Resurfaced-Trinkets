@@ -54,6 +54,6 @@ public class LostTrinketsForge {
     }
 
     public static void addEntityAttributes(EntityAttributeCreationEvent event) {
-        event.put(Entities.DARK_VEX.get(), DarkVexEntity.getAttribute().create());
+        event.put(Entities.DARK_VEX.get(), DarkVexEntity.getAttribute().build());
     }
 }

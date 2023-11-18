@@ -6,8 +6,7 @@ import java.util.function.Supplier;
 import java.util.function.BiFunction;
 
 import me.shedaniel.architectury.registry.DeferredRegister;
-
-import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.Item;
 import net.minecraft.util.registry.Registry;
 
@@ -23,19 +22,19 @@ public class Itms {
         ITEMS.register();
     }
 
-    private static Item.Properties properties() {
-        return new Item.Properties().group(ItemGroups.MAIN);
+    private static Item.Settings properties() {
+        return new Item.Settings().group(ItemGroups.MAIN);
     }
 
-    private static <I extends Item> Supplier<I> register(String name, Function<Item.Properties, I> func) {
+    private static <I extends Item> Supplier<I> register(String name, Function<Item.Settings, I> func) {
         return ITEMS.register(name, () -> func.apply(properties()));
     }
 
-    private static <I extends Item> Supplier<I> register(String name, BiFunction<Rarity, Item.Properties, I> func, Rarity rarity) {
+    private static <I extends Item> Supplier<I> register(String name, BiFunction<Rarity, Item.Settings, I> func, Rarity rarity) {
         return ITEMS.register(name, () -> func.apply(rarity, properties()));
     }
 
-    private static <I extends Item> Supplier<I> register(String name, BiFunction<Rarity, Item.Properties, I> func, Rarity rarity, Consumer<I> consumer) {
+    private static <I extends Item> Supplier<I> register(String name, BiFunction<Rarity, Item.Settings, I> func, Rarity rarity, Consumer<I> consumer) {
         return ITEMS.register(name, () -> {
             I res = func.apply(rarity, properties());
             consumer.accept(res);
@@ -79,7 +78,7 @@ public class Itms {
     public static final Supplier<GoldenSwatterTrinket> GOLDEN_SWATTER = register("golden_swatter", GoldenSwatterTrinket::new, Rarity.MASTER);
     public static final Supplier<StickyMindTrinket> STICKY_MIND = register("sticky_mind", StickyMindTrinket::new, Rarity.MASTER);
     public static final Supplier<FireMindTrinket> FIRE_MIND = register("fire_mind", FireMindTrinket::new, Rarity.MASTER);
-    public static final Supplier<Trinket<?>> THA_GOLEM = register("tha_golem", Trinket::new, Rarity.MASTER, (trinket) -> trinket.add(Attributes.KNOCKBACK_RESISTANCE, "afb13d18-56f2-4e1f-8281-8cc7e3005eef", 1.0D));
+    public static final Supplier<Trinket<?>> THA_GOLEM = register("tha_golem", Trinket::new, Rarity.MASTER, (trinket) -> trinket.add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, "afb13d18-56f2-4e1f-8281-8cc7e3005eef", 1.0D));
     public static final Supplier<DragonBreathTrinket> DRAGON_BREATH = register("dragon_breath", DragonBreathTrinket::new, Rarity.MASTER);
 
     public static final Supplier<Trinket<?>> KARMA = register("karma", Trinket::new, Rarity.ELITE);
@@ -103,15 +102,15 @@ public class Itms {
     public static final Supplier<Trinket<?>> SILVER_NAIL = register("silver_nail", Trinket::new, Rarity.EPIC);
     public static final Supplier<Trinket<?>> GLORY_SHARDS = register("glory_shards", Trinket::new, Rarity.EPIC);
 
-    public static final Supplier<Trinket<?>> ASH_GLOVES = register("ash_gloves", Trinket::new, Rarity.LEGENDARY, (trinket) -> trinket.add(Attributes.ATTACK_SPEED, "1a71bd06-0d8b-459e-b961-fbd992d61c5d", 1024.0D));
+    public static final Supplier<Trinket<?>> ASH_GLOVES = register("ash_gloves", Trinket::new, Rarity.LEGENDARY, (trinket) -> trinket.add(EntityAttributes.GENERIC_ATTACK_SPEED, "1a71bd06-0d8b-459e-b961-fbd992d61c5d", 1024.0D));
     public static final Supplier<RubyHeartTrinket> RUBY_HEART = register("ruby_heart", RubyHeartTrinket::new, Rarity.LEGENDARY);
     public static final Supplier<Trinket<?>> GOLDEN_HORSESHOE = register("golden_horseshoe", Trinket::new, Rarity.LEGENDARY);
     public static final Supplier<Trinket<?>> GOLDEN_TOOTH = register("golden_tooth", Trinket::new, Rarity.LEGENDARY);
-    public static final Supplier<Trinket<?>> BROKEN_HEART_1 = register("broken_heart_1", Trinket::new, Rarity.LEGENDARY, (trinket) -> trinket.add(Attributes.MAX_HEALTH, "092962d0-2711-48e0-9a84-f768ea4aeeb2", 4.0D));
-    public static final Supplier<Trinket<?>> BROKEN_HEART_2 = register("broken_heart_2", Trinket::new, Rarity.LEGENDARY, (trinket) -> trinket.add(Attributes.MAX_HEALTH, "bf4f459a-d398-4cc1-a146-9d3828f2201a", 4.0D));
-    public static final Supplier<Trinket<?>> BROKEN_HEART_3 = register("broken_heart_3", Trinket::new, Rarity.LEGENDARY, (trinket) -> trinket.add(Attributes.MAX_HEALTH, "cb979db5-2f24-40b5-b2ef-4b7d29491ef4", 4.0D));
-    public static final Supplier<Trinket<?>> BROKEN_HEART_4 = register("broken_heart_4", Trinket::new, Rarity.LEGENDARY, (trinket) -> trinket.add(Attributes.MAX_HEALTH, "1816e016-b569-4258-889e-d45829628248", 4.0D));
-    public static final Supplier<Trinket<?>> BROKEN_HEART_5 = register("broken_heart_5", Trinket::new, Rarity.LEGENDARY, (trinket) -> trinket.add(Attributes.MAX_HEALTH, "a3fee661-c9e0-40d9-8386-ac245576bed0", 4.0D));
+    public static final Supplier<Trinket<?>> BROKEN_HEART_1 = register("broken_heart_1", Trinket::new, Rarity.LEGENDARY, (trinket) -> trinket.add(EntityAttributes.GENERIC_MAX_HEALTH, "092962d0-2711-48e0-9a84-f768ea4aeeb2", 4.0D));
+    public static final Supplier<Trinket<?>> BROKEN_HEART_2 = register("broken_heart_2", Trinket::new, Rarity.LEGENDARY, (trinket) -> trinket.add(EntityAttributes.GENERIC_MAX_HEALTH, "bf4f459a-d398-4cc1-a146-9d3828f2201a", 4.0D));
+    public static final Supplier<Trinket<?>> BROKEN_HEART_3 = register("broken_heart_3", Trinket::new, Rarity.LEGENDARY, (trinket) -> trinket.add(EntityAttributes.GENERIC_MAX_HEALTH, "cb979db5-2f24-40b5-b2ef-4b7d29491ef4", 4.0D));
+    public static final Supplier<Trinket<?>> BROKEN_HEART_4 = register("broken_heart_4", Trinket::new, Rarity.LEGENDARY, (trinket) -> trinket.add(EntityAttributes.GENERIC_MAX_HEALTH, "1816e016-b569-4258-889e-d45829628248", 4.0D));
+    public static final Supplier<Trinket<?>> BROKEN_HEART_5 = register("broken_heart_5", Trinket::new, Rarity.LEGENDARY, (trinket) -> trinket.add(EntityAttributes.GENERIC_MAX_HEALTH, "a3fee661-c9e0-40d9-8386-ac245576bed0", 4.0D));
     public static final Supplier<OctopusLegTrinket> OCTOPUS_LEG = register("octopus_leg", OctopusLegTrinket::new, Rarity.LEGENDARY);
     public static final Supplier<MagicalHerbsTrinket> MAGICAL_HERBS = register("magical_herbs", MagicalHerbsTrinket::new, Rarity.LEGENDARY);
     public static final Supplier<MagicalFeathersTrinket> MAGICAL_FEATHERS = register("magical_feathers", MagicalFeathersTrinket::new, Rarity.LEGENDARY);

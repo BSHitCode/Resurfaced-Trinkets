@@ -1,22 +1,21 @@
 package owmii.losttrinkets.client.render.entity;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.entity.BipedRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.render.entity.BipedEntityRenderer;
+import net.minecraft.client.render.entity.EntityRenderDispatcher;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import owmii.losttrinkets.client.model.DarkVexModel;
 import owmii.losttrinkets.entity.DarkVexEntity;
 
 @Environment(EnvType.CLIENT)
-public class DarkVexRenderer extends BipedRenderer<DarkVexEntity, DarkVexModel> {
-    private static final ResourceLocation VEX_TEXTURE = new ResourceLocation("textures/entity/illager/vex.png");
-    private static final ResourceLocation VEX_CHARGING_TEXTURE = new ResourceLocation("textures/entity/illager/vex_charging.png");
+public class DarkVexRenderer extends BipedEntityRenderer<DarkVexEntity, DarkVexModel> {
+    private static final Identifier VEX_TEXTURE = new Identifier("textures/entity/illager/vex.png");
+    private static final Identifier VEX_CHARGING_TEXTURE = new Identifier("textures/entity/illager/vex_charging.png");
 
-    public DarkVexRenderer(EntityRendererManager renderManagerIn) {
+    public DarkVexRenderer(EntityRenderDispatcher renderManagerIn) {
         super(renderManagerIn, new DarkVexModel(), 0.3F);
     }
 
@@ -26,12 +25,12 @@ public class DarkVexRenderer extends BipedRenderer<DarkVexEntity, DarkVexModel> 
     }
 
     @Override
-    public ResourceLocation getEntityTexture(DarkVexEntity entity) {
+    public Identifier getTexture(DarkVexEntity entity) {
         return entity.isCharging() ? VEX_CHARGING_TEXTURE : VEX_TEXTURE;
     }
 
     @Override
-    protected void preRenderCallback(DarkVexEntity vexEntity, MatrixStack matrixStackIn, float partialTickTime) {
+    protected void scale(DarkVexEntity vexEntity, MatrixStack matrixStackIn, float partialTickTime) {
         matrixStackIn.scale(0.4F, 0.4F, 0.4F);
     }
 }

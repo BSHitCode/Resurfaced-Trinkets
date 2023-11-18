@@ -12,7 +12,7 @@ import owmii.losttrinkets.network.Network;
 import owmii.losttrinkets.network.packet.SyncFlyPacket;
 
 public class MagicalFeathersTrinket extends Trinket<MagicalFeathersTrinket> implements ITickableTrinket {
-    public MagicalFeathersTrinket(Rarity rarity, Properties properties) {
+    public MagicalFeathersTrinket(Rarity rarity, Settings properties) {
         super(rarity, properties);
     }
 
@@ -21,11 +21,11 @@ public class MagicalFeathersTrinket extends Trinket<MagicalFeathersTrinket> impl
         PlayerData data = LostTrinketsAPI.getData(player);
         player.abilities.allowFlying = true;
         if (data.wasFlying) {
-            player.abilities.isFlying = true;
+            player.abilities.flying = true;
             data.wasFlying = false;
         }
         if (!data.allowFlying) {
-            if (!world.isRemote) {
+            if (!world.isClient) {
                 Network.toClient(new SyncFlyPacket(true), player);
             }
             data.allowFlying = true;
@@ -38,8 +38,8 @@ public class MagicalFeathersTrinket extends Trinket<MagicalFeathersTrinket> impl
         PlayerData data = LostTrinketsAPI.getData(player);
         if (data.allowFlying) {
             player.abilities.allowFlying = false;
-            player.abilities.isFlying = false;
-            if (!world.isRemote) {
+            player.abilities.flying = false;
+            if (!world.isClient) {
                 Network.toClient(new SyncFlyPacket(false), player);
             }
             data.allowFlying = false;

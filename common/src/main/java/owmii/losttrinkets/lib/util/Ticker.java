@@ -1,6 +1,6 @@
 package owmii.losttrinkets.lib.util;
 
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.NbtCompound;
 
 public class Ticker {
     private double maxTicks;
@@ -52,12 +52,12 @@ public class Ticker {
         return System.currentTimeMillis() % (delay * 5) == 0;
     }
 
-    public void read(CompoundNBT compound, String key) {
+    public void read(NbtCompound compound, String key) {
         this.ticks = compound.getDouble(key + "_ticks");
         this.maxTicks = compound.getDouble(key + "_max_ticks");
     }
 
-    public void write(CompoundNBT compound, String key) {
+    public void write(NbtCompound compound, String key) {
         compound.putDouble(key + "_ticks", this.ticks);
         compound.putDouble(key + "_max_ticks", this.maxTicks);
     }

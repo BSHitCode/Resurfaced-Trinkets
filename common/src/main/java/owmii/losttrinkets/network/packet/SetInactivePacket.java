@@ -1,7 +1,7 @@
 package owmii.losttrinkets.network.packet;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.PacketByteBuf;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.ITrinket;
 import owmii.losttrinkets.api.trinket.Trinkets;
@@ -20,12 +20,12 @@ public class SetInactivePacket implements IPacket {
         this(0);
     }
 
-    public SetInactivePacket(PacketBuffer buffer) {
+    public SetInactivePacket(PacketByteBuf buffer) {
         this(buffer.readInt());
     }
 
     @Override
-    public void encode(PacketBuffer buffer) {
+    public void encode(PacketByteBuf buffer) {
         buffer.writeInt(this.trinket);
     }
 

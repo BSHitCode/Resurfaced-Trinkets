@@ -1,10 +1,10 @@
 package owmii.losttrinkets.network.packet;
 
-import net.minecraft.entity.item.ExperienceOrbEntity;
-import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.ExperienceOrbEntity;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.util.math.Box;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.item.Itms;
 import owmii.losttrinkets.network.IPacket;
@@ -15,25 +15,25 @@ import java.util.List;
 public class MagnetoPacket implements IPacket {
     public MagnetoPacket() {}
 
-    public MagnetoPacket(PacketBuffer buffer) {}
+    public MagnetoPacket(PacketByteBuf buffer) {}
 
     @Override
-    public void encode(PacketBuffer buffer) {}
+    public void encode(PacketByteBuf buffer) {}
 
     @Override
     public void handle(PlayerEntity player) {
         if (player != null && LostTrinketsAPI.getTrinkets(player).isActive(Itms.MAGNETO)) {
-            AxisAlignedBB bb = new AxisAlignedBB(player.getPosition()).grow(10);
-            List<ItemEntity> entities = player.world.getEntitiesWithinAABB(ItemEntity.class, bb);
-            List<ExperienceOrbEntity> orbEntities = player.world.getEntitiesWithinAABB(ExperienceOrbEntity.class, bb);
+            Box bb = new Box(player.getBlockPos()).expand(10);
+            List<ItemEntity> entities = player.world.getNonSpectatingEntities(ItemEntity.class, bb);
+            List<ExperienceOrbEntity> orbEntities = player.world.getNonSpectatingEntities(ExperienceOrbEntity.class, bb);
             entities.stream().filter(Magnet::canCollectManual).forEach(entity -> {
-                entity.setNoPickupDelay();
-                entity.onCollideWithPlayer(player);
+                entity.resetPickupDelay();
+                entity.onPlayerCollision(player);
             });
             orbEntities.stream().filter(Magnet::canCollectManual).forEach(orb -> {
-                orb.delayBeforeCanPickup = 0;
-                player.xpCooldown = 0;
-                orb.onCollideWithPlayer(player);
+                orb.pickupDelay = 0;
+                player.experiencePickUpDelay = 0;
+                orb.onPlayerCollision(player);
             });
         }
     }

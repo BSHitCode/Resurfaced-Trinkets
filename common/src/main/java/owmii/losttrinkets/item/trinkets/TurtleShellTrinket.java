@@ -8,7 +8,7 @@ import owmii.losttrinkets.api.trinket.Rarity;
 import owmii.losttrinkets.api.trinket.Trinket;
 
 public class TurtleShellTrinket extends Trinket<TurtleShellTrinket> implements ITickableTrinket {
-    public TurtleShellTrinket(Rarity rarity, Properties properties) {
+    public TurtleShellTrinket(Rarity rarity, Settings properties) {
         super(rarity, properties);
     }
 

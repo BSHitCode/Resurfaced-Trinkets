@@ -1,12 +1,12 @@
 package owmii.losttrinkets.client.handler.hud;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import me.shedaniel.architectury.event.events.GuiEvent;
 import me.shedaniel.architectury.event.events.client.ClientTickEvent;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.resource.language.I18n;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.StringUtils;
 
@@ -28,13 +28,13 @@ public class HudHandler {
 
     public static void register() {
         GuiEvent.RENDER_HUD.register((matrices, tickDelta) -> {
-            Minecraft mc = Minecraft.getInstance();
+            MinecraftClient mc = MinecraftClient.getInstance();
             if (mc.currentScreen == null) {
-                render(matrices, mc, mc.getMainWindow().getScaledWidth(), mc.getMainWindow().getScaledHeight());
+                render(matrices, mc, mc.getWindow().getScaledWidth(), mc.getWindow().getScaledHeight());
             }
         });
         GuiEvent.RENDER_POST.register((screen, matrices, mouseX, mouseY, delta) -> {
-            Minecraft mc = Minecraft.getInstance();
+            MinecraftClient mc = MinecraftClient.getInstance();
             render(matrices, mc, screen.width, screen.height);
         });
         ClientTickEvent.CLIENT_POST.register((mc) -> {
@@ -67,22 +67,22 @@ public class HudHandler {
         });
     }
 
-    static void render(MatrixStack matrix, Minecraft mc, int width, int height) {
+    static void render(MatrixStack matrix, MinecraftClient mc, int width, int height) {
         if (toast != null) {
             RenderSystem.pushMatrix();
             RenderSystem.translated(width / 2.0F - Textures.TOAST.getWidth() / 2.0F, 4 - 60.0F + ticker.getTicks(), 0.0F);
             Textures.TOAST.draw(matrix, 0, 0);
             RenderSystem.pushMatrix();
             RenderSystem.translated(41.0F, 5.0F, 0.0F);
-            mc.fontRenderer.drawString(matrix, I18n.format("gui.losttrinkets.trinket.unlocked"), 0, 5, new Color(0xFFBA6F).getRGB());
-            String s = I18n.format(toast.getTrinket().asItem().getTranslationKey());
+            mc.textRenderer.draw(matrix, I18n.translate("gui.losttrinkets.trinket.unlocked"), 0, 5, new Color(0xFFBA6F).getRGB());
+            String s = I18n.translate(toast.getTrinket().asItem().getTranslationKey());
             s = StringUtils.abbreviate(s, 20);
-            mc.fontRenderer.drawString(matrix, s, 0, 18, 0xF0C6E5);
+            mc.textRenderer.draw(matrix, s, 0, 18, 0xF0C6E5);
             RenderSystem.popMatrix();
             RenderSystem.pushMatrix();
             RenderSystem.translated(5.0F, 5.0F, 0.0F);
             RenderSystem.scaled(2.0F, 2.0F, 2.0F);
-            mc.getItemRenderer().renderItemAndEffectIntoGUI(new ItemStack(toast.getTrinket()), 0, 0);
+            mc.getItemRenderer().renderInGuiWithOverrides(new ItemStack(toast.getTrinket()), 0, 0);
             RenderSystem.popMatrix();
             RenderSystem.popMatrix();
         }

@@ -3,12 +3,12 @@ package owmii.losttrinkets.item.trinkets;
 import me.shedaniel.architectury.event.events.InteractionEvent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Util;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.Rarity;
 import owmii.losttrinkets.api.trinket.Trinket;
@@ -21,13 +21,13 @@ import owmii.losttrinkets.network.packet.MagnetoPacket;
 import java.util.List;
 
 public class MagnetoTrinket extends Trinket<MagnetoTrinket> {
-    public MagnetoTrinket(Rarity rarity, Properties properties) {
+    public MagnetoTrinket(Rarity rarity, Settings properties) {
         super(rarity, properties);
     }
 
     public static void register() {
         InteractionEvent.CLIENT_RIGHT_CLICK_AIR.register((player, hand) -> {
-            if (KeyHandler.MAGNETO.isInvalid() && hand == Hand.MAIN_HAND) {
+            if (KeyHandler.MAGNETO.isUnbound() && hand == Hand.MAIN_HAND) {
                 trySendCollect(player);
             }
         });
@@ -41,13 +41,13 @@ public class MagnetoTrinket extends Trinket<MagnetoTrinket> {
     }
 
     @Override
-    public void addTrinketDescription(ItemStack stack, List<ITextComponent> lines) {
+    public void addTrinketDescription(ItemStack stack, List<Text> lines) {
         super.addTrinketDescription(stack, lines);
-        String translationKey = Util.makeTranslationKey("info", Registry.ITEM.getKey(stack.getItem()));
-        if (KeyHandler.MAGNETO.isInvalid()) {
-            lines.add(new TranslationTextComponent(translationKey + ".unbound").mergeStyle(TextFormatting.GRAY));
+        String translationKey = Util.createTranslationKey("info", Registry.ITEM.getId(stack.getItem()));
+        if (KeyHandler.MAGNETO.isUnbound()) {
+            lines.add(new TranslatableText(translationKey + ".unbound").formatted(Formatting.GRAY));
         } else {
-            lines.add(new TranslationTextComponent(translationKey + ".bound", KeyHandler.MAGNETO.func_238171_j_()).mergeStyle(TextFormatting.GRAY));
+            lines.add(new TranslatableText(translationKey + ".bound", KeyHandler.MAGNETO.getBoundKeyLocalizedText()).formatted(Formatting.GRAY));
         }
     }
 }

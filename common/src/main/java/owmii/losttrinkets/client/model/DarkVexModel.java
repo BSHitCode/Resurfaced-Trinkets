@@ -5,57 +5,57 @@ import com.google.common.collect.Iterables;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.util.HandSide;
+import net.minecraft.client.model.ModelPart;
+import net.minecraft.client.render.entity.model.BipedEntityModel;
+import net.minecraft.util.Arm;
 import net.minecraft.util.math.MathHelper;
 import owmii.losttrinkets.entity.DarkVexEntity;
 
 @Environment(EnvType.CLIENT)
-public class DarkVexModel extends BipedModel<DarkVexEntity> {
-    private final ModelRenderer leftWing;
-    private final ModelRenderer rightWing;
+public class DarkVexModel extends BipedEntityModel<DarkVexEntity> {
+    private final ModelPart leftWing;
+    private final ModelPart rightWing;
 
     public DarkVexModel() {
         super(0.0F, 0.0F, 64, 64);
-        this.bipedLeftLeg.showModel = false;
-        this.bipedHeadwear.showModel = false;
-        this.bipedRightLeg = new ModelRenderer(this, 32, 0);
-        this.bipedRightLeg.addBox(-1.0F, -1.0F, -2.0F, 6.0F, 10.0F, 4.0F, 0.0F);
-        this.bipedRightLeg.setRotationPoint(-1.9F, 12.0F, 0.0F);
-        this.rightWing = new ModelRenderer(this, 0, 32);
-        this.rightWing.addBox(-20.0F, 0.0F, 0.0F, 20.0F, 12.0F, 1.0F);
-        this.leftWing = new ModelRenderer(this, 0, 32);
+        this.leftLeg.visible = false;
+        this.hat.visible = false;
+        this.rightLeg = new ModelPart(this, 32, 0);
+        this.rightLeg.addCuboid(-1.0F, -1.0F, -2.0F, 6.0F, 10.0F, 4.0F, 0.0F);
+        this.rightLeg.setPivot(-1.9F, 12.0F, 0.0F);
+        this.rightWing = new ModelPart(this, 0, 32);
+        this.rightWing.addCuboid(-20.0F, 0.0F, 0.0F, 20.0F, 12.0F, 1.0F);
+        this.leftWing = new ModelPart(this, 0, 32);
         this.leftWing.mirror = true;
-        this.leftWing.addBox(0.0F, 0.0F, 0.0F, 20.0F, 12.0F, 1.0F);
+        this.leftWing.addCuboid(0.0F, 0.0F, 0.0F, 20.0F, 12.0F, 1.0F);
     }
 
     @Override
-    protected Iterable<ModelRenderer> getBodyParts() {
+    protected Iterable<ModelPart> getBodyParts() {
         return Iterables.concat(super.getBodyParts(), ImmutableList.of(this.rightWing, this.leftWing));
     }
 
     @Override
-    public void setRotationAngles(DarkVexEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        super.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+    public void setAngles(DarkVexEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        super.setAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         if (entityIn.isCharging()) {
-            if (entityIn.getPrimaryHand() == HandSide.RIGHT) {
-                this.bipedRightArm.rotateAngleX = 3.7699115F;
+            if (entityIn.getMainArm() == Arm.RIGHT) {
+                this.rightArm.pitch = 3.7699115F;
             } else {
-                this.bipedLeftArm.rotateAngleX = 3.7699115F;
+                this.leftArm.pitch = 3.7699115F;
             }
         }
 
-        this.bipedRightLeg.rotateAngleX += ((float) Math.PI / 5F);
-        this.rightWing.rotationPointZ = 2.0F;
-        this.leftWing.rotationPointZ = 2.0F;
-        this.rightWing.rotationPointY = 1.0F;
-        this.leftWing.rotationPointY = 1.0F;
-        this.rightWing.rotateAngleY = 0.47123894F + MathHelper.cos(ageInTicks * 0.8F) * (float) Math.PI * 0.05F;
-        this.leftWing.rotateAngleY = -this.rightWing.rotateAngleY;
-        this.leftWing.rotateAngleZ = -0.47123894F;
-        this.leftWing.rotateAngleX = 0.47123894F;
-        this.rightWing.rotateAngleX = 0.47123894F;
-        this.rightWing.rotateAngleZ = 0.47123894F;
+        this.rightLeg.pitch += ((float) Math.PI / 5F);
+        this.rightWing.pivotZ = 2.0F;
+        this.leftWing.pivotZ = 2.0F;
+        this.rightWing.pivotY = 1.0F;
+        this.leftWing.pivotY = 1.0F;
+        this.rightWing.yaw = 0.47123894F + MathHelper.cos(ageInTicks * 0.8F) * (float) Math.PI * 0.05F;
+        this.leftWing.yaw = -this.rightWing.yaw;
+        this.leftWing.roll = -0.47123894F;
+        this.leftWing.pitch = 0.47123894F;
+        this.rightWing.pitch = 0.47123894F;
+        this.rightWing.roll = 0.47123894F;
     }
 }

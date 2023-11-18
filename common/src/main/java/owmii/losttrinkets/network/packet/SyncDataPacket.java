@@ -1,8 +1,8 @@
 package owmii.losttrinkets.network.packet;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.player.PlayerData;
 import owmii.losttrinkets.client.screen.Screens;
@@ -14,29 +14,29 @@ import java.util.UUID;
 
 public class SyncDataPacket implements IPacket {
     private final UUID uuid;
-    private final CompoundNBT nbt;
+    private final NbtCompound nbt;
 
-    protected SyncDataPacket(UUID uuid, CompoundNBT nbt) {
+    protected SyncDataPacket(UUID uuid, NbtCompound nbt) {
         this.uuid = uuid;
         this.nbt = nbt;
     }
 
     public SyncDataPacket() {
-        this(new UUID(0, 0), new CompoundNBT());
+        this(new UUID(0, 0), new NbtCompound());
     }
 
     public SyncDataPacket(PlayerEntity player) {
-        this(player.getUniqueID(), LostTrinketsAPI.getData(player).serializeNBT());
+        this(player.getUuid(), LostTrinketsAPI.getData(player).serializeNBT());
     }
 
-    public SyncDataPacket(PacketBuffer buffer) {
-        this(buffer.readUniqueId(), Objects.requireNonNull(buffer.readCompoundTag()));
+    public SyncDataPacket(PacketByteBuf buffer) {
+        this(buffer.readUuid(), Objects.requireNonNull(buffer.readNbt()));
     }
 
     @Override
-    public void encode(PacketBuffer buffer) {
-        buffer.writeUniqueId(this.uuid);
-        buffer.writeCompoundTag(this.nbt);
+    public void encode(PacketByteBuf buffer) {
+        buffer.writeUuid(this.uuid);
+        buffer.writeNbt(this.nbt);
     }
 
     @Override

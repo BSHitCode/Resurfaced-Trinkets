@@ -1,6 +1,6 @@
 package owmii.losttrinkets.core.mixin;
 
-import net.minecraft.entity.merchant.villager.VillagerEntity;
+import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -12,8 +12,8 @@ import owmii.losttrinkets.item.Itms;
 
 @Mixin(VillagerEntity.class)
 public class VillagerEntityMixin {
-    @Inject(method = "getPlayerReputation", at = @At("TAIL"), cancellable = true)
-    public void getPlayerReputation(PlayerEntity player, CallbackInfoReturnable<Integer> cir) {
+    @Inject(method = "getReputation", at = @At("TAIL"), cancellable = true)
+    public void getReputation(PlayerEntity player, CallbackInfoReturnable<Integer> cir) {
         Trinkets trinkets = LostTrinketsAPI.getTrinkets(player);
         if (trinkets.isActive(Itms.KARMA)) {
             cir.setReturnValue(cir.getReturnValueI() + 100);

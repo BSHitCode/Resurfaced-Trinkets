@@ -1,13 +1,13 @@
 accessWidener v2 named
 
 # LivingEntity
-accessible method net/minecraft/entity/LivingEntity onFinishedPotionEffect (Lnet/minecraft/potion/EffectInstance;)V
+accessible method net/minecraft/entity/LivingEntity onStatusEffectRemoved (Lnet/minecraft/entity/effect/StatusEffectInstance;)V
 
 # CreeperEntity
-accessible field net/minecraft/entity/monster/CreeperEntity timeSinceIgnited I
+accessible field net/minecraft/entity/mob/CreeperEntity currentFuseTime I
 
 # ServerPlayerEntity
-accessible method net/minecraft/entity/player/ServerPlayerEntity onFinishedPotionEffect (Lnet/minecraft/potion/EffectInstance;)V
+accessible method net/minecraft/server/network/ServerPlayerEntity onStatusEffectRemoved (Lnet/minecraft/entity/effect/StatusEffectInstance;)V
 
 # MobEntity
-accessible field net/minecraft/entity/MobEntity goalSelector Lnet/minecraft/entity/ai/goal/GoalSelector;
+accessible field net/minecraft/entity/mob/MobEntity goalSelector Lnet/minecraft/entity/ai/goal/GoalSelector;

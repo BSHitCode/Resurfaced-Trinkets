@@ -1,6 +1,6 @@
 package owmii.losttrinkets.api.player;
 
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.NbtCompound;
 import owmii.losttrinkets.api.trinket.Trinkets;
 
 public class PlayerData {
@@ -10,8 +10,8 @@ public class PlayerData {
     public boolean wasFlying;
     private boolean sync;
 
-    public CompoundNBT serializeNBT() {
-        CompoundNBT nbt = new CompoundNBT();
+    public NbtCompound serializeNBT() {
+        NbtCompound nbt = new NbtCompound();
         nbt.put("trinkets", this.trinkets.serializeNBT());
         nbt.putLong("unlock_delay", this.unlockDelay);
         nbt.putBoolean("allow_flying", this.allowFlying);
@@ -19,7 +19,7 @@ public class PlayerData {
         return nbt;
     }
 
-    public void deserializeNBT(CompoundNBT nbt) {
+    public void deserializeNBT(NbtCompound nbt) {
         this.trinkets.deserializeNBT(nbt.getCompound("trinkets"));
         this.unlockDelay = nbt.getLong("unlock_delay");
         this.allowFlying = nbt.getBoolean("allow_flying");

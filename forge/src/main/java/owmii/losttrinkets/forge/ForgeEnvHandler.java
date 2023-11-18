@@ -7,16 +7,16 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.PortalInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerChunkManager;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.server.world.ThreadedAnvilChunkStorage;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.server.ChunkManager;
-import net.minecraft.world.server.ServerChunkProvider;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.TeleportTarget;
+import net.minecraft.world.WorldAccess;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.util.ITeleporter;
@@ -38,7 +38,7 @@ public class ForgeEnvHandler implements EnvHandler {
     @SuppressWarnings("RedundantIfStatement")
     public boolean magnetCanCollect(Entity entity, boolean automated) {
         // Demagnetize standard
-        CompoundNBT persistentData = entity.getPersistentData();
+        NbtCompound persistentData = entity.getPersistentData();
         if (persistentData.contains(PREVENT_REMOTE_MOVEMENT)) {
             if (!(automated && persistentData.contains(ALLOW_MACHINE_REMOTE_MOVEMENT))) {
                 return false;
@@ -54,12 +54,12 @@ public class ForgeEnvHandler implements EnvHandler {
 
     @Override
     public Collection<ServerPlayerEntity> getTrackingPlayers(Entity entity) {
-        ChunkManager chunkManager = ((ServerChunkProvider)entity.getEntityWorld().getChunkProvider()).chunkManager;
-        return ((ChunkManagerTrackingExtension) chunkManager).forge_getTrackingPlayers(entity);
+        ThreadedAnvilChunkStorage chunkManager = ((ServerChunkManager)entity.getEntityWorld().getChunkManager()).threadedAnvilChunkStorage;
+        return ((ThreadedAnvilChunkStorageTrackingExtension) chunkManager).forge_getTrackingPlayers(entity);
     }
 
     @Override
-    public boolean canHarvestBlock(BlockState state, PlayerEntity player, IWorld world, BlockPos pos) {
+    public boolean canHarvestBlock(BlockState state, PlayerEntity player, WorldAccess world, BlockPos pos) {
         return ForgeHooks.canHarvestBlock(state, player, world, pos);
     }
 
@@ -69,11 +69,11 @@ public class ForgeEnvHandler implements EnvHandler {
     }
 
     @Override
-    public void teleport(PlayerEntity player, ServerWorld world, PortalInfo target) {
+    public void teleport(PlayerEntity player, ServerWorld world, TeleportTarget target) {
         player.changeDimension(world, new ITeleporter() {
             @Override
             @Nullable
-            public PortalInfo getPortalInfo(Entity entity, ServerWorld destWorld, Function<ServerWorld, PortalInfo> defaultPortalInfo) {
+            public TeleportTarget getPortalInfo(Entity entity, ServerWorld destWorld, Function<ServerWorld, TeleportTarget> defaultPortalInfo) {
                 return target;
             }
         });

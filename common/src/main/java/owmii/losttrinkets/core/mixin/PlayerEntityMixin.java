@@ -3,7 +3,7 @@ package owmii.losttrinkets.core.mixin;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -24,18 +24,18 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IPlayerE
     }
 
     @Override
-    protected void frostWalk(BlockPos pos) {
+    protected void applyMovementEffects(BlockPos pos) {
         IceShardTrinket.frostWalk(this, pos);
-        super.frostWalk(pos);
+        super.applyMovementEffects(pos);
     }
 
     @Override
-    public boolean isOnLadder() {
+    public boolean isClimbing() {
         if (this.isSpectator()) {
             return false;
         }
 
-        if (super.isOnLadder()) {
+        if (super.isClimbing()) {
             return true;
         }
 
@@ -46,30 +46,28 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IPlayerE
     @Unique
     private PlayerData playerData = new PlayerData();
 
-    // TODO: change to writeCustomDataToNbt once we use YARN mappings...
-    @Inject(method = "writeAdditional", at = @At("RETURN"))
-    public void writeAdditional(CompoundNBT tag, CallbackInfo ci) {
+    @Inject(method = "writeCustomDataToNbt", at = @At("RETURN"))
+    public void writeCustomDataToNbt(NbtCompound tag, CallbackInfo ci) {
         sunkentrinkets_toTag(tag);
     }
 
-    public void sunkentrinkets_toTag(CompoundNBT tag) {
+    public void sunkentrinkets_toTag(NbtCompound tag) {
         tag.put(DATA_KEY, playerData.serializeNBT());
     }
 
-    // TODO: change to readCustomDataFromNbt once we use YARN mappings...
-    @Inject(method = "readAdditional", at = @At("RETURN"))
-    public void readAdditional(CompoundNBT tag, CallbackInfo ci) {
+    @Inject(method = "readCustomDataFromNbt", at = @At("RETURN"))
+    public void readCustomDataFromNbt(NbtCompound tag, CallbackInfo ci) {
         sunkentrinkets_fromTag(tag);
     }
 
-    public void sunkentrinkets_fromTag(CompoundNBT tag) {
-        CompoundNBT data = null;
+    public void sunkentrinkets_fromTag(NbtCompound tag) {
+        NbtCompound data = null;
         if (tag.contains(DATA_KEY, 10)) {
             data = tag.getCompound(DATA_KEY);
         }
 
         if (tag.contains("ForgeCaps", 10)) {
-            CompoundNBT forgeCaps = tag.getCompound("ForgeCaps");
+            NbtCompound forgeCaps = tag.getCompound("ForgeCaps");
             if (forgeCaps.contains("losttrinkets:player_data", 10)) {
                 if (data != null) {
                     throw new RuntimeException("Malformed data: got old losttrinkets data and new sunken_trinkets data as well!");

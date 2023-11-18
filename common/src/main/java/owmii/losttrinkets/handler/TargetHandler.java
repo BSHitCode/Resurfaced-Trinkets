@@ -1,10 +1,10 @@
 package owmii.losttrinkets.handler;
 
-import net.minecraft.entity.IAngerable;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.brain.Brain;
-import net.minecraft.entity.ai.brain.memory.MemoryModuleType;
+import net.minecraft.entity.ai.brain.MemoryModuleType;
+import net.minecraft.entity.mob.Angerable;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.entity.Entities;
@@ -26,7 +26,7 @@ public class TargetHandler {
                 }
 
                 // Not recently attacked by the player
-                boolean notAttacked = !player.equals(mob.getRevengeTarget()) && !player.equals(mob.getCombatTracker().getBestAttacker());
+                boolean notAttacked = !player.equals(mob.getAttacker()) && !player.equals(mob.getDamageTracker().getBiggestAttacker());
 
                 return LostTrinketsAPI.getTrinkets(player).getTargeting().stream()
                         .anyMatch(trinket -> trinket.preventTargeting(mob, player, notAttacked));
@@ -36,13 +36,13 @@ public class TargetHandler {
     }
 
     public static <T> Optional<T> getBrainMemorySafe(Brain<?> brain, MemoryModuleType<T> type) {
-        return brain.hasMemory(type) ? brain.getMemory(type) : Optional.empty();
+        return brain.hasMemoryModule(type) ? brain.getOptionalMemory(type) : Optional.empty();
     }
 
     public static void setTarget(LivingEntity living, LivingEntity target) {
         if (living instanceof MobEntity && preventTargeting(living, target)) {
             MobEntity mob = (MobEntity) living;
-            mob.setAttackTarget(null);
+            mob.setTarget(null);
         }
     }
 
@@ -50,23 +50,23 @@ public class TargetHandler {
         if (living instanceof MobEntity) {
             MobEntity mob = (MobEntity) living;
             // Remove anger target (mainly for sounds)
-            if (mob instanceof IAngerable) {
-                IAngerable angerable = (IAngerable) mob;
-                UUID targetUUID = angerable.getAngerTarget();
+            if (mob instanceof Angerable) {
+                Angerable angerable = (Angerable) mob;
+                UUID targetUUID = angerable.getAngryAt();
                 if (targetUUID != null && preventTargeting(mob, mob.world.getPlayerByUuid(targetUUID))) {
                     // Resets anger timer and target
-                    angerable.resetTargets();
+                    angerable.stopAnger();
                 }
             }
             // Remove attack target
-            if (preventTargeting(mob, mob.getAttackTarget())) {
-                mob.setAttackTarget(null);
+            if (preventTargeting(mob, mob.getTarget())) {
+                mob.setTarget(null);
             }
             // Remove attack target memory from brain
             Brain<?> brain = mob.getBrain();
             getBrainMemorySafe(brain, MemoryModuleType.ATTACK_TARGET).ifPresent(target -> {
                 if (preventTargeting(mob, target)) {
-                    brain.removeMemory(MemoryModuleType.ATTACK_TARGET);
+                    brain.forget(MemoryModuleType.ATTACK_TARGET);
                 }
             });
         }

@@ -2,10 +2,10 @@ package owmii.losttrinkets.item.trinkets;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.DamageSource;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.Rarity;
 import owmii.losttrinkets.api.trinket.Trinket;
@@ -13,17 +13,17 @@ import owmii.losttrinkets.api.trinket.Trinkets;
 import owmii.losttrinkets.item.Itms;
 
 public class WitherNailTrinket extends Trinket<WitherNailTrinket> {
-    public WitherNailTrinket(Rarity rarity, Properties properties) {
+    public WitherNailTrinket(Rarity rarity, Settings properties) {
         super(rarity, properties);
     }
 
     public static void onHurt(DamageSource source, LivingEntity entityLiving) {
-        Entity entity = source.getImmediateSource();
+        Entity entity = source.getSource();
         if (entity instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) entity;
             Trinkets trinkets = LostTrinketsAPI.getTrinkets(player);
             if (trinkets.isActive(Itms.WITHER_NAIL)) {
-                entityLiving.addPotionEffect(new EffectInstance(Effects.WITHER, 120, 0));
+                entityLiving.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 120, 0));
             }
         }
     }
