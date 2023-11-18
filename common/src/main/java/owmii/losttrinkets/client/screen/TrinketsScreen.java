@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.LiteralText;
+import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
@@ -11,6 +12,7 @@ import net.minecraft.util.Formatting;
 import owmii.losttrinkets.LostTrinkets;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.ITrinket;
+import owmii.losttrinkets.api.trinket.Trinket;
 import owmii.losttrinkets.api.trinket.Trinkets;
 import owmii.losttrinkets.client.screen.widget.TrinketButton;
 import owmii.losttrinkets.lib.client.screen.widget.IconButton;
@@ -20,6 +22,7 @@ import owmii.losttrinkets.network.packet.UnlockSlotPacket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class TrinketsScreen extends AbstractLTScreen {
     private int x, y, columns = 10, rows = 4, btnDim = 28;
@@ -51,7 +54,10 @@ public class TrinketsScreen extends AbstractLTScreen {
                             trinket.addTrinketDescription(stack, list);
                             list.add(new TranslatableText("gui.losttrinkets.rarity." + trinket.getRarity().name().toLowerCase(Locale.ENGLISH)).formatted(Formatting.DARK_GRAY));
                             //GuiUtils.drawHoveringText(matrix, list, i1, i2, this.width, this.height, 240, this.font);
-                            this.renderTooltip(matrix, list, i1, i2);
+                            List<OrderedText> wrapped = list.stream()
+                                .flatMap((t) -> this.textRenderer.wrapLines(t, Trinket.TOOLTIP_MAX_WIDTH).stream())
+                                .collect(Collectors.toList());
+                            this.renderOrderedTooltip(matrix, wrapped, i1, i2);
                         }));
                     } else {
                         boolean locked = i + 1 > trinkets.getSlots();

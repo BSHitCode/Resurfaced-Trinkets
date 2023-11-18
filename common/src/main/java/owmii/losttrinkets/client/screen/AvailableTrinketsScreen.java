@@ -5,12 +5,14 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 //import net.minecraftforge.fml.client.gui.GuiUtils;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.ITrinket;
+import owmii.losttrinkets.api.trinket.Trinket;
 import owmii.losttrinkets.api.trinket.Trinkets;
 import owmii.losttrinkets.client.screen.widget.TrinketButton;
 import owmii.losttrinkets.lib.client.screen.widget.IconButton;
@@ -18,8 +20,10 @@ import owmii.losttrinkets.network.Network;
 import owmii.losttrinkets.network.packet.SetActivePacket;
 
 import javax.annotation.Nullable;
+
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class AvailableTrinketsScreen extends AbstractLTScreen {
     @Nullable
@@ -57,7 +61,10 @@ public class AvailableTrinketsScreen extends AbstractLTScreen {
                             trinket.addTrinketDescription(stack, list);
                             list.add(new TranslatableText("gui.losttrinkets.rarity." + trinket.getRarity().name().toLowerCase(Locale.ENGLISH)).formatted(Formatting.DARK_GRAY));
                             //GuiUtils.drawHoveringText(matrix, list, i1, i2, this.width, this.height, 240, this.font);
-                            this.renderTooltip(matrix, list, i1, i2);
+                            List<OrderedText> wrapped = list.stream()
+                                .flatMap((t) -> this.textRenderer.wrapLines(t, Trinket.TOOLTIP_MAX_WIDTH).stream())
+                                .collect(Collectors.toList());
+                            this.renderOrderedTooltip(matrix, wrapped, i1, i2);
                         }));
                         cur++;
                     }

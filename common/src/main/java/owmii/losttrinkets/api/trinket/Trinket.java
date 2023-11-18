@@ -1,6 +1,11 @@
 package owmii.losttrinkets.api.trinket;
 
 import com.google.common.collect.Maps;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextHandler;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
@@ -8,6 +13,8 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
@@ -19,15 +26,20 @@ import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.lib.client.util.MC;
 
 import javax.annotation.Nullable;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class Trinket<T extends Trinket<?>> extends Item implements ITrinket {
     private final Map<EntityAttribute, EntityAttributeModifier> attributes = Maps.newHashMap();
     private final Rarity rarity;
     protected boolean unlockable = true;
+    public static final int TOOLTIP_MAX_WIDTH = 240;
 
     public Trinket(Rarity rarity, Settings properties) {
         super(properties.maxCount(1));
@@ -47,6 +59,7 @@ public class Trinket<T extends Trinket<?>> extends Item implements ITrinket {
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext flag) {
         if (LostTrinketsAPI.get().isDisabled(this)) {
             tooltip.add(new TranslatableText("gui.losttrinkets.status.disabled").formatted(Formatting.DARK_RED));
@@ -58,7 +71,21 @@ public class Trinket<T extends Trinket<?>> extends Item implements ITrinket {
                 tooltip.add(new TranslatableText("gui.losttrinkets.status.non_random").formatted(Formatting.DARK_GRAY));
             }
         }
-        addTrinketDescription(stack, tooltip);
+
+        // This block is needed so we are able to restrict the tooltip to a fixed width by applying line-wrapping
+        List<Text> temp = new ArrayList<>();
+        addTrinketDescription(stack, temp);
+        @SuppressWarnings("resource")
+        final TextHandler textHandler = MinecraftClient.getInstance().textRenderer.getTextHandler();
+        tooltip.addAll(
+            temp.stream()
+                .flatMap((text) -> textHandler.wrapLines(text, TOOLTIP_MAX_WIDTH, Style.EMPTY).stream())
+                .map((styled) -> {
+                    return styled.visit((style, literal) -> Optional.of(new LiteralText(literal).setStyle(style)), Style.EMPTY).get();
+                })
+                .collect(Collectors.toList())
+        );
+
         tooltip.add(new TranslatableText("gui.losttrinkets.rarity." + getRarity().name().toLowerCase(Locale.ENGLISH)).formatted(Formatting.DARK_GRAY));
     }
 
