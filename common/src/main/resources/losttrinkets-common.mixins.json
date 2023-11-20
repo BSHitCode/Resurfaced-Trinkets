@@ -5,13 +5,13 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
 	"BlockMixin",
-	"EntityPredicateMixin",
+	"TargetPredicateMixin",
 	"EndermanEntityMixin",
 	"PlayerEntityMixin",
 	"AbstractBlockStateMixin",
-	"WebBlockMixin",
+	"CobwebBlockMixin",
 	"VillagerEntityMixin",
-	"MerchantResultSlotMixin",
+	"TradeOutputSlotMixin",
 	"EnderPearlItemMixin",
 	"PigEntityMixin",
 	"FishingBobberEntityMixin",
@@ -20,7 +20,7 @@
 	"EntityMixin"
   ],
   "client": [
-	"LivingRendererMixin"
+	"LivingEntityRendererMixin"
   ],
   "server": [],
   "injectors": {

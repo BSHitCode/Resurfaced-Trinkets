@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import owmii.losttrinkets.handler.UnlockHandler;
 
 @Mixin(TradeOutputSlot.class)
-public class MerchantResultSlotMixin {
+public class TradeOutputSlotMixin {
     @Inject(method = "onTakeItem", at = @At("HEAD"))
     private void trade(PlayerEntity player, ItemStack stack, CallbackInfoReturnable<ItemStack> cir) {
         UnlockHandler.trade(player);

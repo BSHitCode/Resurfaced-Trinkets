@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import owmii.losttrinkets.handler.TargetHandler;
 
 @Mixin(TargetPredicate.class)
-public class EntityPredicateMixin {
+public class TargetPredicateMixin {
     @Inject(method = "test(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/LivingEntity;)Z", at = @At("TAIL"), cancellable = true)
     public void canTarget(LivingEntity attacker, LivingEntity target, CallbackInfoReturnable<Boolean> cir) {
         if (cir.getReturnValueZ()) {

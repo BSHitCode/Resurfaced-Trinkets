@@ -18,8 +18,8 @@ import owmii.losttrinkets.item.Itms;
 import owmii.losttrinkets.lib.util.Stack;
 
 @Mixin(CobwebBlock.class)
-public class WebBlockMixin extends Block {
-    public WebBlockMixin(Settings properties) {
+public class CobwebBlockMixin extends Block {
+    public CobwebBlockMixin(Settings properties) {
         super(properties);
     }
 

@@ -12,7 +12,7 @@ import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.item.Itms;
 
 @Mixin(LivingEntityRenderer.class)
-abstract class LivingRendererMixin {
+abstract class LivingEntityRendererMixin {
 
     @Redirect(
         method = "render",

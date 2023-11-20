@@ -11,7 +11,7 @@
         "EnchantmentHelperMixin",
         "EndermanEntityMixin",
         "ShulkerEntityMixin",
-        "EnchantmentContainerMixin"
+        "EnchantmentScreenHandlerMixin"
     ],
     "client": [],
     "server": [],

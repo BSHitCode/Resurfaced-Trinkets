@@ -15,7 +15,7 @@ import owmii.losttrinkets.api.trinket.Trinkets;
 import owmii.losttrinkets.item.Itms;
 
 @Mixin(EnchantmentScreenHandler.class)
-public class EnchantmentContainerMixin {
+public class EnchantmentScreenHandlerMixin {
     private PlayerEntity player;
 
     @Inject(method = "<init>(ILnet/minecraft/entity/player/PlayerInventory;Lnet/minecraft/screen/ScreenHandlerContext;)V", at = @At("RETURN"))

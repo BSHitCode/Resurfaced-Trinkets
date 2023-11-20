@@ -6,7 +6,7 @@
     "mixins": [
         "ThreadedAnvilChunkStorageMixin",
         "EntityTrackerAccessor",
-        "EnchantmentContainerMixin"
+        "EnchantmentScreenHandlerMixin"
     ],
     "client": [],
     "server": [],
