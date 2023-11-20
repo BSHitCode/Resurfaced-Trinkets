@@ -1,6 +1,5 @@
 package owmii.losttrinkets.fabric.mixin;
 
-import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -10,7 +9,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.ShulkerEntity;
 import owmii.losttrinkets.item.trinkets.StickyMindTrinket;
 
-@Debug(export = true)
 @Mixin(ShulkerEntity.class)
 abstract class ShulkerEntityMixin {
     @Inject(method = "tryTeleport", at = @At("HEAD"), cancellable = true)

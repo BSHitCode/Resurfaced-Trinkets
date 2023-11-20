@@ -1,6 +1,5 @@
 package owmii.losttrinkets.fabric.mixin;
 
-import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,7 +18,6 @@ import owmii.losttrinkets.item.trinkets.CreepoTrinket;
 import owmii.losttrinkets.item.trinkets.MinersPickTrinket;
 import owmii.losttrinkets.item.trinkets.RubyHeartTrinket;
 
-@Debug(export = true)
 @Mixin(PlayerEntity.class)
 abstract class PlayerEntityMixin {
     @Unique
