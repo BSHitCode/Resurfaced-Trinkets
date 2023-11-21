@@ -16,7 +16,6 @@ public class CreepoTrinket extends Trinket<CreepoTrinket> {
     public static void resetExplosion(PlayerEntity player, Entity target) {
         if (LostTrinketsAPI.getTrinkets(player).isActive(Itms.CREEPO)) {
             if (target instanceof CreeperEntity) {
-                // TODO: this just "deletes" the creeper; maybe add an "poof" effect?
                 ((CreeperEntity) target).setFuseSpeed(-1);
                 ((CreeperEntity) target).currentFuseTime = 0;
             }

@@ -64,6 +64,7 @@ public class CommonEventHandler {
                     PlayerEntity player = (PlayerEntity) target;
                     Trinkets trinkets = LostTrinketsAPI.getTrinkets(player);
                     if (trinkets.isActive(Itms.CREEPO)) {
+                        creeper.playSpawnEffects();
                         return ActionResult.FAIL;
                     }
                 }
