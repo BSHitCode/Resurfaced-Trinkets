@@ -1,3 +1,7 @@
+0.1.29
+- Creepers now make a "poof" effect when denied exploding through the "creepo" trinket
+- Re-enable blackList & nonRandom settings that where disabled in the internal restructure
+
 0.1.28
 - Migrated buildprocess to architectury
 - Reworked config to utilize cloth as config api
