@@ -32,9 +32,9 @@ public class SyncFlyPacket implements IPacket {
         MC.player().ifPresent(player -> {
             PlayerData data = LostTrinketsAPI.getData(player);
             data.allowFlying = this.fly;
-            player.abilities.allowFlying = this.fly;
+            player.getAbilities().allowFlying = this.fly;
             if (!this.fly) {
-                player.abilities.flying = false;
+                player.getAbilities().flying = false;
             }
         });
     }

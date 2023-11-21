@@ -19,9 +19,9 @@ public class MagicalFeathersTrinket extends Trinket<MagicalFeathersTrinket> impl
     @Override
     public void tick(World world, BlockPos pos, PlayerEntity player) {
         PlayerData data = LostTrinketsAPI.getData(player);
-        player.abilities.allowFlying = true;
+        player.getAbilities().allowFlying = true;
         if (data.wasFlying) {
-            player.abilities.flying = true;
+            player.getAbilities().flying = true;
             data.wasFlying = false;
         }
         if (!data.allowFlying) {
@@ -37,8 +37,8 @@ public class MagicalFeathersTrinket extends Trinket<MagicalFeathersTrinket> impl
         super.onDeactivated(world, pos, player);
         PlayerData data = LostTrinketsAPI.getData(player);
         if (data.allowFlying) {
-            player.abilities.allowFlying = false;
-            player.abilities.flying = false;
+            player.getAbilities().allowFlying = false;
+            player.getAbilities().flying = false;
             if (!world.isClient) {
                 Network.toClient(new SyncFlyPacket(false), player);
             }

@@ -18,7 +18,7 @@ public class AbstractLTScreen extends ScreenBase {
     @Override
     public void tick() {
         if (this.refresh && this.toRefresh != null) {
-            this.mc.openScreen(this.toRefresh);
+            this.mc.setScreen(this.toRefresh);
             this.refresh = false;
             this.toRefresh = null;
         }

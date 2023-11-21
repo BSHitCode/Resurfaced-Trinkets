@@ -1,3 +1,6 @@
+0.2.0
+- Make the mod compatible with Minecraft 1.17
+
 0.1.30
 - Update JEY compatibility
 - Forge: use the correct display name

@@ -1,7 +1,5 @@
 package owmii.losttrinkets.config;
 
-import static owmii.losttrinkets.LostTrinkets.LOGGER;
-
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
@@ -15,7 +13,7 @@ import java.util.Map;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
 
-import me.shedaniel.architectury.utils.GameInstance;
+import dev.architectury.utils.GameInstance;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.ConfigHolder;

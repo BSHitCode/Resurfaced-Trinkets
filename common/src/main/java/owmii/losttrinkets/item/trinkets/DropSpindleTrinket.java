@@ -20,7 +20,7 @@ public class DropSpindleTrinket extends Trinket<DropSpindleTrinket> {
             PlayerEntity player = (PlayerEntity) entity;
             Trinkets trinkets = LostTrinketsAPI.getTrinkets(player);
             if (trinkets.isActive(Itms.DROP_SPINDLE)) {
-                player.inventory.armor.forEach(stack -> {
+                player.getInventory().armor.forEach(stack -> {
                     if (player.world.random.nextInt(2) == 0) {
                         if (!stack.isEmpty() && stack.isDamaged()) {
                             stack.setDamage(stack.getDamage() - 1);

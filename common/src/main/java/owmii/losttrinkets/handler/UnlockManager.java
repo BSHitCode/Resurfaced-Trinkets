@@ -2,7 +2,7 @@ package owmii.losttrinkets.handler;
 
 import com.google.common.collect.Sets;
 
-import me.shedaniel.architectury.utils.GameInstance;
+import dev.architectury.utils.GameInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.MessageType;
@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -57,8 +58,10 @@ public class UnlockManager {
                         .map(WeightedTrinket::new)
                         .collect(Collectors.toList()));
                 if (!WEIGHTED_TRINKETS.isEmpty()) {
-                    WeightedTrinket item = WeightedPicker.getRandom(player.world.random, WEIGHTED_TRINKETS);
-                    unlock(player, item.trinket, checkDelay);
+                    Optional<WeightedTrinket> item = WeightedPicker.getRandom(player.world.random, WEIGHTED_TRINKETS);
+                    if (item.isPresent()) {
+                        unlock(player, item.get().trinket, checkDelay);
+                    }
                 }
             }
         }

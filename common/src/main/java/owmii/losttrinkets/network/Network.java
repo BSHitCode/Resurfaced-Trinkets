@@ -7,8 +7,8 @@ import java.util.IdentityHashMap;
 import java.util.List;
 
 import io.netty.buffer.Unpooled;
-import me.shedaniel.architectury.networking.NetworkManager;
-import me.shedaniel.architectury.networking.NetworkManager.PacketContext;
+import dev.architectury.networking.NetworkManager;
+import dev.architectury.networking.NetworkManager.PacketContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;

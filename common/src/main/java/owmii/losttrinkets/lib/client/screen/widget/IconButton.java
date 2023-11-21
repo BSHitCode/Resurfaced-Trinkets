@@ -15,7 +15,6 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
-import net.minecraft.util.Identifier;
 import owmii.losttrinkets.lib.client.screen.Texture;
 
 import javax.annotation.Nullable;
@@ -87,31 +86,25 @@ public class IconButton extends ButtonWidget {
                 f.draw(matrix, s, this.xOffset + this.x + 0.5F + this.width / 2.0F - width / 2.0F, this.yOffset + this.y + this.height / 2.0F - 4, color);
             }
             if (!this.stack.isEmpty()) {
-                RenderSystem.pushMatrix();
+                MatrixStack matrixStack = RenderSystem.getModelViewStack();
+                matrixStack.push();
                 MinecraftClient mc = MinecraftClient.getInstance();
-                RenderSystem.translated(this.xOffset + this.x - 8.0D + this.width / 2.0F, this.yOffset + this.y - 8.0D + this.height / 2.0F, 0.0F);
+                matrixStack.translate(this.xOffset + this.x - 8.0D + this.width / 2.0F, this.yOffset + this.y - 8.0D + this.height / 2.0F, 0.0F);
+                RenderSystem.applyModelViewMatrix();
                 mc.getItemRenderer().renderInGuiWithOverrides(this.stack, 0, 0);
-                RenderSystem.popMatrix();
+                matrixStack.pop();
+                RenderSystem.applyModelViewMatrix();
             }
         }
     }
 
     @Override
-    public void renderToolTip(MatrixStack matrix, int mouseX, int mouseY) {
+    public void renderTooltip(MatrixStack matrix, int mouseX, int mouseY) {
         List<Text> tooltip = new ArrayList<>();
         this.tooltipConsumer.accept(tooltip);
         if (!tooltip.isEmpty()) {
             this.screen.renderTooltip(matrix, tooltip, mouseX, mouseY);
         }
-    }
-
-    public void blit(MatrixStack matrix, Texture texture, int x, int y) {
-        bindTexture(texture.getLocation());
-        drawTexture(matrix, x, y, texture.getU(), texture.getV(), texture.getWidth(), texture.getHeight());
-    }
-
-    public void bindTexture(Identifier guiTexture) {
-        this.mc.getTextureManager().bindTexture(guiTexture);
     }
 
     public Screen getScreen() {

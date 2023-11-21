@@ -24,19 +24,20 @@ public class EnderPearlItemMixin extends Item {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+        // TODO: this is not update save; we should transform the code someway other...
         ItemStack stack = player.getStackInHand(hand);
-        world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_ENDER_PEARL_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (RANDOM.nextFloat() * 0.4F + 0.8F));
+        world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_ENDER_PEARL_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F));
         player.getItemCooldownManager().set(this, 20);
         if (!world.isClient) {
             EnderPearlEntity entity = new EnderPearlEntity(world, player);
             entity.setItem(stack);
-            entity.setProperties(player, player.pitch, player.yaw, 0.0F, 1.5F, 1.0F);
+            entity.setProperties(player, player.getPitch(), player.getYaw(), 0.0F, 1.5F, 1.0F);
             world.spawnEntity(entity);
         }
         player.incrementStat(Stats.USED.getOrCreateStat(this));
 
         Trinkets trinkets = LostTrinketsAPI.getTrinkets(player);
-        if (!player.abilities.creativeMode && !trinkets.isActive(Itms.EMPTY_AMULET)) {
+        if (!player.getAbilities().creativeMode && !trinkets.isActive(Itms.EMPTY_AMULET)) {
             stack.decrement(1);
         }
 

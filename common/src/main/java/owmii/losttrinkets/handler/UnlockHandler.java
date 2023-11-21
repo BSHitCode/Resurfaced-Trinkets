@@ -1,6 +1,6 @@
 package owmii.losttrinkets.handler;
 
-import me.shedaniel.architectury.hooks.PlayerHooks;
+import dev.architectury.hooks.level.entity.PlayerHooks;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;

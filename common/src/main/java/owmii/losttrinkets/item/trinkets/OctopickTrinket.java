@@ -94,7 +94,6 @@ public class OctopickTrinket extends Trinket<OctopickTrinket> {
                 if (entity instanceof ItemEntity) {
                     ((ItemEntity) entity).resetPickupDelay();
                 } else if (entity instanceof ExperienceOrbEntity) {
-                    ((ExperienceOrbEntity) entity).pickupDelay = 0;
                     player.experiencePickUpDelay = 0;
                 } else {
                     valid = false;

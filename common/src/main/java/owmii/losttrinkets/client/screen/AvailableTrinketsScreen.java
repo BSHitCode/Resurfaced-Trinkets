@@ -75,12 +75,12 @@ public class AvailableTrinketsScreen extends AbstractLTScreen {
             int i = this.columns * this.rows;
             if (cur == this.columns * this.rows && total > this.headID) {
                 addButton(new IconButton(60 + x1, y1, Textures.TRINKET_NEXT, button -> {
-                    this.mc.openScreen(new AvailableTrinketsScreen(this.prevScreen, this.headID + i));
+                    this.mc.setScreen(new AvailableTrinketsScreen(this.prevScreen, this.headID + i));
                 }, this));
             }
             if (this.headID > 0) {
                 addButton(new IconButton(x1, y1, Textures.TRINKET_PREV, button -> {
-                    this.mc.openScreen(new AvailableTrinketsScreen(this.prevScreen, Math.max(0, this.headID - i)));
+                    this.mc.setScreen(new AvailableTrinketsScreen(this.prevScreen, Math.max(0, this.headID - i)));
                 }, this));
             }
         }
@@ -106,7 +106,7 @@ public class AvailableTrinketsScreen extends AbstractLTScreen {
     @Override
     public void onClose() {
         if (this.prevScreen instanceof TrinketsScreen) {
-            this.mc.openScreen(this.prevScreen);
+            this.mc.setScreen(this.prevScreen);
         }
     }
 }

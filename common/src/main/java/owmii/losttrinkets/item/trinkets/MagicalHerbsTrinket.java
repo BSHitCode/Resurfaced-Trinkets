@@ -2,8 +2,8 @@ package owmii.losttrinkets.item.trinkets;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffectType;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
@@ -25,7 +25,7 @@ public class MagicalHerbsTrinket extends Trinket<MagicalHerbsTrinket> {
         if (entity instanceof PlayerEntity) {
             Trinkets trinkets = LostTrinketsAPI.getTrinkets((PlayerEntity) entity);
             if (trinkets.isActive(Itms.MAGICAL_HERBS)) {
-                if (effect.getType().equals(StatusEffectType.HARMFUL) ||
+                if (effect.getCategory().equals(StatusEffectCategory.HARMFUL) ||
                         effect.equals(StatusEffects.BAD_OMEN)) {
                     denyResult.run();
                 }
@@ -39,7 +39,7 @@ public class MagicalHerbsTrinket extends Trinket<MagicalHerbsTrinket> {
         Iterator<StatusEffectInstance> iterator = player.getActiveStatusEffects().values().iterator();
         while (iterator.hasNext()) {
             StatusEffectInstance effect = iterator.next();
-            if (effect.getEffectType().getType().equals(StatusEffectType.HARMFUL) ||
+            if (effect.getEffectType().getCategory().equals(StatusEffectCategory.HARMFUL) ||
                     effect.getEffectType().equals(StatusEffects.BAD_OMEN)) {
                 player.onStatusEffectRemoved(effect);
                 iterator.remove();

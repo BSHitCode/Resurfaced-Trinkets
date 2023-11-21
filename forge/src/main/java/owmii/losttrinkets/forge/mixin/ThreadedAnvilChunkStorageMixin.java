@@ -22,10 +22,10 @@ abstract class ThreadedAnvilChunkStorageMixin implements ThreadedAnvilChunkStora
 	private Int2ObjectMap<EntityTrackerAccessor> entityTrackers;
 
 	public Collection<ServerPlayerEntity> forge_getTrackingPlayers(Entity entity) {
-		EntityTrackerAccessor accessor = this.entityTrackers.get(entity.getEntityId());
+		EntityTrackerAccessor accessor = this.entityTrackers.get(entity.getId());
 
 		if (accessor != null) {
-			return accessor.getPlayersTracking();
+			return accessor.getListeners();
 		}
 
 		return Collections.emptySet();

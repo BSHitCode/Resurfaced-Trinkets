@@ -27,12 +27,15 @@ public class TrinketButton extends ButtonWidget {
             this.texture.draw(matrix, this.x, this.y);
             int i = (this.texture.getWidth() - 16) / 2;
             int j = (this.texture.getHeight() - 16) / 2;
-            RenderSystem.pushMatrix();
+            MatrixStack matrixStack = RenderSystem.getModelViewStack();
+            matrixStack.push();
             MinecraftClient mc = MinecraftClient.getInstance();
-            RenderSystem.translated(i + this.x - 2.0F, j + this.y - 2.0F, 0.0F);
-            RenderSystem.scaled(1.25F, 1.25F, 1.0F);
+            matrixStack.translate(i + this.x - 2.0F, j + this.y - 2.0F, 0.0F);
+            matrixStack.scale(1.25F, 1.25F, 1.0F);
+            RenderSystem.applyModelViewMatrix();
             mc.getItemRenderer().renderInGuiWithOverrides(new ItemStack(this.trinket), 0, 0);
-            RenderSystem.popMatrix();
+            matrixStack.pop();
+            RenderSystem.applyModelViewMatrix();
         }
     }
 }

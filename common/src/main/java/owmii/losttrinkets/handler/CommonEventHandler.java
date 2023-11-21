@@ -2,19 +2,19 @@ package owmii.losttrinkets.handler;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-import me.shedaniel.architectury.event.events.BlockEvent;
-import me.shedaniel.architectury.event.events.EntityEvent;
-import me.shedaniel.architectury.event.events.ExplosionEvent;
-import me.shedaniel.architectury.event.events.LifecycleEvent;
-import me.shedaniel.architectury.event.events.PlayerEvent;
-import me.shedaniel.architectury.event.events.TickEvent;
+import dev.architectury.event.EventResult;
+import dev.architectury.event.events.common.BlockEvent;
+import dev.architectury.event.events.common.EntityEvent;
+import dev.architectury.event.events.common.ExplosionEvent;
+import dev.architectury.event.events.common.LifecycleEvent;
+import dev.architectury.event.events.common.PlayerEvent;
+import dev.architectury.event.events.common.TickEvent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.ActionResult;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.player.PlayerData;
 import owmii.losttrinkets.api.trinket.Trinkets;
@@ -66,29 +66,30 @@ public class CommonEventHandler {
                     Trinkets trinkets = LostTrinketsAPI.getTrinkets(player);
                     if (trinkets.isActive(Itms.CREEPO)) {
                         creeper.playSpawnEffects();
-                        return ActionResult.FAIL;
+                        return EventResult.interruptFalse();
                     }
                 }
             }
-            return ActionResult.PASS;
+            return EventResult.pass();
         });
         EntityEvent.ADD.register((entity, world) -> {
-            AtomicReference<ActionResult> result = new AtomicReference<>(ActionResult.PASS);
+            AtomicReference<EventResult> result = new AtomicReference<>(EventResult.pass());
             OctopickTrinket.collectDrops(entity, (cancel) -> {
-                result.set(cancel ? ActionResult.FAIL : ActionResult.PASS);
+                result.set(cancel ? EventResult.interruptFalse() : EventResult.pass());
             });
             BigFootTrinket.addAvoidGoal(entity);
             return result.get();
         });
-        EntityEvent.LIVING_ATTACK.register((entity, source, amount) -> {
-            if (source == null) return ActionResult.PASS;
+        // Forge's LivingAttackEvent
+        EntityEvent.LIVING_HURT.register((entity, source, amount) -> {
+            if (source == null) return EventResult.pass();
 
-            AtomicReference<ActionResult> result = new AtomicReference<>(ActionResult.PASS);
+            AtomicReference<EventResult> result = new AtomicReference<>(EventResult.pass());
             if (BlazeHeartTrinket.isImmuneToFire(entity, source)) {
-                result.set(ActionResult.FAIL);;
+                result.set(EventResult.interruptFalse());
             }
             MadAuraTrinket.onAttack(entity, source, (cancel) -> {
-                result.set(cancel ? ActionResult.FAIL : ActionResult.PASS);
+                result.set(cancel ? EventResult.interruptFalse() : EventResult.pass());
             });
             OctopusLegTrinket.onAttack(entity, source);
             return result.get();
@@ -96,16 +97,16 @@ public class CommonEventHandler {
         // saveHealthHurt is handed by fabric:PlayerEntityMixin.applyDamage() / forge:LivingHurtEvent
         // onHurt is handled by fabric:LivingEntityMixin.applyDamage() / fabric:PlayerEntityMixin.applyDamage() / forge:LivingHurtEvent
         EntityEvent.LIVING_DEATH.register((entity, source) -> {
-            if (source == null) return ActionResult.PASS;
-            AtomicReference<ActionResult> result = new AtomicReference<>(ActionResult.PASS);
+            if (source == null) return EventResult.pass();
+            AtomicReference<EventResult> result = new AtomicReference<>(EventResult.pass());
             RubyHeartTrinket.onDeath(source, entity, (cancel) -> {
-                result.set(cancel ? ActionResult.FAIL : ActionResult.PASS);
+                result.set(cancel ? EventResult.interruptFalse() : EventResult.pass());
             });
             return result.get();
         });
         EntityEvent.LIVING_DEATH.register((entity, source) -> {
             UnlockHandler.kill(source, entity);
-            return ActionResult.PASS;
+            return EventResult.pass();
         });
         // onDrops is handled by fabric:LivingEntityMixin.drop() / forge:LivingDropsEvent
         // onPotion is handled by fabric:LivingEntityMixin.canHaveStatusEffect() / forge:PotionApplicableEvent
@@ -114,9 +115,9 @@ public class CommonEventHandler {
         // onUseFinish fabric:LivingEntityMixin.consumeItem() / forge:LivingEntityUseItemEvent.Finish
         // onBreakSpeed is handled by fabric:PlayerEntityMixin.getBlockBreakingSpeed() / forge:PlayerEvent.BreakSpeed
         BlockEvent.BREAK.register((world, pos, state, player, xp) -> {
-            AtomicReference<ActionResult> result = new AtomicReference<>(ActionResult.PASS);
+            AtomicReference<EventResult> result = new AtomicReference<>(EventResult.pass());
             OctopickTrinket.onBreak(player, pos, state, (cancel) -> {
-                result.set(cancel ? ActionResult.FAIL : ActionResult.PASS);
+                result.set(cancel ? EventResult.interruptFalse() : EventResult.pass());
             });
             return result.get();
         });

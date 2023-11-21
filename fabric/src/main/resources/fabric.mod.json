@@ -32,10 +32,10 @@
         "losttrinkets-fabric.mixins.json"
     ],
     "depends": {
-        "fabricloader": ">=0.13.0",
-        "fabric": ">=0.34.2",
-        "minecraft": ">=1.16.5",
-        "architectury": ">=1.32.68",
-        "cloth-config2": ">=4.17.101"
+        "fabricloader": ">=0.14.0",
+        "fabric": ">=0.46.0",
+        "minecraft": ">=1.17.0",
+        "architectury": ">=2.10.0",
+        "cloth-config2": ">=5.3.0"
     }
 }

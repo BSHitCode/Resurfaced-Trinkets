@@ -2,7 +2,7 @@ package owmii.losttrinkets;
 
 import java.util.Collection;
 
-import me.shedaniel.architectury.platform.Platform;
+import dev.architectury.platform.Platform;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;

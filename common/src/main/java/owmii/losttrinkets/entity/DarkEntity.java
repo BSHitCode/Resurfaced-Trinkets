@@ -55,8 +55,8 @@ public class DarkEntity extends PathAwareEntity {
     }
 
     protected void vanish() {
-        remove();
         playSpawnEffects();
+        remove(RemovalReason.DISCARDED);
     }
 
     @Override

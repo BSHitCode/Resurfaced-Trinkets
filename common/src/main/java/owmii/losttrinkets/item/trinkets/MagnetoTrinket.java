@@ -1,6 +1,6 @@
 package owmii.losttrinkets.item.trinkets;
 
-import me.shedaniel.architectury.event.events.InteractionEvent;
+import dev.architectury.event.events.common.InteractionEvent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;

@@ -31,7 +31,6 @@ public class MagnetoPacket implements IPacket {
                 entity.onPlayerCollision(player);
             });
             orbEntities.stream().filter(Magnet::canCollectManual).forEach(orb -> {
-                orb.pickupDelay = 0;
                 player.experiencePickUpDelay = 0;
                 orb.onPlayerCollision(player);
             });

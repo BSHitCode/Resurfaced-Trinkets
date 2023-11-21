@@ -3,7 +3,8 @@ package owmii.losttrinkets.client.render.entity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.entity.BipedEntityRenderer;
-import net.minecraft.client.render.entity.EntityRenderDispatcher;
+import net.minecraft.client.render.entity.EntityRendererFactory;
+import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -15,8 +16,8 @@ public class DarkVexRenderer extends BipedEntityRenderer<DarkVexEntity, DarkVexM
     private static final Identifier VEX_TEXTURE = new Identifier("textures/entity/illager/vex.png");
     private static final Identifier VEX_CHARGING_TEXTURE = new Identifier("textures/entity/illager/vex_charging.png");
 
-    public DarkVexRenderer(EntityRenderDispatcher renderManagerIn) {
-        super(renderManagerIn, new DarkVexModel(), 0.3F);
+    public DarkVexRenderer(EntityRendererFactory.Context context) {
+        super(context, new DarkVexModel(context.getPart(EntityModelLayers.VEX)), 0.3F);
     }
 
     @Override

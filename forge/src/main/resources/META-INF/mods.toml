@@ -18,20 +18,20 @@ description='''
 [[dependencies.losttrinkets]]
     modId="forge"
     mandatory=true
-    versionRange="[36.0.0,)"
+    versionRange="[37.1.0,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.losttrinkets]]
     modId="architectury"
     mandatory=true
-    versionRange="[1.32.68,]"
+    versionRange="[2.10.12,]"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.losttrinkets]]
-    modId="cloth-config"
+    modId="cloth_config"
     mandatory=true
-    versionRange="[4.17.101,]"
+    versionRange="[5.3.63,]"
     ordering="NONE"
     side="BOTH"

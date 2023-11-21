@@ -210,13 +210,13 @@ public class DarkVexEntity extends DarkEntity {
                     DarkVexEntity.this.setVelocity(DarkVexEntity.this.getVelocity().add(vector3d.multiply(this.speed * 0.05D / d0)));
                     if (DarkVexEntity.this.getTarget() == null) {
                         Vec3d vector3d1 = DarkVexEntity.this.getVelocity();
-                        DarkVexEntity.this.yaw = -((float) MathHelper.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI);
-                        DarkVexEntity.this.bodyYaw = DarkVexEntity.this.yaw;
+                        DarkVexEntity.this.setYaw( -((float) MathHelper.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI) );
+                        DarkVexEntity.this.bodyYaw = DarkVexEntity.this.getYaw();
                     } else {
                         double d2 = DarkVexEntity.this.getTarget().getX() - DarkVexEntity.this.getX();
                         double d1 = DarkVexEntity.this.getTarget().getZ() - DarkVexEntity.this.getZ();
-                        DarkVexEntity.this.yaw = -((float) MathHelper.atan2(d2, d1)) * (180F / (float) Math.PI);
-                        DarkVexEntity.this.bodyYaw = DarkVexEntity.this.yaw;
+                        DarkVexEntity.this.setYaw( -((float) MathHelper.atan2(d2, d1)) * (180F / (float) Math.PI) );
+                        DarkVexEntity.this.bodyYaw = DarkVexEntity.this.getYaw();
                     }
                 }
 

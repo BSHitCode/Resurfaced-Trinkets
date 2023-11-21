@@ -51,7 +51,7 @@ public class DataManager {
 
     public static void loggedOut(PlayerEntity player) {
         PlayerData data = LostTrinketsAPI.getData(player);
-        data.wasFlying = player.abilities.flying;
+        data.wasFlying = player.getAbilities().flying;
     }
 
     public static void trackPlayer(Entity target, PlayerEntity player) {

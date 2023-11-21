@@ -2,7 +2,7 @@ package owmii.losttrinkets.lib.compat.botania;
 
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.ModList;
-import vazkii.botania.api.BotaniaAPI;
+// import vazkii.botania.api.BotaniaAPI;
 
 public class BotaniaCompat {
     public static final String ID = "botania";
@@ -13,6 +13,7 @@ public class BotaniaCompat {
     }
 
     public static boolean preventCollect(Entity entity) {
-        return isLoaded() && BotaniaAPI.instance().hasSolegnoliaAround(entity);
+        // return isLoaded() && BotaniaAPI.instance().hasSolegnoliaAround(entity);
+        return false;
     }
 }

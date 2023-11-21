@@ -33,6 +33,7 @@ public class TrinketsScreen extends AbstractLTScreen {
 
     @Override
     protected void init() {
+        super.init();
         if (this.mc.player != null) {
             this.x = this.width / 2 - this.columns * this.btnDim / 2;
             this.y = this.height / 2 - this.rows * this.btnDim / 2;
@@ -46,7 +47,7 @@ public class TrinketsScreen extends AbstractLTScreen {
                     if (i + 1 <= all.size()) {
                         ITrinket trinket = all.get(i);
                         addButton(new TrinketButton(this.x + j2 * this.btnDim, this.y + j1 * this.btnDim, Textures.TRINKET_ACTIVE_BG, trinket, button -> {
-                            this.mc.openScreen(new TrinketOptionScreen(trinket, this));
+                            this.mc.setScreen(new TrinketOptionScreen(trinket, this));
                         }, (button, matrix, i1, i2) -> {
                             ItemStack stack = new ItemStack(trinket);
                             ArrayList<Text> list = Lists.newArrayList();
@@ -69,7 +70,7 @@ public class TrinketsScreen extends AbstractLTScreen {
                                 Network.toServer(new UnlockSlotPacket());
                                 setRefreshScreen(this);
                             } else {
-                                this.mc.openScreen(new AvailableTrinketsScreen(this, 0));
+                                this.mc.setScreen(new AvailableTrinketsScreen(this, 0));
                             }
                         }, this).setTooltip(tooltip -> {
                             if (locked) {

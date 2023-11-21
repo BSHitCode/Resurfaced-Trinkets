@@ -1,6 +1,6 @@
 package owmii.losttrinkets.item.trinkets;
 
-import me.shedaniel.architectury.utils.GameInstance;
+import dev.architectury.utils.GameInstance;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;

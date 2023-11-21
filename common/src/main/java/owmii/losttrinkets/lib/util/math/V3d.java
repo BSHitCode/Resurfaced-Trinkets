@@ -156,7 +156,7 @@ public class V3d extends Vec3d {
     }
 
     public double hMagSqrt() {
-        return MathHelper.sqrt(hMag());
+        return Math.sqrt(hMag());
     }
 
     public double hMag() {
@@ -164,7 +164,7 @@ public class V3d extends Vec3d {
     }
 
     public double magSqrt() {
-        return MathHelper.sqrt(mag());
+        return Math.sqrt(mag());
     }
 
     public double mag() {

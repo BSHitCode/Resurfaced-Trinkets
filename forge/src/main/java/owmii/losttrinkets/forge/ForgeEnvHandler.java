@@ -60,7 +60,7 @@ public class ForgeEnvHandler implements EnvHandler {
 
     @Override
     public boolean canHarvestBlock(BlockState state, PlayerEntity player, WorldAccess world, BlockPos pos) {
-        return ForgeHooks.canHarvestBlock(state, player, world, pos);
+        return ForgeHooks.isCorrectToolForDrops(state, player);
     }
 
     @Override

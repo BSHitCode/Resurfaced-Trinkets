@@ -2,7 +2,7 @@ package owmii.losttrinkets.command;
 
 import com.mojang.brigadier.CommandDispatcher;
 
-import me.shedaniel.architectury.event.events.CommandRegistrationEvent;
+import dev.architectury.event.events.common.CommandRegistrationEvent;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;

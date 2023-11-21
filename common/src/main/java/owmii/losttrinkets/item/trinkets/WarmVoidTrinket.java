@@ -32,7 +32,7 @@ public class WarmVoidTrinket extends Trinket<WarmVoidTrinket> implements ITickab
 
     @Override
     public void tick(World world, BlockPos pos, PlayerEntity player) {
-        // TODO 1.17: Update -64
+        // TODO 1.18: Update -64
         if (player instanceof ServerPlayerEntity && player.getY() + Math.min(0, player.getVelocity().getY()) <= -64) {
             if (!player.hasVehicle() && !player.hasPassengers()) {
                 teleportToSpawnPoint((ServerPlayerEntity) player);

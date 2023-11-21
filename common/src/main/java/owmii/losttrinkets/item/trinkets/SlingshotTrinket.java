@@ -22,7 +22,7 @@ public class SlingshotTrinket extends Trinket<SlingshotTrinket> {
             PlayerEntity player = (PlayerEntity) entity;
             Trinkets trinkets = LostTrinketsAPI.getTrinkets(player);
             if (trinkets.isActive(Itms.SLINGSHOT)) {
-                entityLiving.takeKnockback(1.4F, (double) MathHelper.sin(player.yaw * ((float) Math.PI / 180F)), (double) (-MathHelper.cos(player.yaw * ((float) Math.PI / 180F))));
+                entityLiving.takeKnockback(1.4F, (double) MathHelper.sin(player.getYaw() * ((float) Math.PI / 180F)), (double) (-MathHelper.cos(player.getYaw() * ((float) Math.PI / 180F))));
             }
         }
     }

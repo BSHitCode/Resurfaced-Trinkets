@@ -1,6 +1,6 @@
 package owmii.losttrinkets.entity.ai;
 
-import net.minecraft.entity.ai.TargetFinder;
+import net.minecraft.entity.ai.NoPenaltyTargeting;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.pathing.EntityNavigation;
 import net.minecraft.entity.ai.pathing.Path;
@@ -56,7 +56,7 @@ public class BigFootGoal extends Goal {
             this.player = this.entity.world.getClosestPlayer(this.entity.getX(), this.entity.getY(), this.entity.getZ(), 8.0,
                     target -> target instanceof PlayerEntity && LostTrinketsAPI.getTrinkets((PlayerEntity) target).isActive(Itms.BIG_FOOT));
             if (this.player != null) {
-                Vec3d vector3d = TargetFinder.findTargetAwayFrom(this.entity, 16, 7, this.player.getPos());
+                Vec3d vector3d = NoPenaltyTargeting.find(this.entity, 16, 7, this.player.getPos());
                 if (vector3d == null) {
                     return false;
                 } else if (this.player.squaredDistanceTo(vector3d.x, vector3d.y, vector3d.z) < this.player.squaredDistanceTo(this.entity)) {

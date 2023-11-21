@@ -16,7 +16,7 @@ public class MossyBeltTrinket extends Trinket<MossyBeltTrinket> implements ITick
     @Override
     public void tick(World world, BlockPos pos, PlayerEntity player) {
         if (world.getTime() % 40 == 0) {
-            for (ItemStack stack : player.inventory.armor) {
+            for (ItemStack stack : player.getInventory().armor) {
                 if (!stack.isEmpty() && stack.isDamaged()) {
                     stack.setDamage(stack.getDamage() - 1);
                     break;

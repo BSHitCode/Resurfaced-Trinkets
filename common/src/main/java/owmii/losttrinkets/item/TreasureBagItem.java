@@ -2,8 +2,8 @@ package owmii.losttrinkets.item;
 
 import java.util.List;
 
-import me.shedaniel.architectury.hooks.ItemStackHooks;
-import me.shedaniel.architectury.utils.GameInstance;
+import dev.architectury.hooks.item.ItemStackHooks;
+import dev.architectury.utils.GameInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

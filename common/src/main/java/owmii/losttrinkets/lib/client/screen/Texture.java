@@ -1,7 +1,10 @@
 package owmii.losttrinkets.lib.client.screen;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import owmii.losttrinkets.LostTrinkets;
@@ -49,13 +52,10 @@ public class Texture extends DrawableHelper {
 
     public void draw(MatrixStack matrix, int x, int y) {
         if (!isEmpty()) {
-            bindTexture(getLocation());
+            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+            RenderSystem.setShaderTexture(0, getLocation());
             drawTexture(matrix, x, y, getU(), getV(), getWidth(), getHeight(), this.tw, this.th);
         }
-    }
-
-    public void bindTexture(Identifier guiTexture) {
-        MinecraftClient.getInstance().getTextureManager().bindTexture(guiTexture);
     }
 
     public Texture addW(int width) {

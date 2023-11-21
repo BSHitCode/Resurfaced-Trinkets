@@ -1,15 +1,15 @@
 package owmii.losttrinkets.forge;
 
-import me.shedaniel.architectury.platform.forge.EventBuses;
+import dev.architectury.platform.forge.EventBuses;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.ExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraftforge.fmlclient.ConfigGuiHandler;
 
 import owmii.losttrinkets.LostTrinkets;
 import owmii.losttrinkets.config.SunkenTrinketsConfig;
@@ -45,11 +45,12 @@ public class LostTrinketsForge {
 
     public static void registerModsPage() {
         ModLoadingContext.get().registerExtensionPoint(
-            ExtensionPoint.CONFIGGUIFACTORY,
-            () ->
+            ConfigGuiHandler.ConfigGuiFactory.class,
+            () -> new ConfigGuiHandler.ConfigGuiFactory(
                 (client, parent) -> {
                     return SunkenTrinketsConfig.builder().setParentScreen(parent).build();
                 }
+            )
         );
     }
 

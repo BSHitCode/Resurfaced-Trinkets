@@ -52,11 +52,14 @@ public class TrinketOptionScreen extends AbstractLTScreen {
         renderBackground(matrix);
         int x = this.width / 2 - 16 / 2;
         int y = this.height / 3 - 16 / 2;
-        RenderSystem.pushMatrix();
-        RenderSystem.translated(x - 16.0F, y - 16.0F, 0.0F);
-        RenderSystem.scaled(3.0F, 3.0F, 1.0F);
+        MatrixStack matrixStack = RenderSystem.getModelViewStack();
+        matrixStack.push();
+        matrixStack.translate(x - 16.0F, y - 16.0F, 0.0F);
+        matrixStack.scale(3.0F, 3.0F, 1.0F);
+        RenderSystem.applyModelViewMatrix();
         this.mc.getItemRenderer().renderInGuiWithOverrides(new ItemStack(this.trinket), 0, 0);
-        RenderSystem.popMatrix();
+        matrixStack.pop();
+        RenderSystem.applyModelViewMatrix();
 
         super.render(matrix, mx, my, pt);
 
@@ -67,7 +70,7 @@ public class TrinketOptionScreen extends AbstractLTScreen {
     @Override
     public void onClose() {
         if (this.prevScreen instanceof TrinketsScreen) {
-            this.mc.openScreen(this.prevScreen);
+            this.mc.setScreen(this.prevScreen);
         }
     }
 }

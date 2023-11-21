@@ -2,7 +2,7 @@ package owmii.losttrinkets.fabric;
 
 import java.util.Collection;
 
-import me.shedaniel.architectury.hooks.TagHooks;
+import dev.architectury.hooks.tags.TagHooks;
 import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.block.Block;
@@ -19,7 +19,7 @@ import net.minecraft.world.WorldAccess;
 import owmii.losttrinkets.EnvHandler;
 
 public class FabricEnvHandler implements EnvHandler {
-    static final Tag.Identified<Block> ORES = TagHooks.getBlockOptional(new Identifier("c", "ores"));
+    static final Tag.Identified<Block> ORES = TagHooks.optionalBlock(new Identifier("c", "ores"));
 
     @Override
     public boolean magnetCanCollect(Entity entity, boolean automated) {

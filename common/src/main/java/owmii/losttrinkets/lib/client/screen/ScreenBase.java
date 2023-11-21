@@ -1,6 +1,11 @@
 package owmii.losttrinkets.lib.client.screen;
 
+import java.util.List;
+
+import com.google.common.collect.Lists;
+
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.util.math.MatrixStack;
@@ -9,14 +14,17 @@ import net.minecraft.text.Text;
 public class ScreenBase extends Screen {
     public final MinecraftClient mc = MinecraftClient.getInstance();
     public int x, y, w, h;
+    private final List<ClickableWidget> buttons;
 
     protected ScreenBase(Text title) {
         super(title);
+        this.buttons = Lists.newArrayList();
     }
 
     @Override
     protected void init() {
         super.init();
+        this.buttons.clear();
         this.x = (this.width - this.w) / 2;
         this.y = (this.height - this.h) / 2;
     }
@@ -26,7 +34,7 @@ public class ScreenBase extends Screen {
         super.render(matrix, mx, my, pt);
         for (ClickableWidget widget : this.buttons) {
             if (widget.isHovered()) {
-                widget.renderToolTip(matrix, mx, my);
+                widget.renderTooltip(matrix, mx, my);
                 return;
             }
         }
@@ -55,7 +63,8 @@ public class ScreenBase extends Screen {
         return mouseX >= x && mouseY >= y && mouseX < x + w && mouseY < y + h;
     }
 
-    public <T extends ClickableWidget> T addButton2(T button) {
-        return addButton(button);
+    public <T extends ClickableWidget> T addButton(T button) {
+        this.buttons.add((ClickableWidget)this.addDrawableChild(button));
+        return button;
     }
 }
