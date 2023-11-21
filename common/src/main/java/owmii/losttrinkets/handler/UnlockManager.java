@@ -6,6 +6,7 @@ import me.shedaniel.architectury.utils.GameInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.MessageType;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.HoverEvent;
 import net.minecraft.text.Text;
@@ -15,8 +16,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.util.collection.WeightedPicker;
 import net.minecraft.util.registry.Registry;
-// import net.minecraftforge.fml.server.ServerLifecycleHooks;
-// import net.minecraftforge.registries.ForgeRegistries;
 import owmii.losttrinkets.LostTrinkets;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.player.PlayerData;
@@ -146,12 +145,11 @@ public class UnlockManager {
                 .forEach(rl -> LOGGER.warn(MARKER, "Redundant Non-Random Trinket (already banned): " + rl));
         // Remove banned trinkets from current players if server is running
 
-        // TODO: handle server reload somehow
-        // MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-        // if (server != null) {
-        //     server.runAsync(() -> GameInstance.getServer().getPlayerList().getPlayers()
-        //             .forEach(player -> LostTrinketsAPI.getTrinkets(player).removeDisabled(player)));
-        // }
+        MinecraftServer server = GameInstance.getServer();
+        if (server != null) {
+            server.submit(() -> GameInstance.getServer().getPlayerManager().getPlayerList()
+                    .forEach(player -> LostTrinketsAPI.getTrinkets(player).removeDisabled(player)));
+        }
     }
 
     public static Set<ITrinket> getTrinkets() {

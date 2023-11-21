@@ -5,6 +5,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import me.shedaniel.architectury.event.events.BlockEvent;
 import me.shedaniel.architectury.event.events.EntityEvent;
 import me.shedaniel.architectury.event.events.ExplosionEvent;
+import me.shedaniel.architectury.event.events.LifecycleEvent;
 import me.shedaniel.architectury.event.events.PlayerEvent;
 import me.shedaniel.architectury.event.events.TickEvent;
 import net.minecraft.entity.Entity;
@@ -129,6 +130,10 @@ public class CommonEventHandler {
         PlayerEvent.CHANGE_DIMENSION.register((player, oldLevel, newLevel) -> DataManager.sync(player));
         PlayerEvent.PLAYER_RESPAWN.register((player, conqueredEnd) -> DataManager.sync(player));
         // trackPlayer is handled by fabric:EntityTrackingEvents.START_TRACKING / forge:PlayerEvent.StartTracking
+
+        LifecycleEvent.SERVER_BEFORE_START.register((server) -> {
+            UnlockManager.refresh();
+        });
     }
 
     public static float onHurt(DamageSource source, LivingEntity entityLiving, float amount) {

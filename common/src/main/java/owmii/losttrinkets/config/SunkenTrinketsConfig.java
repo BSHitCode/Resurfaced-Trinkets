@@ -1,5 +1,7 @@
 package owmii.losttrinkets.config;
 
+import static owmii.losttrinkets.LostTrinkets.LOGGER;
+
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
@@ -13,6 +15,7 @@ import java.util.Map;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
 
+import me.shedaniel.architectury.utils.GameInstance;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.ConfigHolder;
@@ -28,6 +31,7 @@ import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import me.shedaniel.clothconfig2.impl.builders.SubCategoryBuilder;
 import net.minecraft.text.TranslatableText;
 import owmii.losttrinkets.LostTrinkets;
+import owmii.losttrinkets.handler.UnlockManager;
 
 @Config(name = "losttrinkets")
 public class SunkenTrinketsConfig implements ConfigData {
@@ -68,10 +72,10 @@ public class SunkenTrinketsConfig implements ConfigData {
     public int woodCutting = woodCuttingDefault;
 
     public void validatePostLoad() throws ValidationException {
-        // TODO: validate that blackList and nonRandom are lists of trinkets
-
-        // TODO: refresh UnlockManager...
-        // UnlockManager.refresh();
+        if (GameInstance.getServer() != null) {
+            // refresh only if a server is running...
+            UnlockManager.refresh();
+        }
     }
 
     public int calcCost(int currentSlosts) {
