@@ -1,4 +1,4 @@
-package owmii.losttrinkets.client;
+package owmii.losttrinkets.forge.client;
 
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.eventbus.api.IEventBus;

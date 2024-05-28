@@ -1,4 +1,4 @@
-package owmii.losttrinkets.client.compat.jei;
+package owmii.losttrinkets.forge.client.compat.jei;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;

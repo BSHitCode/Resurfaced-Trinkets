@@ -35,7 +35,7 @@ public class LostTrinketsForge {
 
         if (FMLEnvironment.dist.isClient()) {
             try {
-                Class<?> clientClass = Class.forName("owmii.losttrinkets.client.LostTrinketsClient");
+                Class<?> clientClass = Class.forName("owmii.losttrinkets.forge.client.LostTrinketsClient");
                 clientClass.getMethod("init").invoke(null);
             } catch (Exception exception) {
                 throw new RuntimeException("Failed Lost Trinkets client-side setup", exception);

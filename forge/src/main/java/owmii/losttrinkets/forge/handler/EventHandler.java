@@ -1,4 +1,4 @@
-package owmii.losttrinkets.handler;
+package owmii.losttrinkets.forge.handler;
 
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
@@ -10,6 +10,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import owmii.losttrinkets.api.LostTrinketsAPI;
 import owmii.losttrinkets.api.trinket.Trinkets;
+import owmii.losttrinkets.handler.*;
 import owmii.losttrinkets.item.Itms;
 import owmii.losttrinkets.item.trinkets.*;
 
