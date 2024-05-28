@@ -24,13 +24,12 @@ public class EnchantmentScreenHandlerMixin {
     }
 
     @ModifyArg(
-        method = "func_217002_a", // lambda in onContentChanged
+        method = "method_17411(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)V", // lambda in onContentChanged
         at = @At(
             value = "INVOKE",
             target = "Lnet/minecraft/enchantment/EnchantmentHelper;calculateRequiredExperienceLevel(Ljava/util/Random;IILnet/minecraft/item/ItemStack;)I"
         ),
         index = 2
-        // No usage of "refmap = false" here, or it will fail in a release build!
     )
     private int modifyPower(int in) {
         if (this.player != null) {
