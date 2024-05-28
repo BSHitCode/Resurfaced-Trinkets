@@ -6,7 +6,7 @@ license="LGPLv3"
 [[mods]]
 modId="losttrinkets"
 version="${version}"
-displayName="Lost Trinkets Rediscovered"
+displayName="Sunken Trinkets"
 displayURL="https://modrinth.com/mod/sunken-trinkets"
 logoFile="logo.png"
 logoBlur=false
