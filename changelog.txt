@@ -1,3 +1,9 @@
+0.1.30
+- Update JEY compatibility
+- Forge: use the correct display name
+- Internal: Forge: Moved client and handler packages into subpackage forge to prevent problems when building
+- Internal: Forge: Fix EnchantmentScreenHandlerMixin not building sometimes
+
 0.1.29
 - Creepers now make a "poof" effect when denied exploding through the "creepo" trinket
 - Re-enable blackList & nonRandom settings that where disabled in the internal restructure
